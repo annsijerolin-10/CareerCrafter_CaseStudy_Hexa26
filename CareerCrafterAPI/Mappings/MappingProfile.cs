@@ -1,0 +1,58 @@
+﻿using AutoMapper;
+using CareerCrafterAPI.DTOs;
+using CareerCrafterAPI.Models;
+
+namespace CareerCrafterAPI.Mappings
+{
+    public class MappingProfile:Profile
+    {
+        public MappingProfile()
+        {
+           
+            CreateMap<User, UserResponseDto>();
+            CreateMap<UserCreateDto, User>();
+
+          
+            CreateMap<Employer, EmployerResponseDto>();
+            CreateMap<EmployerCreateDto, Employer>();
+
+          
+            CreateMap<Job, JobResponseDto>();
+            CreateMap<JobCreateDto, Job>();
+            CreateMap<JobUpdateDto, Job>();
+
+            CreateMap<JobSeeker, JobSeekerResponseDto>();
+            CreateMap<JobSeekerCreateDto, JobSeeker>();
+            CreateMap<JobSeekerUpdateDto, JobSeeker>();
+
+            CreateMap<Resume, ResumeResponseDto>();
+            CreateMap<ResumeUploadDto, Resume>();
+            CreateMap<ResumeUpdateDto, Resume>()
+                 .ForMember(
+                     dest => dest.ResumeFile,
+                     opt => opt.Ignore());
+
+            CreateMap<ApplicationCreateDto, Application>();
+            CreateMap<Application, ApplicationResponseDto>().ForMember(
+                dest => dest.JobSeekerName,
+                opt => opt.MapFrom(
+                    src => src.JobSeeker != null &&
+                           src.JobSeeker.User != null
+                           ? src.JobSeeker.User.FullName
+                           : ""));
+
+
+            CreateMap<Notification, NotificationResponseDto>();
+
+
+
+
+
+
+
+
+
+        }
+    }
+}
+

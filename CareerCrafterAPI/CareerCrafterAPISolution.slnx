@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../CareerCrafterAPI.Tests/CareerCrafterAPI.Tests.csproj" Id="fc8cb40f-1b29-45d5-a7a6-a512164df8fc" />
+  <Project Path="CareerCrafterAPI.csproj" />
+</Solution>
