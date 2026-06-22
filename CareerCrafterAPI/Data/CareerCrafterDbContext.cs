@@ -27,13 +27,18 @@ namespace CareerCrafterAPI.Data
                 .HasForeignKey(a => a.JobId)
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Job>()
-     .Property(j => j.Salary)
-     .HasPrecision(18, 2);
+                 .Property(j => j.Salary)
+                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<Notification>()
-    .HasOne(n => n.JobSeeker)
-    .WithMany()
-    .HasForeignKey(n => n.JobSeekerId);
+                .HasOne(n => n.JobSeeker)
+                .WithMany()
+                .HasForeignKey(n => n.JobSeekerId);
+
+
+            modelBuilder.Entity<Resume>()
+                .HasIndex(r => r.JobSeekerId)
+                .IsUnique();
 
 
             base.OnModelCreating(modelBuilder);

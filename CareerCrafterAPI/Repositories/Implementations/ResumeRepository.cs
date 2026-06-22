@@ -25,7 +25,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 .FirstOrDefaultAsync(r => r.ResumeId == resumeId);
         }
 
-        public async Task UploadResumeAsync(Resume resume)
+        public async Task AddResumeAsync(Resume resume)
         {
             await _context.Resumes.AddAsync(resume);
             await _context.SaveChangesAsync();
@@ -46,6 +46,11 @@ namespace CareerCrafterAPI.Repositories.Implementations
         {
             _context.Resumes.Remove(resume);
             await _context.SaveChangesAsync();
+        }
+        public async Task<Resume?> GetByJobSeekerIdAsync(int jobSeekerId)
+        {
+            return await _context.Resumes
+                .FirstOrDefaultAsync(r => r.JobSeekerId == jobSeekerId);
         }
     }
 

@@ -4,6 +4,7 @@ using CareerCrafterAPI.Models;
 using CareerCrafterAPI.Repositories.Interfaces;
 using CareerCrafterAPI.Services.Implementations;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -188,6 +189,89 @@ namespace CareerCrafterAPI.Tests.Servicetests
             _mockRepository.Verify(r => r.UpdateResumeAsync(It.IsAny<Resume>()), Times.Once);
 
 
+        }
+
+        [Test]
+        public void UploadResumeAsync_ThrowsException_WhenJobSeekerNotFound()
+        {
+            var fileMock = new Mock<IFormFile>();
+
+            var dto = new ResumeUploadDto
+            {
+                ResumeFile = fileMock.Object,
+                JobSeekerId = 100
+            };
+
+            _mockRepository
+                .Setup(r => r.JobSeekerExistsAsync(100))
+                .ReturnsAsync(false);
+
+            Assert.ThrowsAsync<Exception>(
+                async () =>
+                    await _resumeService.UploadResumeAsync(dto));
+        }
+
+
+        [Test]
+        public void UploadResumeAsync_ThrowsException_WhenFileIsNotPdf()
+        {
+            var fileMock = new Mock<IFormFile>();
+
+            fileMock.Setup(f => f.FileName)
+                .Returns("resume.docx");
+
+            var dto = new ResumeUploadDto
+            {
+                ResumeFile = fileMock.Object,
+                JobSeekerId = 1
+            };
+
+            _mockRepository
+                .Setup(r => r.JobSeekerExistsAsync(1))
+                .ReturnsAsync(true);
+
+            Assert.ThrowsAsync<Exception>(
+                async () =>
+                    await _resumeService.UploadResumeAsync(dto));
+        }
+
+        [Test]
+        public async Task GetAllResumesAsync_ReturnsResumes()
+        {
+            var resumes = new List<Resume>
+            {
+                new Resume
+                {
+                    ResumeId = 1,
+                    ResumeFile = "/uploads/resume.pdf",
+                    JobSeekerId = 1
+                }
+            };
+
+            _mockRepository
+                .Setup(r => r.GetAllResumesAsync())
+                .ReturnsAsync(resumes);
+
+            _mockMapper
+                .Setup(m => m.Map<List<ResumeResponseDto>>
+                    (It.IsAny<List<Resume>>()))
+                .Returns(new List<ResumeResponseDto>
+                {
+            new ResumeResponseDto
+            {
+                ResumeId = 1,
+                ResumeFile = "/uploads/resume.pdf",
+                JobSeekerId = 1
+            }
+                });
+
+            var result =
+                await _resumeService.GetAllResumesAsync();
+
+            Assert.IsNotNull(result);
+
+            Assert.That(result.Count,
+                Is.EqualTo(1));
         }
 
 

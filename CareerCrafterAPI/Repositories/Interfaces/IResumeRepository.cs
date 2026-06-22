@@ -8,11 +8,12 @@ namespace CareerCrafterAPI.Repositories.Interfaces
 
         Task<Resume?> GetResumeByIdAsync(int resumeId);
 
-        Task UploadResumeAsync(Resume resume);
+        Task AddResumeAsync(Resume resume);
         Task UpdateResumeAsync(Resume resume);
 
         Task DeleteResumeAsync(Resume resume);
 
         Task<bool> JobSeekerExistsAsync(int jobSeekerId);
+        Task<Resume?> GetByJobSeekerIdAsync(int jobSeekerId);
     }
 }
