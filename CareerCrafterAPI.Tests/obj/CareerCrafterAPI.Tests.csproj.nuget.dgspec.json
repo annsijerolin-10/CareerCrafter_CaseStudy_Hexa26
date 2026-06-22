@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\vs12\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj": {}
+    "E:\\vs12\\folder\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj": {}
   },
   "projects": {
-    "E:\\vs12\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj": {
+    "E:\\vs12\\folder\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\vs12\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj",
+        "projectUniqueName": "E:\\vs12\\folder\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj",
         "projectName": "CareerCrafterAPI.Tests",
-        "projectPath": "E:\\vs12\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj",
+        "projectPath": "E:\\vs12\\folder\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj",
         "packagesPath": "C:\\Users\\Annsi\\.nuget\\packages\\",
-        "outputPath": "E:\\vs12\\CareerCrafterAPI.Tests\\obj\\",
+        "outputPath": "E:\\vs12\\folder\\CareerCrafterAPI.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\vs12\\CareerCrafterAPI\\CareerCrafterAPI.csproj": {
-                "projectPath": "E:\\vs12\\CareerCrafterAPI\\CareerCrafterAPI.csproj"
+              "E:\\vs12\\folder\\CareerCrafterAPI\\CareerCrafterAPI.csproj": {
+                "projectPath": "E:\\vs12\\folder\\CareerCrafterAPI\\CareerCrafterAPI.csproj"
               }
             }
           }
@@ -101,14 +101,14 @@
         }
       }
     },
-    "E:\\vs12\\CareerCrafterAPI\\CareerCrafterAPI.csproj": {
+    "E:\\vs12\\folder\\CareerCrafterAPI\\CareerCrafterAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\vs12\\CareerCrafterAPI\\CareerCrafterAPI.csproj",
+        "projectUniqueName": "E:\\vs12\\folder\\CareerCrafterAPI\\CareerCrafterAPI.csproj",
         "projectName": "CareerCrafterAPI",
-        "projectPath": "E:\\vs12\\CareerCrafterAPI\\CareerCrafterAPI.csproj",
+        "projectPath": "E:\\vs12\\folder\\CareerCrafterAPI\\CareerCrafterAPI.csproj",
         "packagesPath": "C:\\Users\\Annsi\\.nuget\\packages\\",
-        "outputPath": "E:\\vs12\\CareerCrafterAPI\\obj\\",
+        "outputPath": "E:\\vs12\\folder\\CareerCrafterAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

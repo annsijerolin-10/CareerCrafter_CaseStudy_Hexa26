@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LCSAaT9aKng=",
+  "dgSpecHash": "UlQSzKjvPGc=",
   "success": true,
-  "projectFilePath": "E:\\vs12\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj",
+  "projectFilePath": "E:\\vs12\\folder\\CareerCrafterAPI.Tests\\CareerCrafterAPI.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Annsi\\.nuget\\packages\\asp.versioning.abstractions\\8.1.0\\asp.versioning.abstractions.8.1.0.nupkg.sha512",
     "C:\\Users\\Annsi\\.nuget\\packages\\asp.versioning.http\\8.1.0\\asp.versioning.http.8.1.0.nupkg.sha512",

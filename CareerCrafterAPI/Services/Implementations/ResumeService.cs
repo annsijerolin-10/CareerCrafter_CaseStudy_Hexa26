@@ -75,11 +75,16 @@ namespace CareerCrafterAPI.Services.Implementations
 
                 if (dto.ResumeFile != null)
                 {
+                    if (Path.GetExtension(dto.ResumeFile.FileName).ToLower() != ".pdf")
+                    {
+                        throw new Exception("Only PDF files are allowed");
+                    }
                     // delete old file
                     if (!string.IsNullOrEmpty(oldResumePath))
                     {
                         DeleteResumeFile(oldResumePath);
                     }
+                  
 
                     // save new file
                     string newPath = await SaveResumeAsync(dto.ResumeFile);
@@ -190,6 +195,10 @@ namespace CareerCrafterAPI.Services.Implementations
                 if (!exists)
                 {
                     throw new Exception("Job Seeker not found");
+                }
+                if (Path.GetExtension(dto.ResumeFile.FileName).ToLower() != ".pdf")
+                {
+                    throw new Exception("Only PDF files are allowed");
                 }
 
                 string resumePath = await SaveResumeAsync(dto.ResumeFile);
