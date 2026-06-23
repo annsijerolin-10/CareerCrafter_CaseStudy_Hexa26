@@ -108,10 +108,10 @@ namespace CareerCrafterAPI.Controllers
         [Authorize(Roles = "JobSeeker")]
         public async Task<IActionResult> WithdrawApplication(int id)
         {
-            var result =
-                await _applicationService
+            var result = await _applicationService
                     .WithdrawApplicationAsync(id);
 
+           
             if (!result)
             {
                 return NotFound();

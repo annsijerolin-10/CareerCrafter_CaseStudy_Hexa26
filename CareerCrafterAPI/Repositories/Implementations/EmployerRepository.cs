@@ -59,9 +59,8 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
 
                 ShortlistedCount = applications.Count(a => a.Status == "Shortlisted"),
-
-
-                RejectedCount = applications.Count(a => a.Status == "Rejected")
+                RejectedCount = applications.Count(a => a.Status == "Rejected"),
+                WithdrawnCount = applications.Count(a => a.Status == "Withdrawn")
 
             };
         }

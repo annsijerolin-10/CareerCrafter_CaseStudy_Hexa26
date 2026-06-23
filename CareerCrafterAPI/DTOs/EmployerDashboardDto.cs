@@ -11,5 +11,7 @@
         public int ShortlistedCount { get; set; }
 
         public int RejectedCount { get; set; }
+
+        public int WithdrawnCount { get; set; }
     }
 }

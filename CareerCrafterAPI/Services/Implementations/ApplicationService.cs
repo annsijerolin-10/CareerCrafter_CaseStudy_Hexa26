@@ -161,6 +161,11 @@ namespace CareerCrafterAPI.Services.Implementations
                 {
                     return null;
                 }
+                if (application.Status == "Withdrawn")
+                {
+                    throw new Exception("Withdrawn applications cannot be updated.");
+
+                }
 
                 application.Status = dto.Status;
 
@@ -230,7 +235,14 @@ namespace CareerCrafterAPI.Services.Implementations
                 var application = await _applicationRepository.GetApplicationByIdAsync(applicationId);
 
                 if (application == null)
+                {
                     return false;
+                }
+                if (application.Status != "Applied")
+                {
+                    throw new Exception(
+                        "Only applications with Applied status can be withdrawn.");
+                }
 
                 application.Status = "Withdrawn";
 
