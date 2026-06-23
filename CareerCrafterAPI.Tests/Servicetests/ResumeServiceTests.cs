@@ -217,8 +217,8 @@ namespace CareerCrafterAPI.Tests.Servicetests
         {
             var fileMock = new Mock<IFormFile>();
 
-            fileMock.Setup(f => f.FileName)
-                .Returns("resume.docx");
+            fileMock.Setup(f => f.FileName).Returns("resume.docx");
+
 
             var dto = new ResumeUploadDto
             {
@@ -227,8 +227,8 @@ namespace CareerCrafterAPI.Tests.Servicetests
             };
 
             _mockRepository
-                .Setup(r => r.JobSeekerExistsAsync(1))
-                .ReturnsAsync(true);
+             .Setup(r => r.GetByJobSeekerIdAsync(1))
+             .ReturnsAsync((Resume?)null);
 
             Assert.ThrowsAsync<Exception>(
                 async () =>
@@ -253,8 +253,7 @@ namespace CareerCrafterAPI.Tests.Servicetests
                 .ReturnsAsync(resumes);
 
             _mockMapper
-                .Setup(m => m.Map<List<ResumeResponseDto>>
-                    (It.IsAny<List<Resume>>()))
+                .Setup(m => m.Map<List<ResumeResponseDto>>(It.IsAny<List<Resume>>()))
                 .Returns(new List<ResumeResponseDto>
                 {
             new ResumeResponseDto
@@ -270,8 +269,39 @@ namespace CareerCrafterAPI.Tests.Servicetests
 
             Assert.IsNotNull(result);
 
-            Assert.That(result.Count,
-                Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(1));
+
+        }
+
+        [Test]
+        public void UploadResumeAsync_ThrowsException_WhenResumeAlreadyExists()
+        {
+            var fileMock = new Mock<IFormFile>();
+
+            fileMock.Setup(f => f.FileName)
+                .Returns("resume.pdf");
+
+            var dto = new ResumeUploadDto
+            {
+                ResumeFile = fileMock.Object,
+                JobSeekerId = 1
+            };
+
+            _mockRepository
+                .Setup(r => r.JobSeekerExistsAsync(1))
+                .ReturnsAsync(true);
+
+            _mockRepository
+                .Setup(r => r.GetByJobSeekerIdAsync(1))
+                .ReturnsAsync(new Resume
+                {
+                    ResumeId = 1,
+                    JobSeekerId = 1
+                });
+
+            Assert.ThrowsAsync<Exception>(
+                async () =>
+                    await _resumeService.UploadResumeAsync(dto));
         }
 
 
