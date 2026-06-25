@@ -26,20 +26,36 @@ namespace CareerCrafterAPI.Mappings
             CreateMap<JobSeekerUpdateDto, JobSeeker>();
 
             CreateMap<Resume, ResumeResponseDto>();
-            CreateMap<ResumeUploadDto, Resume>();
+           // CreateMap<ResumeUploadDto, Resume>();
             CreateMap<ResumeUpdateDto, Resume>()
                  .ForMember(
                      dest => dest.ResumeFile,
                      opt => opt.Ignore());
 
             CreateMap<ApplicationCreateDto, Application>();
-            CreateMap<Application, ApplicationResponseDto>().ForMember(
+            CreateMap<Application, ApplicationResponseDto>()
+            .ForMember(
                 dest => dest.JobSeekerName,
                 opt => opt.MapFrom(
                     src => src.JobSeeker != null &&
                            src.JobSeeker.User != null
-                           ? src.JobSeeker.User.FullName
-                           : ""));
+                        ? src.JobSeeker.User.FullName
+                        : ""))
+
+            .ForMember(
+                dest => dest.JobTitle,
+                opt => opt.MapFrom(
+                    src => src.Job != null
+                        ? src.Job.JobTitle
+                        : ""))
+
+            .ForMember(
+                dest => dest.CompanyName,
+                opt => opt.MapFrom(
+                    src => src.Job != null &&
+                           src.Job.Employer != null
+                        ? src.Job.Employer.CompanyName
+                        : ""));
 
 
             CreateMap<Notification, NotificationResponseDto>();

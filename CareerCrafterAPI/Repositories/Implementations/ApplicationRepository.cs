@@ -16,14 +16,19 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         public async Task<List<Application>> GetAllApplicationsAsync()
         {
-            return await _context.Applications.Include(a => a.Job)
+            return await _context.Applications
+               .Include(a => a.Job)
+                    .ThenInclude(j => j!.Employer)
                 .Include(a => a.JobSeeker)
-                .ThenInclude(js => js!.User).ToListAsync();
+                    .ThenInclude(js => js!.User)
+                .ToListAsync();
         }
 
         public async Task<Application?> GetApplicationByIdAsync(int applicationId)
         {
             return await _context.Applications.Include(a => a.Job)
+                .Include(a => a.Job)
+                    .ThenInclude(j => j!.Employer)
                 .Include(a => a.JobSeeker)
                 .ThenInclude(js => js!.User)
                 .FirstOrDefaultAsync(a => a.ApplicationId == applicationId);
@@ -52,6 +57,9 @@ namespace CareerCrafterAPI.Repositories.Implementations
         {
             return await _context.Applications
                 .Include(a => a.Job)
+                    .ThenInclude(j => j!.Employer)
+                .Include(a => a.JobSeeker)
+                    .ThenInclude(js => js!.User)
                 .Where(a => a.JobSeekerId == jobSeekerId)
                 .ToListAsync();
         }

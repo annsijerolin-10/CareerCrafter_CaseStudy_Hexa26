@@ -33,8 +33,6 @@ namespace CareerCrafterAPI.Services.Implementations
             {
                 _logger.LogInformation("Fetching all applications");
                 var applications = await _applicationRepository.GetAllApplicationsAsync();
-
-
                 return _mapper.Map<List<ApplicationResponseDto>>(applications);
             }
             catch (Exception ex)
