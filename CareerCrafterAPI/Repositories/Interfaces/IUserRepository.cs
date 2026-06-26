@@ -9,6 +9,7 @@ namespace CareerCrafterAPI.Repositories.Interfaces
         Task<List<User>> GetAllUsersAsync();
         Task<User?> GetUserByIdAsync(int id);
         Task<bool> UserExistsAsync(int userId);
+        Task<bool> EmailExistsAsync(string email);
 
     }
 }

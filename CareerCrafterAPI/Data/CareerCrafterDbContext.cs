@@ -39,6 +39,9 @@ namespace CareerCrafterAPI.Data
             modelBuilder.Entity<Resume>()
                 .HasIndex(r => r.JobSeekerId)
                 .IsUnique();
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
 
 
             base.OnModelCreating(modelBuilder);

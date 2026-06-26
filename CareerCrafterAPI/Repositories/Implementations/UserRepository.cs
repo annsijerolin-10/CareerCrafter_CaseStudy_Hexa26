@@ -34,5 +34,10 @@ namespace CareerCrafterAPI.Repositories.Implementations
         {
             return await _context.Users.AnyAsync(u => u.UserId == userId);
         }
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users
+                .AnyAsync(u => u.Email == email);
+        }
     }
 }

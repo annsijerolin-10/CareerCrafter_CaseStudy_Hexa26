@@ -55,6 +55,13 @@ namespace CareerCrafterAPI.Services.Implementations
     {
             try
             {
+                bool emailExists = await _userRepository.EmailExistsAsync(dto.Email);
+
+
+                if (emailExists)
+                {
+                    throw new Exception("Email already registered");
+                }
                 _logger.LogInformation("Creating user with email {Email}", dto.Email);
                 var user = _mapper.Map<User>(dto);
 
