@@ -59,6 +59,16 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5173").AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+
+    });
+});
 
 
 
@@ -153,7 +163,7 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
 
