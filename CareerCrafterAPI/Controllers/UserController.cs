@@ -73,22 +73,29 @@ namespace CareerCrafterAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(UserCreateDto dto)
         {
-            var user = await _userService.AddUserAsync(dto);
+            try
+            {
+                var user = await _userService.AddUserAsync(dto);
 
-            return Ok(user);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllUsers()
-        //{
-        //    var users = await _userService.GetAllUsersAsync();
+            //[HttpGet]
+            //public async Task<IActionResult> GetAllUsers()
+            //{
+            //    var users = await _userService.GetAllUsersAsync();
 
-        //    return Ok(new
-        //    {
-        //        StatusCode = StatusCodes.Status200OK,
-        //        Message = "Users retrieved successfully",
-        //        Data = users
-        //    });
-        //}
-    }
+            //    return Ok(new
+            //    {
+            //        StatusCode = StatusCodes.Status200OK,
+            //        Message = "Users retrieved successfully",
+            //        Data = users
+            //    });
+            //}
+        }
 }

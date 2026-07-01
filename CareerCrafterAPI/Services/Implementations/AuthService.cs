@@ -57,7 +57,11 @@ namespace CareerCrafterAPI.Services.Implementations
                 {
                     Token = token,
                     Email = user.Email,
-                    Role = user.Role
+                    Role = user.Role,
+                    UserId = user.UserId,
+                    FullName = user.FullName,
+                    EmployerId = user.Employer?.EmployerId,
+                    JobSeekerId = user.JobSeeker?.JobSeekerId
                 };
             }
             catch(Exception ex)

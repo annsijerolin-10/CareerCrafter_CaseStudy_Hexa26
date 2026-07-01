@@ -16,7 +16,10 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users
+                .Include(u => u.Employer)
+                .Include(u => u.JobSeeker)
+                .FirstOrDefaultAsync(u => u.Email == email);
 
         }
     }
