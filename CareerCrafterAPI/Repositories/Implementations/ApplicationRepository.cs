@@ -31,6 +31,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
                     .ThenInclude(j => j!.Employer)
                 .Include(a => a.JobSeeker)
                 .ThenInclude(js => js!.User)
+                .Include(a => a.Resume)
                 .FirstOrDefaultAsync(a => a.ApplicationId == applicationId);
         }
 
@@ -60,6 +61,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
                     .ThenInclude(j => j!.Employer)
                 .Include(a => a.JobSeeker)
                     .ThenInclude(js => js!.User)
+                .Include(a => a.Resume)
                 .Where(a => a.JobSeekerId == jobSeekerId)
                 .ToListAsync();
         }
@@ -80,8 +82,18 @@ namespace CareerCrafterAPI.Repositories.Implementations
                     .ThenInclude(j=>j!.Employer)
                 .Include(a => a.JobSeeker)
                     .ThenInclude(js => js!.User)
+                .Include(a => a.Resume)
                 .Where(a => a.JobId == jobId)
                 .ToListAsync();
+        }
+
+        public async Task<bool> ResumeBelongsToJobSeekerAsync(
+         int resumeId,
+         int jobSeekerId)
+        {
+            return await _context.Resumes.AnyAsync(r =>
+                r.ResumeId == resumeId &&
+                r.JobSeekerId == jobSeekerId);
         }
     }
 }

@@ -45,6 +45,14 @@ namespace CareerCrafterAPI.Data
 
 
             base.OnModelCreating(modelBuilder);
+
+         
+
+            modelBuilder.Entity<Application>()
+                .HasOne(a => a.Resume)
+                .WithMany(r => r.Applications)
+                .HasForeignKey(a => a.ResumeId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

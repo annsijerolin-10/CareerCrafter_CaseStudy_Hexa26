@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CareerCrafterAPI.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+486a426febde5dc4a4a6be30450a9f3349f028da")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d8f1258bc516bfcb4b0705d03a212ccdda1e1c0")]
 [assembly: System.Reflection.AssemblyProductAttribute("CareerCrafterAPI.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CareerCrafterAPI.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

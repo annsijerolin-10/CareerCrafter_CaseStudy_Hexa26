@@ -21,6 +21,9 @@ namespace CareerCrafterAPI.Repositories.Interfaces
         Task UpdateApplicationAsync(Application application);
 
         Task<List<Application>> GetApplicationsByJobIdAsync(int jobId);
+        Task<bool> ResumeBelongsToJobSeekerAsync(
+    int resumeId,
+    int jobSeekerId);
 
     }
 }

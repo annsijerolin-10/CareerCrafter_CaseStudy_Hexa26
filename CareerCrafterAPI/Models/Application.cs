@@ -11,5 +11,8 @@
 
         public int JobSeekerId { get; set; }
         public JobSeeker? JobSeeker { get; set; }
+
+        public int? ResumeId { get; set; }
+        public Resume? Resume { get; set; }
     }
 }

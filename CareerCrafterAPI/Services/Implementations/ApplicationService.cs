@@ -73,8 +73,18 @@ namespace CareerCrafterAPI.Services.Implementations
         {
             try
             {
-                _logger.LogInformation("Applying for JobId {JobId} by JobSeekerId {JobSeekerId}", dto.JobId, dto.JobSeekerId);
 
+                _logger.LogInformation("Applying for JobId {JobId} by JobSeekerId {JobSeekerId}", dto.JobId, dto.JobSeekerId);
+                bool validResume =
+                    await _applicationRepository
+                        .ResumeBelongsToJobSeekerAsync(
+                            dto.ResumeId,
+                            dto.JobSeekerId);
+
+                if (!validResume)
+                {
+                    throw new Exception("Invalid resume selected.");
+                }
 
 
                 bool jobExists = await _applicationRepository.JobExistsAsync(dto.JobId);
@@ -103,7 +113,11 @@ namespace CareerCrafterAPI.Services.Implementations
 
 
 
-                return _mapper.Map<ApplicationResponseDto>(application);
+                var savedApplication = await _applicationRepository.GetApplicationByIdAsync(
+                        application.ApplicationId);
+
+
+                return _mapper.Map<ApplicationResponseDto>(savedApplication);
             }
             catch (Exception ex)
             {

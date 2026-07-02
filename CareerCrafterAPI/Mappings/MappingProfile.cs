@@ -55,7 +55,13 @@ namespace CareerCrafterAPI.Mappings
                     src => src.Job != null &&
                            src.Job.Employer != null
                         ? src.Job.Employer.CompanyName
-                        : ""));
+                        : ""))
+            .ForMember(
+    dest => dest.ResumeFile,
+    opt => opt.MapFrom(
+        src => src.Resume != null
+            ? src.Resume.ResumeFile
+            : ""));
 
 
             CreateMap<Notification, NotificationResponseDto>();
