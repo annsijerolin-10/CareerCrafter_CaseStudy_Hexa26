@@ -76,8 +76,10 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         {
             return await _context.Applications
+                .Include(a=>a.Job)
+                    .ThenInclude(j=>j!.Employer)
                 .Include(a => a.JobSeeker)
-                .ThenInclude(js => js!.User)
+                    .ThenInclude(js => js!.User)
                 .Where(a => a.JobId == jobId)
                 .ToListAsync();
         }
