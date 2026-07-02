@@ -16,7 +16,9 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         public async Task<List<Job>> GetAllJobsAsync()
         {
-            return await _context.Jobs.ToListAsync();
+            return await _context.Jobs
+                .Where(j => !j.IsDeleted)
+                .ToListAsync();
         }
 
         public async Task<Job?> GetJobByIdAsync(int jobId)
@@ -45,7 +47,9 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         public async Task DeleteJobAsync(Job job)
         {
-            _context.Jobs.Remove(job);
+            job.IsDeleted = true;
+            _context.Jobs.Update(job);
+            
             await _context.SaveChangesAsync();
         }
 
@@ -56,7 +60,8 @@ namespace CareerCrafterAPI.Repositories.Implementations
             bool descending)
  
         {
-            IQueryable<Job> query = _context.Jobs;
+            IQueryable<Job> query = _context.Jobs
+    .Where(j => !j.IsDeleted);
 
             if (!string.IsNullOrEmpty(sortBy))
             {
@@ -96,7 +101,9 @@ namespace CareerCrafterAPI.Repositories.Implementations
             string? title,
             string? location)
         {
-            var query = _context.Jobs.AsQueryable();
+            var query = _context.Jobs
+    .Where(j => !j.IsDeleted)
+    .AsQueryable();
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -121,7 +128,8 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 .ToList();
 
             return await _context.Jobs
-                .Where(j =>
+                .Where(j =>!j.IsDeleted  &&
+
                     !string.IsNullOrEmpty(j.RequiredSkills) &&
                     skillList.Any(skill =>
                         j.RequiredSkills.ToLower().Contains(skill)))
@@ -131,7 +139,22 @@ namespace CareerCrafterAPI.Repositories.Implementations
         public async Task<List<Job>> GetJobsByEmployerIdAsync(int employerId)
         {
             return await _context.Jobs
-                .Where(j => j.EmployerId == employerId)
+                .Where(j => j.EmployerId == employerId && !j.IsDeleted)
+                .OrderByDescending(j => j.PostedDate)
+                .ToListAsync();
+        }
+        public async Task RestoreJobAsync(Job job)
+        {
+            job.IsDeleted = false;
+
+            _context.Jobs.Update(job);
+
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<Job>> GetArchivedJobsByEmployerIdAsync(int employerId)
+        {
+            return await _context.Jobs
+                .Where(j => j.EmployerId == employerId && j.IsDeleted)
                 .OrderByDescending(j => j.PostedDate)
                 .ToListAsync();
         }

@@ -13,5 +13,8 @@
         public int RejectedCount { get; set; }
 
         public int WithdrawnCount { get; set; }
+        public int ActiveJobsCount { get; set; }
+
+        public int ArchivedJobsCount { get; set; }
     }
 }

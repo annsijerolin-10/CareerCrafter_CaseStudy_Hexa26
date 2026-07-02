@@ -15,6 +15,7 @@ namespace CareerCrafterAPI.Models
         public decimal Salary { get; set; }
 
         public DateTime PostedDate { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public int EmployerId { get; set; }
 

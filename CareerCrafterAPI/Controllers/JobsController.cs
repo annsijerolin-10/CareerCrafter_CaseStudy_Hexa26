@@ -128,5 +128,28 @@ namespace CareerCrafterAPI.Controllers
             return Ok(jobs);
         }
 
+        [Authorize(Roles = "Employer")]
+        [HttpPut("restore/{id}")]
+        public async Task<IActionResult> RestoreJob(int id)
+        {
+            var restored = await _jobService.RestoreJobAsync(id);
+
+            if (!restored)
+                return NotFound();
+
+            return Ok("Job restored successfully");
+        }
+
+        [Authorize(Roles = "Employer")]
+        [HttpGet("employer/{employerId}/archived")]
+        public async Task<IActionResult> GetArchivedJobs(int employerId)
+        {
+            var jobs =
+                await _jobService
+                    .GetArchivedJobsByEmployerIdAsync(employerId);
+
+            return Ok(jobs);
+        }
+
     }
 }

@@ -131,7 +131,7 @@ namespace CareerCrafterAPI.Services.Implementations
         {
             try
             {
-                _logger.LogInformation("Deleting job {JobId}", jobId);
+                _logger.LogInformation("Soft Deleting job {JobId}", jobId);
 
 
                 var job = await _jobRepository.GetJobByIdAsync(jobId);
@@ -140,7 +140,7 @@ namespace CareerCrafterAPI.Services.Implementations
                     return false;
 
                 await _jobRepository.DeleteJobAsync(job);
-                _logger.LogInformation("Job deleted successfully. JobId: {JobId}", jobId);
+                _logger.LogInformation("Job archieved successfully. JobId: {JobId}", jobId);
 
 
                 return true;
@@ -237,7 +237,57 @@ namespace CareerCrafterAPI.Services.Implementations
 
         public async Task<List<JobResponseDto>> GetJobsByEmployerIdAsync(int employerId)
         {
-            var jobs = await _jobRepository.GetJobsByEmployerIdAsync(employerId);
+            try
+            {
+                _logger.LogInformation(
+                    "Fetching jobs for EmployerId {EmployerId}",
+                    employerId);
+
+                var jobs =
+                    await _jobRepository.GetJobsByEmployerIdAsync(employerId);
+
+                return _mapper.Map<List<JobResponseDto>>(jobs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Error fetching jobs for EmployerId {EmployerId}",
+                    employerId);
+
+                throw;
+            }
+        }
+        public async Task<bool> RestoreJobAsync(int jobId)
+        {
+            try
+            {
+                var job = await _jobRepository.GetJobByIdAsync(jobId);
+                _logger.LogInformation(job == null ? "NULL" : $"Found {job.JobTitle}");
+
+                if (job == null)
+                    return false;
+
+                await _jobRepository.RestoreJobAsync(job);
+
+                _logger.LogInformation("Job restored successfully. JobId: {JobId}", jobId);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Error restoring job {JobId}",
+                    jobId);
+
+                throw;
+            }
+        }
+
+        public async Task<List<JobResponseDto>> GetArchivedJobsByEmployerIdAsync(int employerId)
+        {
+            var jobs = await _jobRepository
+                .GetArchivedJobsByEmployerIdAsync(employerId);
 
             return _mapper.Map<List<JobResponseDto>>(jobs);
         }

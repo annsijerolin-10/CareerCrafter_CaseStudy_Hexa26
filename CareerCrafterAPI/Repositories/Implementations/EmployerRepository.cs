@@ -38,8 +38,12 @@ namespace CareerCrafterAPI.Repositories.Implementations
         public async Task<EmployerDashboardDto> GetDashboardAsync(int employerId)
         {
             var jobs = await _context.Jobs
-                .Where(j => j.EmployerId == employerId)
-                .ToListAsync();
+     .Where(j => j.EmployerId == employerId)
+     .ToListAsync();
+
+            var activeJobs = jobs.Where(j => !j.IsDeleted).ToList();
+
+            var archivedJobs = jobs.Where(j => j.IsDeleted).ToList();
 
             var jobIds = jobs
                 .Select(j => j.JobId)
@@ -52,7 +56,9 @@ namespace CareerCrafterAPI.Repositories.Implementations
             return new EmployerDashboardDto
             {
                 TotalJobsPosted = jobs.Count,
+                ActiveJobsCount = activeJobs.Count,
 
+                ArchivedJobsCount = archivedJobs.Count,
                 TotalApplications = applications.Count,
 
                 AppliedCount = applications.Count(a => a.Status == "Applied"),

@@ -116,3 +116,54 @@ export async function deleteJob(jobId, token) {
         );
     }
 }
+export async function getArchivedJobs(employerId, token) {
+
+    try {
+
+        const response = await axios.get(
+            `${BASE_URL}/employer/${employerId}/archived`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(error, "Failed to fetch archived jobs.")
+        );
+
+    }
+
+}
+export async function restoreJob(jobId, token) {
+
+    try {
+
+        const response = await axios.put(
+            `${BASE_URL}/restore/${jobId}`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(error, "Failed to restore job.")
+        );
+
+    }
+
+}

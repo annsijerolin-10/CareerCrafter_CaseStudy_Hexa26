@@ -27,5 +27,8 @@ namespace CareerCrafterAPI.Repositories.Interfaces
 
 
         Task<List<Job>> GetJobsByEmployerIdAsync(int employerId);
+        Task RestoreJobAsync(Job job);
+
+        Task<List<Job>> GetArchivedJobsByEmployerIdAsync(int employerId);
     }
 }

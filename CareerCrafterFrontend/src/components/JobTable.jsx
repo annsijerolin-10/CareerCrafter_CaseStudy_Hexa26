@@ -2,8 +2,10 @@
 
 export function JobTable({
     jobs,
-     onEditJob,
-    onDeleteJob
+    onEditJob,
+    onDeleteJob,
+    onRestoreJob,
+    showArchived
 }) {
 
     if (jobs.length === 0) {
@@ -19,8 +21,9 @@ export function JobTable({
                     <th>Location</th>
                     <th>Salary</th>
                     <th>Required Skills</th>
-                    <th>Actions</th>
                     <th>Posted Date</th>
+                    <th>Actions</th>
+                    
                 </tr>
             </thead>
 
@@ -38,18 +41,25 @@ export function JobTable({
 
 
                         <td>
+                            {
+                                showArchived?(
+                                    <button onClick={()=> onRestoreJob(job.jobId)}>Restore</button>
+                                ):(
+                                    <>
+                                     <button onClick={() => onEditJob(job)}>  
+                                        Edit                                                                                                                 
+                                    </button>
 
-                            <button
-                                onClick={() => onEditJob(job)}
-                            >
-                                Edit
-                            </button>
+                                    <button onClick={() => onDeleteJob(job.jobId)}>                                                                        
+                                        Archive
+                                    </button>
+                                    
 
-                            <button
-                                onClick={() => onDeleteJob(job.jobId)}
-                            >
-                                Delete
-                            </button>
+                                    </>
+                                )
+                            }
+
+                           
 
                         </td>
 
