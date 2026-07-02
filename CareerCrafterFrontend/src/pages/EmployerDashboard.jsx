@@ -35,10 +35,7 @@ export function EmployerDashboard() {
 
                 {" | "}
 
-                {/* <Link to="/employer/jobs">
-                    <button>Manage Jobs</button>
-                </Link>
-                {" | "} */}
+                
 
                 <button onClick={handleLogout}>
                     Logout
