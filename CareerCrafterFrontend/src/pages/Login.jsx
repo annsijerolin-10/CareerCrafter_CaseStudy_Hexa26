@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate,Link } from "react-router-dom";
-import { loginUser } from "../api/AuthAxiosApi";
+import { loginUser } from "../api/AuthAxiosApi.js";
 import {useAuth} from "../context/AuthContext.jsx"
 
 export function Login(){

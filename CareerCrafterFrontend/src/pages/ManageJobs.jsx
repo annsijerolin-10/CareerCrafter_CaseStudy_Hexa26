@@ -1,7 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { useState,useEffect } from "react";
 
-import { getEmployerJobs,deleteJob ,getArchivedJobs,restoreJob} from "../api/JobAxiosApi";
+import { getEmployerJobs,restoreJob,getArchivedJobs } from "../api/JobAxiosApi";
 import { JobForm } from "../components/JobForm";
 import { JobTable } from "../components/JobTable";
 
