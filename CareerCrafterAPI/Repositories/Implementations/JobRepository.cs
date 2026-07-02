@@ -127,5 +127,13 @@ namespace CareerCrafterAPI.Repositories.Implementations
                         j.RequiredSkills.ToLower().Contains(skill)))
                 .ToListAsync();
         }
+
+        public async Task<List<Job>> GetJobsByEmployerIdAsync(int employerId)
+        {
+            return await _context.Jobs
+                .Where(j => j.EmployerId == employerId)
+                .OrderByDescending(j => j.PostedDate)
+                .ToListAsync();
+        }
     }
 }

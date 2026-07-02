@@ -25,5 +25,7 @@ namespace CareerCrafterAPI.Repositories.Interfaces
 
         Task<List<Job>> GetRecommendedJobsAsync(string skills);
 
+
+        Task<List<Job>> GetJobsByEmployerIdAsync(int employerId);
     }
 }

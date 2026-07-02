@@ -234,5 +234,12 @@ namespace CareerCrafterAPI.Services.Implementations
             }
         }
 
+
+        public async Task<List<JobResponseDto>> GetJobsByEmployerIdAsync(int employerId)
+        {
+            var jobs = await _jobRepository.GetJobsByEmployerIdAsync(employerId);
+
+            return _mapper.Map<List<JobResponseDto>>(jobs);
+        }
     }
 }

@@ -9,6 +9,11 @@ import { EmployerDashboard } from './pages/EmployerDashboard'
 import { JobSeekerDashboard } from './pages/JobSeekerDashboard'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { Register } from './pages/Register'
+import { EmployerHome } from './pages/EmployerHome'
+import { CandidateProfile } from './pages/CandidateProfile'
+import { ManageJobs } from './pages/ManageJobs'
+import { Applications } from './pages/Applications'
+
 function App() {
   
 
@@ -17,11 +22,32 @@ function App() {
     <Routes>
       <Route path="/" element={<Login/>} />
       <Route path="/register" element={<Register/>} />
-      <Route path="/employer/dashboard" element={
-        <ProtectedRoute role="Employer">
-          <EmployerDashboard/>
-        </ProtectedRoute>
-      } />
+      <Route
+        path="/employer/dashboard"
+        element={
+            <ProtectedRoute role="Employer">
+                <EmployerDashboard/>
+            </ProtectedRoute>
+        }
+        >
+
+            <Route
+                index
+                element={<EmployerHome/>}
+            />
+
+            { <Route
+                path="jobs"
+                element={<ManageJobs/>}
+            /> }
+
+            { <Route
+                path="applications"
+                element={<Applications/>}
+            /> }
+           
+
+          </Route>
       <Route path="/jobseeker/dashboard" element={
         <ProtectedRoute role="JobSeeker">
           <JobSeekerDashboard/>

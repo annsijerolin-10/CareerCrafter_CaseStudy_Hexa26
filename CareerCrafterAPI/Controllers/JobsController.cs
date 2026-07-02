@@ -119,5 +119,14 @@ namespace CareerCrafterAPI.Controllers
             return Ok(jobs);
         }
 
+        [Authorize(Roles = "Employer")]
+        [HttpGet("employer/{employerId}")]
+        public async Task<IActionResult> GetJobsByEmployer(int employerId)
+        {
+            var jobs = await _jobService.GetJobsByEmployerIdAsync(employerId);
+
+            return Ok(jobs);
+        }
+
     }
 }
