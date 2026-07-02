@@ -52,6 +52,7 @@ export async function updateApplicationStatus(
 ) {
 
     try {
+        console.log(token);
 
         const response = await axios.put(
             `${BASE_URL}/${applicationId}/status`,

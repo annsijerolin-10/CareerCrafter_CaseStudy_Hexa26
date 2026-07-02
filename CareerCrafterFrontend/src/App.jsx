@@ -12,7 +12,7 @@ import { Register } from './pages/Register'
 import { EmployerHome } from './pages/EmployerHome'
 import { CandidateProfile } from './pages/CandidateProfile'
 import { ManageJobs } from './pages/ManageJobs'
-import { Applications } from './pages/Applications'
+import { ManageApplications } from './pages/ManageApplication'
 
 function App() {
   
@@ -43,7 +43,7 @@ function App() {
 
             { <Route
                 path="applications"
-                element={<Applications/>}
+                element={<ManageApplications/>}
             /> }
            
 

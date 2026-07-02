@@ -1,7 +1,8 @@
 import { useState,useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-
-
+import { getEmployerJobs } from "../api/JobAxiosApi";
+import { getApplicationsByJob,updateApplicationStatus } from "../api/ApplicationAxiosApi";
+import { ApplicationTable } from "../components/ApplicationTable";
 export function ManageApplications() {
 
     const { user } = useAuth();
@@ -10,13 +11,56 @@ export function ManageApplications() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        loadApplications();
-    }, []);
+     if (user.employerId) {
+            loadApplications();
+        }
+
+    }, [user.employerId]);
 
     async function loadApplications() {
 
-        // We'll implement this after creating the Axios API
+        try {
+            const jobs = await getEmployerJobs(
+                user.employerId,
+                user.token
+            );
+            let allApplications = [];
+            for (const job of jobs) {
+                const jobApplications =
+                    await getApplicationsByJob(
+                        job.jobId,
+                        user.token
+                    );
 
+                allApplications = [
+                    ...allApplications,
+                    ...jobApplications
+                ];
+            }
+
+            setApplications(allApplications);
+
+        }
+        catch (error) {
+
+            setError(error.message);
+
+        }
+    }
+
+    async function handleStatusUpdate(applicationId, status) {
+        try {
+            await updateApplicationStatus(
+                applicationId,
+                status,
+                user.token
+            );
+
+            await loadApplications(); 
+        }
+        catch (error) {
+            setError(error.message);
+        }
     }
 
     return (
@@ -30,6 +74,11 @@ export function ManageApplications() {
                     {error}
                 </p>
             )}
+             <ApplicationTable
+                applications={applications}
+                onStatusUpdate={handleStatusUpdate}
+            />
+
 
         </div>
 
