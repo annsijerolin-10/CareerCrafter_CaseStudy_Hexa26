@@ -6,8 +6,8 @@ namespace CareerCrafterAPI.DTOs
     {
         [Required]
         [RegularExpression(
-        "Applied|Shortlisted|Rejected",
-        ErrorMessage = "Status must be Applied, Shortlisted or Rejected")]
+        "Applied|Reviewed|Shortlisted|Rejected",
+        ErrorMessage = "Status must be Applied, Reviewed,Shortlisted or Rejected")]
 
         public string Status { get; set; } = string.Empty;
     }
