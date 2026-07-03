@@ -22,6 +22,20 @@ function ApplicationRow({
                     .toLocaleDateString()}
             </td>
 
+             <td>
+                            <a
+                                href={`https://localhost:7109${application.resumeFile}`}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                View Resume
+                            </a>
+                        </td>
+
+
+                       
+
+
             <td>{application.status}</td>
 
             <td>{

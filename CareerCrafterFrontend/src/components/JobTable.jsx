@@ -22,6 +22,7 @@ export function JobTable({
                     <th>Salary</th>
                     <th>Required Skills</th>
                     <th>Posted Date</th>
+               
                     <th>Actions</th>
                     
                 </tr>
@@ -38,7 +39,7 @@ export function JobTable({
                         <td>{job.salary}</td>
                         <td>{job.requiredSkills}</td>
                         <td>{new Date(job.postedDate).toLocaleDateString()}</td>
-
+                        
 
                         <td>
                             {
