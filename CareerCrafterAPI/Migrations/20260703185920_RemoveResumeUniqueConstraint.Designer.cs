@@ -4,6 +4,7 @@ using CareerCrafterAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareerCrafterAPI.Migrations
 {
     [DbContext(typeof(CareerCrafterDbContext))]
-    partial class CareerCrafterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260703185920_RemoveResumeUniqueConstraint")]
+    partial class RemoveResumeUniqueConstraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

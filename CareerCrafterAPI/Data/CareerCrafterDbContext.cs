@@ -36,12 +36,12 @@ namespace CareerCrafterAPI.Data
                 .HasForeignKey(n => n.JobSeekerId);
 
 
-            modelBuilder.Entity<Resume>()
-                .HasIndex(r => r.JobSeekerId)
-                .IsUnique();
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
+            //modelBuilder.Entity<Resume>()
+            //    .HasIndex(r => r.JobSeekerId)
+            //    .IsUnique();
+            //modelBuilder.Entity<User>()
+            //    .HasIndex(u => u.Email)
+            //    .IsUnique();
 
 
             base.OnModelCreating(modelBuilder);

@@ -14,6 +14,7 @@ namespace CareerCrafterAPI.Services.Interfaces
         Task<ResumeResponseDto> UploadResumeAsync(ResumeUploadDto dto);
 
         Task<bool> DeleteResumeAsync(int ResumeId);
+        Task<List<ResumeResponseDto>> GetResumeByJobSeekerIdAsync(int jobSeekerId);
 
     }
 }

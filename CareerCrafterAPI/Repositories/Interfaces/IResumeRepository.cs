@@ -14,6 +14,8 @@ namespace CareerCrafterAPI.Repositories.Interfaces
         Task DeleteResumeAsync(Resume resume);
 
         Task<bool> JobSeekerExistsAsync(int jobSeekerId);
-        Task<Resume?> GetByJobSeekerIdAsync(int jobSeekerId);
+        //Task<List<Resume>> GetByJobSeekerIdAsync(int jobSeekerId);
+
+        Task<List<Resume>> GetResumeByJobSeekerIdAsync(int jobSeekerId);
     }
 }

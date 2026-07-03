@@ -197,13 +197,13 @@ namespace CareerCrafterAPI.Services.Implementations
                     throw new Exception("Job Seeker not found");
                 }
 
-                var existingResume = await _resumeRepository.GetByJobSeekerIdAsync(dto.JobSeekerId);
+                //var existingResume = await _resumeRepository.GetByJobSeekerIdAsync(dto.JobSeekerId);
 
-                if (existingResume != null)
-                {
-                    throw new Exception(
-                        "Resume already exists. Please update the existing resume.");
-                }
+                //if (existingResume != null)
+                //{
+                //    throw new Exception(
+                //        "Resume already exists. Please update the existing resume.");
+                //}
 
                 if (Path.GetExtension(dto.ResumeFile.FileName).ToLower() != ".pdf")
                 {
@@ -233,6 +233,14 @@ namespace CareerCrafterAPI.Services.Implementations
 
                 throw;
             }
+        }
+        public async Task<List<ResumeResponseDto>> GetResumeByJobSeekerIdAsync(
+     int jobSeekerId)
+        {
+            var resumes =
+                await _resumeRepository.GetResumeByJobSeekerIdAsync(jobSeekerId);
+
+            return _mapper.Map<List<ResumeResponseDto>>(resumes);
         }
 
     }

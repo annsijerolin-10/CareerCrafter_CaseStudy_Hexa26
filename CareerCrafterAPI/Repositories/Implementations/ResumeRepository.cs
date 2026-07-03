@@ -47,10 +47,14 @@ namespace CareerCrafterAPI.Repositories.Implementations
             _context.Resumes.Remove(resume);
             await _context.SaveChangesAsync();
         }
-        public async Task<Resume?> GetByJobSeekerIdAsync(int jobSeekerId)
+
+
+        public async Task<List<Resume>> GetResumeByJobSeekerIdAsync(int jobSeekerId)
         {
             return await _context.Resumes
-                .FirstOrDefaultAsync(r => r.JobSeekerId == jobSeekerId);
+                .Where(r => r.JobSeekerId == jobSeekerId)
+                .OrderByDescending(r => r.UploadDate)
+                .ToListAsync();
         }
     }
 

@@ -86,6 +86,15 @@ namespace CareerCrafterAPI.Controllers
 
             return Ok("Resume deleted successfully");
         }
+        [Authorize(Roles = "JobSeeker")]
+        [HttpGet("jobseeker/{jobSeekerId}")]
+        public async Task<IActionResult> GetResumeByJobSeeker(int jobSeekerId)
+        {
+            var resumes =
+                await _resumeService.GetResumeByJobSeekerIdAsync(jobSeekerId);
+
+            return Ok(resumes);
+        }
 
         //    [HttpPut("{id}")]
         //    [Authorize(Roles = "JobSeeker")]
