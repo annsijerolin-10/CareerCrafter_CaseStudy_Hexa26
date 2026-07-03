@@ -30,6 +30,13 @@ namespace CareerCrafterAPI.Repositories.Implementations
             await _context.Resumes.AddAsync(resume);
             await _context.SaveChangesAsync();
         }
+        public async Task<bool> CanDeleteResumeAsync(int resumeId)
+        {
+            return !await _context.Applications
+                .AnyAsync(a =>
+                    a.ResumeId == resumeId &&
+                    a.Status != "Withdrawn");
+        }
 
         public async Task<bool> JobSeekerExistsAsync(int jobSeekerId)
         {

@@ -117,6 +117,14 @@ namespace CareerCrafterAPI.Services.Implementations
                 {
                     return false;
                 }
+                bool canDelete =
+    await _resumeRepository.CanDeleteResumeAsync(resumeId);
+
+                if (!canDelete)
+                {
+                    throw new Exception(
+                        "This resume is used in one or more applications and cannot be deleted.");
+                }
 
                 if (!string.IsNullOrEmpty(resume.ResumeFile))
                 {
@@ -165,21 +173,21 @@ namespace CareerCrafterAPI.Services.Implementations
         }
         private void DeleteResumeFile(string resumePath)
         {
+            string relativePath = resumePath
+                .TrimStart('/')
+                .Replace('/', Path.DirectorySeparatorChar);
 
-
-            string existingFilePath =
-                Path.Combine(
-                    _webHostEnvironment.WebRootPath,
-                    resumePath.TrimStart('/'));
+            string existingFilePath = Path.Combine(
+                _webHostEnvironment.WebRootPath,
+                relativePath);
 
             _logger.LogInformation("Deleting physical file: {FilePath}", existingFilePath);
-
-
 
             if (File.Exists(existingFilePath))
             {
                 File.Delete(existingFilePath);
             }
+        
         }
 
 
