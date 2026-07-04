@@ -17,13 +17,14 @@ namespace CareerCrafterAPI.Repositories.Implementations
         public async Task<List<Job>> GetAllJobsAsync()
         {
             return await _context.Jobs
+                .Include(j => j.Employer)
                 .Where(j => !j.IsDeleted)
                 .ToListAsync();
         }
 
         public async Task<Job?> GetJobByIdAsync(int jobId)
         {
-            return await _context.Jobs.FirstOrDefaultAsync(j => j.JobId == jobId);
+            return await _context.Jobs.Include(j => j.Employer).FirstOrDefaultAsync(j => j.JobId == jobId);
 
         }
 
@@ -60,7 +61,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
             bool descending)
  
         {
-            IQueryable<Job> query = _context.Jobs
+            IQueryable<Job> query = _context.Jobs.Include(j => j.Employer)
     .Where(j => !j.IsDeleted);
 
             if (!string.IsNullOrEmpty(sortBy))
@@ -86,7 +87,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
                     //    break;
 
                     default:
-                        query = query.OrderBy(j => j.JobId);
+                        query = query.OrderByDescending(j => j.PostedDate);
                         break;
                 }
             }
@@ -101,7 +102,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
             string? title,
             string? location)
         {
-            var query = _context.Jobs
+            var query = _context.Jobs.Include(j => j.Employer)
     .Where(j => !j.IsDeleted)
     .AsQueryable();
 
@@ -128,6 +129,7 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 .ToList();
 
             return await _context.Jobs
+                .Include(j => j.Employer)
                 .Where(j =>!j.IsDeleted  &&
 
                     !string.IsNullOrEmpty(j.RequiredSkills) &&

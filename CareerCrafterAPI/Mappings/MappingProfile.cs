@@ -16,8 +16,14 @@ namespace CareerCrafterAPI.Mappings
             CreateMap<Employer, EmployerResponseDto>();
             CreateMap<EmployerCreateDto, Employer>();
 
-          
-            CreateMap<Job, JobResponseDto>();
+            CreateMap<Job, JobResponseDto>()
+                .ForMember(
+                    dest => dest.CompanyName,
+                    opt => opt.MapFrom(
+                        src => src.Employer != null
+                            ? src.Employer.CompanyName
+                            : ""
+                    ));
             CreateMap<JobCreateDto, Job>();
             CreateMap<JobUpdateDto, Job>();
 
@@ -57,11 +63,11 @@ namespace CareerCrafterAPI.Mappings
                         ? src.Job.Employer.CompanyName
                         : ""))
             .ForMember(
-    dest => dest.ResumeFile,
-    opt => opt.MapFrom(
-        src => src.Resume != null
-            ? src.Resume.ResumeFile
-            : ""));
+                dest => dest.ResumeFile,
+                opt => opt.MapFrom(
+                    src => src.Resume != null
+                        ? src.Resume.ResumeFile
+                        : ""));
 
 
             CreateMap<Notification, NotificationResponseDto>();
