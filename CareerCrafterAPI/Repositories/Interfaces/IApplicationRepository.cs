@@ -25,5 +25,9 @@ namespace CareerCrafterAPI.Repositories.Interfaces
     int resumeId,
     int jobSeekerId);
 
+        Task<bool> HasAlreadyAppliedAsync(
+    int jobId,
+    int jobSeekerId);
+
     }
 }

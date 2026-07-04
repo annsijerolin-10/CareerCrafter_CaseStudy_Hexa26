@@ -95,5 +95,15 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 r.ResumeId == resumeId &&
                 r.JobSeekerId == jobSeekerId);
         }
+
+        public async Task<bool> HasAlreadyAppliedAsync(
+    int jobId,
+    int jobSeekerId)
+        {
+            return await _context.Applications.AnyAsync(a =>
+                a.JobId == jobId &&
+                a.JobSeekerId == jobSeekerId &&
+                a.Status != "Withdrawn");
+        }
     }
 }

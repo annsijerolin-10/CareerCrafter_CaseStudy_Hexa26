@@ -75,6 +75,15 @@ namespace CareerCrafterAPI.Services.Implementations
             {
 
                 _logger.LogInformation("Applying for JobId {JobId} by JobSeekerId {JobSeekerId}", dto.JobId, dto.JobSeekerId);
+                bool alreadyApplied =
+                    await _applicationRepository.HasAlreadyAppliedAsync(
+                        dto.JobId,
+                        dto.JobSeekerId);
+
+                if (alreadyApplied)
+                {
+                    throw new Exception("You have already applied for this job.");
+                }
                 bool validResume =
                     await _applicationRepository
                         .ResumeBelongsToJobSeekerAsync(

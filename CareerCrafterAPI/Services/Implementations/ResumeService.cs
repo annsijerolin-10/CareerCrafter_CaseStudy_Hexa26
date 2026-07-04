@@ -117,13 +117,12 @@ namespace CareerCrafterAPI.Services.Implementations
                 {
                     return false;
                 }
-                bool canDelete =
-    await _resumeRepository.CanDeleteResumeAsync(resumeId);
+                bool canDelete =await _resumeRepository.CanDeleteResumeAsync(resumeId);
 
                 if (!canDelete)
                 {
-                    throw new Exception(
-                        "This resume is used in one or more applications and cannot be deleted.");
+                    throw new ArgumentException("Cannot delete this resume because it is associated with one or more active job applications.");
+
                 }
 
                 if (!string.IsNullOrEmpty(resume.ResumeFile))

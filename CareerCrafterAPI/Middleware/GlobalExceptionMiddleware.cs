@@ -64,7 +64,7 @@ namespace CareerCrafterAPI.Middleware
 
                     response = CreateResponse(
                         context,
-                        "Invalid request",
+                        exception.Message,
                         "ValidationError",
                         exception);
 
