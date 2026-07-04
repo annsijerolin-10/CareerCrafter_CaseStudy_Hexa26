@@ -1,16 +1,60 @@
-import {useNavigate} from "react-router-dom";
-import {useAuth} from "../context/AuthContext.jsx";
-export function JobSeekerDashboard(){
-    const navigate=useNavigate();
-    const {logout}=useAuth();
-    function handleLogout(){
-        logout();
-        navigate("/");
-    }
-    return(
+import { Outlet, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+export function JobSeekerDashboard() {
+
+    const { user, logout } = useAuth();
+
+    return (
         <div>
-            JobSeeker Dashboard
-            <button onClick={handleLogout}>Logout</button>
+
+            <h1>CareerCrafter - Job Seeker</h1>
+
+            <h2>Welcome {user.fullName}</h2>
+
+            <nav>
+
+                <Link to="/jobseeker/dashboard">
+                    Dashboard
+                </Link>
+
+                {" | "}
+
+                <Link to="/jobseeker/dashboard/jobs">
+                    Browse Jobs
+                </Link>
+
+                {" | "}
+
+                <Link to="/jobseeker/dashboard/applications">
+                    My Applications
+                </Link>
+
+                {" | "}
+
+                <Link to="/jobseeker/dashboard/resumes">
+                    My Resumes
+                </Link>
+
+                {" | "}
+
+                <Link to="/jobseeker/dashboard/notifications">
+                    Notifications
+                </Link>
+
+                {" | "}
+
+                <button onClick={logout}>
+                    Logout
+                </button>
+
+            </nav>
+
+            <hr />
+
+            <Outlet />
+
         </div>
-    )
+    );
 }
+

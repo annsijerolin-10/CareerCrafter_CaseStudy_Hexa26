@@ -14,6 +14,13 @@ import { CandidateProfile } from './pages/CandidateProfile'
 import { ManageJobs } from './pages/ManageJobs'
 import { ManageApplications } from './pages/ManageApplication'
 
+import { JobSeekerHome } from './pages/JobSeekerHome'
+import { MyResumes } from './pages/MyResumes'
+import { MyApplications } from './pages/MyApplications'
+import { BrowseJobs } from './pages/BrowseJobs'
+import { Notifications } from './pages/Notifications'
+import { MyApplicationsTable } from './components/MyApplicationsTable'
+
 function App() {
   
 
@@ -47,12 +54,35 @@ function App() {
             /> }
            
 
-          </Route>
-      <Route path="/jobseeker/dashboard" element={
-        <ProtectedRoute role="JobSeeker">
-          <JobSeekerDashboard/>
-        </ProtectedRoute>
-      } />
+      </Route>
+      <Route
+        path="/jobseeker/dashboard"
+        element={
+            <ProtectedRoute role="JobSeeker">
+                <JobSeekerDashboard />
+            </ProtectedRoute>
+        }
+    >
+        <Route index element={<JobSeekerHome />} />
+
+        <Route path="jobs" element={<BrowseJobs />} />
+
+        <Route
+            path="applications"
+            element={<MyApplications />}
+        />
+
+        <Route
+            path="resumes"
+            element={<MyResumes />}
+        />
+
+        <Route
+            path="notifications"
+            element={<Notifications />}
+        />
+
+    </Route>
     </Routes>
 
       

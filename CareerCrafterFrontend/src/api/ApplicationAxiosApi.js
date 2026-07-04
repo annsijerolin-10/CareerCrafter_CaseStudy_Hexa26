@@ -77,3 +77,86 @@ export async function updateApplicationStatus(
     }
 
 }
+
+export async function applyJob(applicationData, token) {
+
+    try {
+
+        const response = await axios.post(
+            BASE_URL,
+            applicationData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(error, "Failed to apply for job.")
+        );
+
+    }
+}
+
+export async function getApplicationsByJobSeeker(jobSeekerId, token) {
+
+    try {
+
+        const response = await axios.get(
+            `${BASE_URL}/jobseeker/${jobSeekerId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(error, "Failed to fetch applications.")
+        );
+
+    }
+
+}
+
+export async function withdrawApplication(
+    applicationId,
+    token
+) {
+
+    try {
+
+        await axios.put(
+            `${BASE_URL}/${applicationId}/withdraw`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(
+                error,
+                "Failed to withdraw application."
+            )
+        );
+
+    }
+
+}
