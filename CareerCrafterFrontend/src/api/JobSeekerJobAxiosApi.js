@@ -43,3 +43,69 @@ export async function getAllJobs(token) {
     }
 
 }
+export async function searchJobs(
+    title,
+    location,
+    token
+) {
+
+    try {
+
+        const response = await axios.get(
+
+            `${BASE_URL}/search`,
+
+            {
+                params: {
+                    title,
+                    location
+                },
+
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(
+                error,
+                "Failed to search jobs."
+            )
+        );
+
+    }
+
+}
+
+export async function getRecommendedJobs(jobSeekerId, token) {
+
+    try {
+
+        const response = await axios.get(
+            `${BASE_URL}/recommend/${jobSeekerId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(error, "Failed to load recommended jobs.")
+        );
+
+    }
+
+}

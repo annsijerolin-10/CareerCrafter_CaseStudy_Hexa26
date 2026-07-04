@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { getAllJobs } from "../api/JobSeekerJobAxiosApi";
+import { getAllJobs,searchJobs,getRecommendedJobs } from "../api/JobSeekerJobAxiosApi";
 import { JobCardList } from "../components/JobCardList";
 import { getResumesByJobSeeker } from "../api/ResumeAxiosApi";
 import { applyJob,getApplicationsByJobSeeker } from "../api/ApplicationAxiosApi";
@@ -17,6 +17,10 @@ export function BrowseJobs() {
     const [resumes, setResumes] = useState([]);
     const [selectedResumeId, setSelectedResumeId] = useState("");
     const [applications, setApplications] = useState([]);
+    const [searchTitle, setSearchTitle] = useState("");
+    const [recommendedJobs, setRecommendedJobs] = useState([]);
+
+const [searchLocation, setSearchLocation] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,6 +28,12 @@ export function BrowseJobs() {
         loadJobs();
 
     }, []);
+
+    useEffect(() => {
+
+        handleSearch();
+
+    }, [searchTitle, searchLocation]);
 
     async function loadJobs() {
 
@@ -43,6 +53,12 @@ export function BrowseJobs() {
         );
 
 setApplications(applicationResponse);
+const recommended = await getRecommendedJobs(
+    user.jobSeekerId,
+    user.token
+);
+
+setRecommendedJobs(recommended);
 
     }
     catch (error) {
@@ -109,7 +125,7 @@ async function handleConfirmApply() {
         user.token
     );
 
-setApplications(updatedApplications);
+    setApplications(updatedApplications);
 
         alert("Application submitted successfully.");
 
@@ -128,6 +144,44 @@ function handleViewApplication(jobId) {
     navigate("/jobseeker/dashboard/applications");
 
 }
+async function handleSearch() {
+
+    try {
+         setError("");
+
+        if (
+            searchTitle.trim() === "" &&
+            searchLocation.trim() === ""
+        ) {
+
+            loadJobs();
+            return;
+
+        }
+
+        const jobs = await searchJobs(
+            searchTitle,
+            searchLocation,
+            user.token
+        );
+
+        setJobs(jobs);
+
+    }
+    catch (error) {
+
+        setError(error.message);
+
+    }
+
+}
+const filteredJobs = jobs.filter(
+    job =>
+        !recommendedJobs.some(
+            recommended => recommended.jobId === job.jobId
+        )
+);
+
 // function getResumeFileName(path) {
 
 //     if (!path) return "";
@@ -151,9 +205,49 @@ function handleViewApplication(jobId) {
                 </p>
 
             }
+            {
+            recommendedJobs.length > 0 && (
+                <>
+                    <h3>Recommended Jobs</h3>
+
+                    <JobCardList
+                        jobs={recommendedJobs}
+                        applications={applications}
+                        onApply={handleApply}
+                        onViewApplication={handleViewApplication}
+                    />
+
+                    <hr />
+                </>
+            )
+        }
+            <div style={{ marginBottom: "20px" }}>
+
+                <input
+                    type="text"
+                    placeholder="Search by Job Title"
+                    value={searchTitle}
+                    onChange={(e) =>
+                        setSearchTitle(e.target.value)
+                    }
+                />
+
+                <input
+                    type="text"
+                    placeholder="Location"
+                    value={searchLocation}
+                    onChange={(e) =>
+                        setSearchLocation(e.target.value)
+                    }
+                    style={{ marginLeft: "10px" }}
+                />
+
+                
+
+            </div>
 
             <JobCardList
-                jobs={jobs}
+                jobs={filteredJobs}
                 applications={applications}
                 onApply={handleApply}
                  onViewApplication={handleViewApplication}

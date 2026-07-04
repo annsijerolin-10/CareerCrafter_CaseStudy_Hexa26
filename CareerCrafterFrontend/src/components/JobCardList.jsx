@@ -26,6 +26,9 @@ export function JobCardList({
                 >
 
                     <h3>{job.jobTitle}</h3>
+                    <p>
+                        <strong>Company:</strong> {job.companyName}
+                    </p>
 
                     <p>
                         <strong>Location:</strong> {job.location}
