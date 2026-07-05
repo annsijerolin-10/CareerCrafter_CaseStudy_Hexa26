@@ -20,7 +20,8 @@ import { MyApplications } from './pages/MyApplications'
 import { BrowseJobs } from './pages/BrowseJobs'
 import { Notifications } from './pages/Notifications'
 import { MyApplicationsTable } from './components/MyApplicationsTable'
-
+import { JobSeekerProfileForm } from './components/JobSeekerProfileForm'
+import { MyProfile } from './pages/MyProfile'
 function App() {
   
 
@@ -81,6 +82,10 @@ function App() {
             path="notifications"
             element={<Notifications />}
         />
+        <Route
+    path="profile"
+    element={<MyProfile />}
+/>
 
     </Route>
     </Routes>

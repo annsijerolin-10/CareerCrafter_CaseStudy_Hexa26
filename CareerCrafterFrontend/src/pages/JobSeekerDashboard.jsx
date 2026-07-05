@@ -41,6 +41,11 @@ export function JobSeekerDashboard() {
                 <Link to="/jobseeker/dashboard/notifications">
                     Notifications
                 </Link>
+                <Link to="/jobseeker/dashboard/profile">
+
+    My Profile
+
+</Link>
 
                 {" | "}
 
