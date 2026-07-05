@@ -7,14 +7,55 @@ export function Register(){
         fullName:"",
         email:"",
         password:"",
-        role:""
+        role:"",
+        companyName: "",
+        companyDescription: "",
+        phone: "",
+        address: "",
+        skills: "",
+        experienceYears: 0
     });
     const[errorMessage,setErrorMessage]=useState("");
-    function handleChange(e){
+    const [successMessage, setSuccessMessage] = useState("");
+    function handleChange(e) {
+
+        const { name, value } = e.target;
+
+        if (name === "role") {
+
+            if (value === "Employer") {
+
+                setUserData({
+                    ...userData,
+                    role: value,
+
+                    phone: "",
+                    address: "",
+                    skills: "",
+                    experienceYears: 0
+                });
+
+            }
+            else {
+
+                setUserData({
+                    ...userData,
+                    role: value,
+
+                    companyName: "",
+                    companyDescription: ""
+                });
+
+            }
+
+            return;
+        }
+
         setUserData({
             ...userData,
-            [e.target.name]:e.target.value
+            [name]: value
         });
+
     }
     async function handleSubmit(e){
         e.preventDefault();
@@ -39,7 +80,10 @@ export function Register(){
             const response=await registerUser(userData);
             console.log(response.data);
             setErrorMessage("");
-            navigate("/");
+            setSuccessMessage("Registration successful! Redirecting to login...");
+            setTimeout(() => {
+                navigate("/");
+            }, 2000);
         }
         catch(error){
             if (error.response?.data?.title) {
@@ -61,6 +105,11 @@ return(
         <h2>Register</h2>
         {errorMessage && <p style={{color:"red"}}>{errorMessage}</p>
         }
+        {successMessage && (
+            <p style={{ color: "green" }}>
+                {successMessage}
+            </p>
+        )}
         <input
             type="text"
             name="fullName"
@@ -90,6 +139,65 @@ return(
             <option value="Employer">Employer</option>
             <option value="JobSeeker">Job Seeker</option>
         </select>
+        {
+            userData.role === "Employer" && (
+                <>
+                    <input
+                        type="text"
+                        name="companyName"
+                        placeholder="Company Name (Optional)"
+                        value={userData.companyName}
+                        onChange={handleChange}
+                    />
+
+                    <input
+                        type="text"
+                        name="companyDescription"
+                        placeholder="Company Description (Optional)"
+                        value={userData.companyDescription}
+                        onChange={handleChange}
+                    />
+                </>
+            )
+        }
+
+        {
+            userData.role === "JobSeeker" && (
+                <>
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="Phone (Optional)"
+                        value={userData.phone}
+                        onChange={handleChange}
+                    />
+
+                    <input
+                        type="text"
+                        name="address"
+                        placeholder="Address (Optional)"
+                        value={userData.address}
+                        onChange={handleChange}
+                    />
+
+                    <input
+                        type="text"
+                        name="skills"
+                        placeholder="Skills (Optional)"
+                        value={userData.skills}
+                        onChange={handleChange}
+                    />
+
+                    <input
+                        type="number"
+                        name="experienceYears"
+                        placeholder="Experience (Optional)"
+                        value={userData.experienceYears}
+                        onChange={handleChange}
+                    />
+                </>
+            )
+        }
         <button type="submit">Register</button>
         <p>
         <Link to="/">Already have an account? Login</Link>
