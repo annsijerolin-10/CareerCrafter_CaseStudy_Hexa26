@@ -13,5 +13,8 @@
         public int JobSeekerId { get; set; }
 
         public JobSeeker JobSeeker { get; set; } = null!;
+        public string JobTitle { get; set; } = string.Empty;
+
+        public string CompanyName { get; set; } = string.Empty;
     }
 }

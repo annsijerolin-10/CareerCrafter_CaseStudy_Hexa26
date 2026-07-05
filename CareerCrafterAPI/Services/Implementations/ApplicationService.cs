@@ -208,7 +208,7 @@ namespace CareerCrafterAPI.Services.Implementations
 
                 var notification = new Notification
                 {
-                    Message = $"Your application status changed to {dto.Status}",
+                    Message = $"Your application for {application.Job?.JobTitle ?? "the job"} at {application.Job?.Employer?.CompanyName ?? "the company"} has been {dto.Status}.",
                     JobSeekerId = application.JobSeekerId,
                     CreatedDate = DateTime.Now,
                     IsRead = false
