@@ -10,5 +10,6 @@
 
         public decimal Salary { get; set; }
         public string? RequiredSkills { get; set; }
+        public DateTime ApplicationDeadline { get; set; }
     }
 }

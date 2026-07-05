@@ -12,5 +12,6 @@
 
         public int EmployerId { get; set; }
         public string RequiredSkills { get; set; } = string.Empty;
+        public DateTime ApplicationDeadline { get; set; }
     }
 }

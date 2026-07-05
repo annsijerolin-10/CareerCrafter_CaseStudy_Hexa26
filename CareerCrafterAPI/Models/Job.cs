@@ -22,6 +22,8 @@ namespace CareerCrafterAPI.Models
         public Employer? Employer { get; set; }
         public string RequiredSkills { get; set; } = string.Empty;
 
+
         public List<Application> Applications { get; set; } = new List<Application>();
+        public DateTime ApplicationDeadline { get; set; }
     }
 }
