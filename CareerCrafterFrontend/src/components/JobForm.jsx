@@ -14,7 +14,8 @@ export function JobForm({
         jobDescription: "",
         location: "",
         salary: "",
-        requiredSkills: ""
+        requiredSkills: "",
+        applicationDeadline: ""
     });
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -27,7 +28,9 @@ export function JobForm({
                 jobDescription: selectedJob.jobDescription,
                 location: selectedJob.location,
                 salary: selectedJob.salary,
-                requiredSkills: selectedJob.requiredSkills
+                requiredSkills: selectedJob.requiredSkills,
+                applicationDeadline: selectedJob.applicationDeadline?.split("T")[0] ?? ""
+       
             });
         }
 
@@ -70,6 +73,19 @@ export function JobForm({
         setErrorMessage("Required Skills are required");
         return;
     }
+    if (jobData.applicationDeadline === "") {
+    setErrorMessage("Application Deadline is required");
+    return;
+}
+
+const today = new Date().toISOString().split("T")[0];
+
+if (jobData.applicationDeadline < today) {
+    setErrorMessage(
+        "Application Deadline cannot be in the past."
+    );
+    return;
+}
 
     try {
 
@@ -117,7 +133,8 @@ export function JobForm({
             jobDescription: "",
             location: "",
             salary: "",
-            requiredSkills: ""
+            requiredSkills: "",
+            applicationDeadline: ""
         });
     }
 
@@ -183,6 +200,19 @@ export function JobForm({
             />
 
             <br /><br />
+            <input
+                type="date"
+                name="applicationDeadline"
+                value={jobData.applicationDeadline}
+                min={
+                    selectedJob
+                        ? ""
+                        : new Date().toISOString().split("T")[0]
+                }
+                onChange={handleChange}
+            />
+
+<br /><br />
 
             <button type="submit">
                 {selectedJob ? "Update" : "Add"}

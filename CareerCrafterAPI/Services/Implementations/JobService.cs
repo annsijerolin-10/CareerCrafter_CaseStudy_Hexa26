@@ -82,6 +82,11 @@ namespace CareerCrafterAPI.Services.Implementations
                     throw new Exception("Employer not found");
                 }
 
+                if (dto.ApplicationDeadline.Date < DateTime.Today)
+                {
+                    throw new Exception(
+                        "Application deadline cannot be in the past.");
+                }
                 var job = _mapper.Map<Job>(dto);
 
                 job.PostedDate = DateTime.Now;
@@ -111,6 +116,12 @@ namespace CareerCrafterAPI.Services.Implementations
 
                 if (job == null)
                     return null;
+
+                if (dto.ApplicationDeadline.Date < DateTime.Today)
+                {
+                    throw new Exception(
+                        "Application deadline cannot be in the past.");
+                }
 
                 _mapper.Map(dto, job);
 

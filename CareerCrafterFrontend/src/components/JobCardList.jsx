@@ -10,75 +10,106 @@ export function JobCardList({
     }
 
     const appliedJobIds = applications
-    .filter(app => app.status !== "Withdrawn")
-    .map(app => app.jobId);
+        .filter(app => app.status !== "Withdrawn")
+        .map(app => app.jobId);
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     return (
 
         <div className="job-container">
 
-            {jobs.map(job => (
+            {jobs.map(job => {
 
-                <div
-                    key={job.jobId}
-                    className="job-card"
-                >
+                const deadline = new Date(job.applicationDeadline);
+                deadline.setHours(0, 0, 0, 0);
 
-                    <h3>{job.jobTitle}</h3>
-                    <p>
-                        <strong>Company:</strong> {job.companyName}
-                    </p>
+                const isDeadlinePassed = deadline < today;
 
-                    <p>
-                        <strong>Location:</strong> {job.location}
-                    </p>
+                return (
 
-                    <p>
-                        <strong>Salary:</strong> ₹ {job.salary}
-                    </p>
+                    <div
+                        key={job.jobId}
+                        className="job-card"
+                    >
 
-                    <p>
-                        <strong>Skills:</strong> {job.requiredSkills}
-                    </p>
+                        <h3>{job.jobTitle}</h3>
 
-                    <p>
-                        <strong>Posted:</strong>{" "}
-                        {new Date(job.postedDate).toLocaleDateString()}
-                    </p>
+                        <p>
+                            <strong>Company:</strong> {job.companyName}
+                        </p>
 
-                    <hr />
+                        <p>
+                            <strong>Location:</strong> {job.location}
+                        </p>
 
-                    {
-                        appliedJobIds.includes(job.jobId)
-                            ?
-                            <>
-                                <button disabled>
-                                    ✓ Applied
-                                </button>
+                        <p>
+                            <strong>Salary:</strong> ₹ {job.salary}
+                        </p>
 
-                                <br />
+                        <p>
+                            <strong>Skills:</strong> {job.requiredSkills}
+                        </p>
 
-                                <button
-                                    style={{ marginTop: "10px" }}
-                                    onClick={() =>
-                                        onViewApplication(job.jobId)
-                                    }
-                                >
-                                    View Application
-                                </button>
-                            </>
-                            :
-                            <button
-                                onClick={() => onApply(job)}
-                            >
-                                Apply
-                            </button>
-                    }
+                        <p>
+                            <strong>Posted:</strong>{" "}
+                            {new Date(job.postedDate).toLocaleDateString()}
+                        </p>
 
-                </div>
+                        <p>
+                            <strong>Apply Before:</strong>{" "}
+                            {deadline.toLocaleDateString()}
+                        </p>
 
-            ))}
+                        <hr />
+
+                        {
+                            appliedJobIds.includes(job.jobId)
+                                ? (
+                                    <>
+                                        <button disabled>
+                                            ✓ Applied
+                                        </button>
+
+                                        <br />
+
+                                        <button
+                                            style={{ marginTop: "10px" }}
+                                            onClick={() =>
+                                                onViewApplication(job.jobId)
+                                            }
+                                        >
+                                            View Application
+                                        </button>
+                                    </>
+                                )
+                                : isDeadlinePassed
+                                    ? (
+                                        <button
+                                            disabled
+                                            style={{
+                                                backgroundColor: "#888",
+                                                cursor: "not-allowed"
+                                            }}
+                                        >
+                                            Closed
+                                        </button>
+                                    )
+                                    : (
+                                        <button
+                                            onClick={() => onApply(job)}
+                                        >
+                                            Apply
+                                        </button>
+                                    )
+                        }
+
+                    </div>
+
+                );
+
+            })}
 
         </div>
 
