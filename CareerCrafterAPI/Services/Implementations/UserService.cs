@@ -14,13 +14,17 @@ namespace CareerCrafterAPI.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly ILogger<UserService> _logger;
         private readonly IMapper _mapper;
+        private readonly IEmployerRepository _employerRepository;
+        private readonly IJobSeekerRepository _jobSeekerRepository;
         //private readonly IJwtService _jwtService;
         // private readonly IAuthRepository _authRepository;
-        public UserService(IUserRepository userRepository,ILogger<UserService> logger, IMapper mapper)
+        public UserService(IUserRepository userRepository,IEmployerRepository employerRepository,IJobSeekerRepository jobSeekerRepository, ILogger<UserService> logger, IMapper mapper)
         {
             _userRepository = userRepository;
             _logger = logger;
             _mapper = mapper;
+            _employerRepository = employerRepository;
+            _jobSeekerRepository= jobSeekerRepository; 
             // _jwtService = jwtService;
             //_authRepository = authRepository;
         }
@@ -69,6 +73,31 @@ namespace CareerCrafterAPI.Services.Implementations
                     BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
                 await _userRepository.AddUserAsync(user);
+                if (user.Role.Equals("Employer", StringComparison.OrdinalIgnoreCase))
+
+                {
+                    var employer = new Employer
+                    {
+                        UserId = user.UserId,
+                        CompanyName = dto.CompanyName ?? "",
+                        CompanyDescription = dto.CompanyDescription ?? ""
+                    };
+
+                    await _employerRepository.AddEmployerAsync(employer);
+                }
+                else
+                {
+                    var jobSeeker = new JobSeeker
+                    {
+                        UserId = user.UserId,
+                        Phone = dto.Phone ?? "",
+                        Address = dto.Address ?? "",
+                        Skills = dto.Skills ?? "",
+                        ExperienceYears = dto.ExperienceYears
+                    };
+
+                    await _jobSeekerRepository.AddJobSeekerAsync(jobSeeker);
+                }
 
                 _logger.LogInformation("User created successfully. UserId: {UserId}", user.UserId);
 
