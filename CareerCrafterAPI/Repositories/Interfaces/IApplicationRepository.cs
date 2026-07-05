@@ -29,5 +29,7 @@ namespace CareerCrafterAPI.Repositories.Interfaces
     int jobId,
     int jobSeekerId);
 
+        Task<Job?> GetJobByIdAsync(int jobId);
+
     }
 }

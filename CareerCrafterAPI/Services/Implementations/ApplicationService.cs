@@ -103,6 +103,19 @@ namespace CareerCrafterAPI.Services.Implementations
                 {
                     throw new Exception("Job not found");
                 }
+                var job = await _applicationRepository.GetJobByIdAsync(dto.JobId);
+
+
+                if (job == null)
+                {
+                    throw new Exception("Job not found");
+                }
+
+                if (job.ApplicationDeadline.Date < DateTime.Today)
+                {
+                    throw new Exception(
+                        "The application deadline has passed.");
+                }
 
                 bool jobSeekerExists = await _applicationRepository.JobSeekerExistsAsync(dto.JobSeekerId);
 

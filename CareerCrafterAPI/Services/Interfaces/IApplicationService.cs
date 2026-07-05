@@ -1,4 +1,5 @@
 ﻿using CareerCrafterAPI.DTOs;
+using CareerCrafterAPI.Models;
 
 namespace CareerCrafterAPI.Services.Interfaces
 {
@@ -20,6 +21,7 @@ namespace CareerCrafterAPI.Services.Interfaces
 
         Task<List<ApplicationResponseDto>> GetApplicationsByJobIdAsync(int jobId);
         Task<bool> WithdrawApplicationAsync(int applicationId);
+       
 
 
     }
