@@ -16,12 +16,12 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         public async Task<List<JobSeeker>> GetAllJobSeekersAsync()
         {
-            return await _context.JobSeekers.ToListAsync();
+            return await _context.JobSeekers.Include(js => js.User).ToListAsync();
         }
 
         public async Task<JobSeeker?> GetJobSeekerByIdAsync(int id)
         {
-            return await _context.JobSeekers
+            return await _context.JobSeekers.Include(js => js.User)
                 .FirstOrDefaultAsync(j => j.JobSeekerId == id);
         }
 

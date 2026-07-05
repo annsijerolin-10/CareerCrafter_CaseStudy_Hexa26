@@ -31,8 +31,9 @@ namespace CareerCrafterAPI.Controllers
                 Data = jobSeekers
             });
         }
-
+        [Authorize(Roles = "JobSeeker")]
         [HttpGet("{id}")]
+
         public async Task<IActionResult> GetJobSeekerById(int id)
         {
             if (id <= 0)
@@ -83,6 +84,7 @@ namespace CareerCrafterAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "JobSeeker")]
         public async Task<IActionResult> UpdateJobSeeker(
             int id,
             JobSeekerUpdateDto dto)

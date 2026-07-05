@@ -27,7 +27,23 @@ namespace CareerCrafterAPI.Mappings
             CreateMap<JobCreateDto, Job>();
             CreateMap<JobUpdateDto, Job>();
 
-            CreateMap<JobSeeker, JobSeekerResponseDto>();
+            CreateMap<JobSeeker, JobSeekerResponseDto>()
+
+                .ForMember(
+                    dest => dest.FullName,
+                    opt => opt.MapFrom(src =>
+                        src.User != null
+                            ? src.User.FullName
+                            : "")
+                )
+
+                .ForMember(
+                    dest => dest.Email,
+                    opt => opt.MapFrom(src =>
+                        src.User != null
+                            ? src.User.Email
+                            : "")
+                );
             CreateMap<JobSeekerCreateDto, JobSeeker>();
             CreateMap<JobSeekerUpdateDto, JobSeeker>();
 
