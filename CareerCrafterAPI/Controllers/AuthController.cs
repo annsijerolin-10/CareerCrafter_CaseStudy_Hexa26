@@ -11,7 +11,7 @@ namespace CareerCrafterAPI.Controllers
     [ApiController]
 
     public class AuthController : ControllerBase
-        {
+    {
             private readonly IAuthService _authService;
 
             public AuthController(IAuthService authService)
@@ -22,7 +22,7 @@ namespace CareerCrafterAPI.Controllers
             [HttpPost("login")]
             public async Task<IActionResult> Login(LoginRequestDto dto)
 
-        {
+            {
                 var result = await _authService.LoginAsync(dto);
 
 
@@ -34,7 +34,32 @@ namespace CareerCrafterAPI.Controllers
 
                 return Ok(result);
             }
+        [HttpPut("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
 
-       
+        {
+            await _authService
+                .ForgotPasswordAsync(dto);
+
+            return Ok(new
+            {
+                Message = "Password reset successfully."
+            });
+        }
+
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword(
+    ChangePasswordDto dto)
+        {
+            await _authService.ChangePasswordAsync(dto);
+
+            return Ok(new
+            {
+                Message = "Password changed successfully."
+            });
+        }
+
+
     }
-    }
+}

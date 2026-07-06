@@ -85,6 +85,7 @@ namespace CareerCrafterAPI.Controllers
             }
         }
 
+
             //[HttpGet]
             //public async Task<IActionResult> GetAllUsers()
             //{

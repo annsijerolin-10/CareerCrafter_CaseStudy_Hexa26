@@ -2,7 +2,8 @@ export function JobCardList({
     jobs,
     applications,
     onApply,
-    onViewApplication
+    onViewApplication,
+    profileCompleted
 }) {
 
     if (jobs.length === 0) {
@@ -85,7 +86,7 @@ export function JobCardList({
                                     </>
                                 )
                                 : isDeadlinePassed
-                                    ? (
+                                    ?(
                                         <button
                                             disabled
                                             style={{
@@ -96,11 +97,23 @@ export function JobCardList({
                                             Closed
                                         </button>
                                     )
-                                    : (
+                                    :(
                                         <button
-                                            onClick={() => onApply(job)}
+                                            disabled={!profileCompleted}
+                                            onClick={() => {
+
+                                                if (!profileCompleted) {
+                                                    alert(
+                                                        "Complete your profile before applying for jobs."
+                                                    );
+                                                    return;
+                                                }
+
+                                                onApply(job);
+
+                                            }}
                                         >
-                                            Apply
+                                            {profileCompleted ? "Apply" : "Complete Profile"}
                                         </button>
                                     )
                         }

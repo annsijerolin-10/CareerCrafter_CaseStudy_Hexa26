@@ -6,7 +6,7 @@ import { getResumesByJobSeeker } from "../api/ResumeAxiosApi";
 import { applyJob,getApplicationsByJobSeeker } from "../api/ApplicationAxiosApi";
 import { ApplyJobModal } from "../components/ApplyJobModal";
 import { useNavigate } from "react-router-dom";
-
+import { getJobSeekerProfile } from "../api/JobSeekerAxiosApi";
 
 export function BrowseJobs() {
 
@@ -19,7 +19,7 @@ export function BrowseJobs() {
     const [applications, setApplications] = useState([]);
     const [searchTitle, setSearchTitle] = useState("");
     const [recommendedJobs, setRecommendedJobs] = useState([]);
-
+    const [jobSeekerProfile, setJobSeekerProfile] = useState(null);
 const [searchLocation, setSearchLocation] = useState("");
     const navigate = useNavigate();
 
@@ -41,24 +41,31 @@ const [searchLocation, setSearchLocation] = useState("");
 
         const response = await getAllJobs(user.token);
 
-        console.log("Response:", response);
-        console.log("Is Array:", Array.isArray(response));
-        console.log("Length:", response.length);
-
         setJobs(response);
+
         const applicationResponse =
-        await getApplicationsByJobSeeker(
-            user.jobSeekerId,
-            user.token
-        );
+            await getApplicationsByJobSeeker(
+                user.jobSeekerId,
+                user.token
+            );
 
-setApplications(applicationResponse);
-const recommended = await getRecommendedJobs(
-    user.jobSeekerId,
-    user.token
-);
+        setApplications(applicationResponse);
 
-setRecommendedJobs(recommended);
+        const profile =
+            await getJobSeekerProfile(
+                user.jobSeekerId,
+                user.token
+            );
+
+        setJobSeekerProfile(profile);
+
+        const recommended =
+            await getRecommendedJobs(
+                user.jobSeekerId,
+                user.token
+            );
+
+        setRecommendedJobs(recommended);
 
     }
     catch (error) {
@@ -175,12 +182,7 @@ async function handleSearch() {
     }
 
 }
-const filteredJobs = jobs.filter(
-    job =>
-        !recommendedJobs.some(
-            recommended => recommended.jobId === job.jobId
-        )
-);
+
 
 // function getResumeFileName(path) {
 
@@ -191,6 +193,23 @@ const filteredJobs = jobs.filter(
 //     return fileName.substring(fileName.indexOf("_") + 1);
 
 // }
+const profileCompleted =
+    jobSeekerProfile &&
+    (jobSeekerProfile.phone ?? "").trim() !== "" &&
+    (jobSeekerProfile.address ?? "").trim() !== "" &&
+    (jobSeekerProfile.skills ?? "").trim() !== "" &&
+    jobSeekerProfile.experienceYears > 0;
+
+const filteredJobs =
+    profileCompleted
+        ? jobs.filter(
+              job =>
+                  !recommendedJobs.some(
+                      recommended =>
+                          recommended.jobId === job.jobId
+                  )
+          )
+        : jobs;
 
     return (
 
@@ -206,21 +225,63 @@ const filteredJobs = jobs.filter(
 
             }
             {
-            recommendedJobs.length > 0 && (
-                <>
-                    <h3>Recommended Jobs</h3>
+    !profileCompleted
+    ?
+    (
+        <div
+            style={{
+                border: "1px solid orange",
+                padding: "15px",
+                marginBottom: "20px",
+                borderRadius: "8px"
+            }}
+        >
 
-                    <JobCardList
-                        jobs={recommendedJobs}
-                        applications={applications}
-                        onApply={handleApply}
-                        onViewApplication={handleViewApplication}
-                    />
+            <h3>
+                Recommended Jobs
+            </h3>
 
-                    <hr />
-                </>
-            )
-        }
+            <p>
+
+                Complete your profile by adding your
+                <strong> Skills </strong>
+
+                to receive personalized job recommendations.
+
+            </p>
+
+            <button
+                onClick={() =>
+                    navigate("/jobseeker/dashboard/profile")
+                }
+            >
+
+                Complete Profile
+
+            </button>
+
+        </div>
+    )
+    :
+    recommendedJobs.length > 0 &&
+    (
+        <>
+            <h3>
+                Recommended Jobs
+            </h3>
+
+            <JobCardList
+                jobs={recommendedJobs}
+                applications={applications}
+                onApply={profileCompleted ? handleApply : null}
+                onViewApplication={handleViewApplication}
+            />
+
+            <hr />
+
+        </>
+    )
+}
             <div style={{ marginBottom: "20px" }}>
 
                 <input

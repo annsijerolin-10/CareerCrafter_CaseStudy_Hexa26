@@ -70,6 +70,58 @@ namespace CareerCrafterAPI.Services.Implementations
                 throw new Exception($"Login failed: {ex.Message}");
             }
         }
-    
+        public async Task ForgotPasswordAsync(
+    ForgotPasswordDto dto)
+        {
+            var user =
+                await _authRepository
+                    .GetUserByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                throw new Exception("Email not found.");
+            }
+
+            user.PasswordHash =
+                BCrypt.Net.BCrypt.HashPassword(
+                    dto.NewPassword);
+
+            await _authRepository.UpdateUserAsync(user);
+
+            _logger.LogInformation(
+                "Password reset successfully for {Email}",
+                dto.Email);
+        }
+
+        public async Task ChangePasswordAsync(ChangePasswordDto dto)
+        {
+            var user =
+                await _authRepository.GetUserByIdAsync(dto.UserId);
+
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            bool validPassword =
+                BCrypt.Net.BCrypt.Verify(
+                    dto.CurrentPassword,
+                    user.PasswordHash);
+
+            if (!validPassword)
+            {
+                throw new Exception("Current password is incorrect.");
+            }
+
+            user.PasswordHash =
+                BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+            await _authRepository.UpdateUserAsync(user);
+
+            _logger.LogInformation(
+                "Password changed successfully for UserId {UserId}",
+                dto.UserId);
+        }
+
     }
 }

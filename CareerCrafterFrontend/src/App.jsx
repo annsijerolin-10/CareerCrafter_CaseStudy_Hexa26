@@ -22,6 +22,7 @@ import { Notifications } from './pages/Notifications'
 import { MyApplicationsTable } from './components/MyApplicationsTable'
 import { JobSeekerProfileForm } from './components/JobSeekerProfileForm'
 import { MyProfile } from './pages/MyProfile'
+import { ForgotPassword } from './pages/ForgotPassword'
 function App() {
   
 
@@ -30,6 +31,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Login/>} />
       <Route path="/register" element={<Register/>} />
+       <Route
+    path="/forgot-password"
+    element={<ForgotPassword />}
+/>
       <Route
         path="/employer/dashboard"
         element={
@@ -57,6 +62,7 @@ function App() {
             path="profile"
             element={<MyProfile />}
         />
+           
            
 
       </Route>
@@ -90,6 +96,7 @@ function App() {
             path="profile"
             element={<MyProfile />}
         />
+        
 
     </Route>
     </Routes>
