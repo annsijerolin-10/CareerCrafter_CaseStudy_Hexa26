@@ -197,9 +197,33 @@ namespace CareerCrafterAPI.Services.Implementations
                 }
                 if (application.Status == "Withdrawn")
                 {
-                    throw new Exception("Withdrawn applications cannot be updated.");
-
+                    throw new Exception(
+                        "Withdrawn applications cannot be updated."
+                    );
                 }
+
+                if (application.Status == "Reviewed" &&
+                    dto.Status == "Applied")
+                {
+                    throw new Exception(
+                        "Reviewed applications cannot be moved back to Applied."
+                    );
+                }
+
+                if (application.Status == "Shortlisted")
+                {
+                    throw new Exception(
+                        "Shortlisted applications cannot be updated."
+                    );
+                }
+                if (application.Status == "Rejected")
+                {
+                    throw new Exception(
+                        "Rejected applications cannot be updated."
+                    );
+                }
+
+                application.Status = dto.Status;
 
                 application.Status = dto.Status;
 
