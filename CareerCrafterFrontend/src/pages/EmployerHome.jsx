@@ -133,9 +133,17 @@ export function EmployerHome() {
                         <strong>Total Job Posts:</strong>{" "}
                         {dashboard.totalJobsPosted}
                     </p>
+                    <p>
+                        <strong>Active Jobs:</strong>{" "}
+                        {dashboard.activeJobsCount}
+                    </p>
+                    <p>
+    <strong>Archived Jobs:</strong>{" "}
+    {dashboard.archivedJobsCount}
+</p>
 
                     <p>
-                        <strong>Total Applications:</strong>{" "}
+                        <strong>Total Applications Received:</strong>{" "}
                         {dashboard.totalApplications}
                     </p>
 
@@ -143,19 +151,23 @@ export function EmployerHome() {
                         <strong>Applied:</strong>{" "}
                         {dashboard.appliedCount}
                     </p>
+                    <p>
+                        <strong>Reviewed Applications:</strong>{" "}
+                        {dashboard.reviewedCount}
+                    </p>
 
                     <p>
-                        <strong>Shortlisted:</strong>{" "}
+                        <strong>Shortlisted Applications:</strong>{" "}
                         {dashboard.shortlistedCount}
                     </p>
 
                     <p>
-                        <strong>Rejected:</strong>{" "}
+                        <strong>Rejected Applications:</strong>{" "}
                         {dashboard.rejectedCount}
                     </p>
 
                     <p>
-                        <strong>Withdrawn:</strong>{" "}
+                        <strong>Withdrawn Applications:</strong>{" "}
                         {dashboard.withdrawnCount}
                     </p>
 

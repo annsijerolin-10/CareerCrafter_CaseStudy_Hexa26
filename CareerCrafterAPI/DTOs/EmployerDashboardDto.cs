@@ -7,6 +7,7 @@
         public int TotalApplications { get; set; }
 
         public int AppliedCount { get; set; }
+        public int ReviewedCount { get; set; }
 
         public int ShortlistedCount { get; set; }
 
@@ -16,5 +17,6 @@
         public int ActiveJobsCount { get; set; }
 
         public int ArchivedJobsCount { get; set; }
+
     }
 }

@@ -64,8 +64,10 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 TotalApplications = applications.Count,
 
                 AppliedCount = applications.Count(a => a.Status == "Applied"),
-
-
+                ReviewedCount = await _context.Applications
+                    .CountAsync(a =>
+                        a.Job.EmployerId == employerId &&
+                        a.Status == "Reviewed"),
                 ShortlistedCount = applications.Count(a => a.Status == "Shortlisted"),
                 RejectedCount = applications.Count(a => a.Status == "Rejected"),
                 WithdrawnCount = applications.Count(a => a.Status == "Withdrawn")
