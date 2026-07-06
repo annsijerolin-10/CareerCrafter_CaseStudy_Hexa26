@@ -2,101 +2,115 @@ import { useState } from "react";
 
 function ApplicationRow({
     application,
-    onStatusUpdate
+    onStatusUpdate,
+    onViewCandidate
 }) {
 
     const [status, setStatus] = useState(application.status);
 
     return (
 
-        <tr>
+    <tr>
 
-            <td>{application.jobSeekerName}</td>
+        <td>{application.jobSeekerName}</td>
 
-            <td>{application.jobTitle}</td>
+        <td>{application.jobTitle}</td>
 
-            <td>{application.companyName}</td>
+        <td>{application.companyName}</td>
 
-            <td>
-                {new Date(application.applicationDate)
-                    .toLocaleDateString()}
-            </td>
+        <td>
+            {new Date(application.applicationDate)
+                .toLocaleDateString()}
+        </td>
 
-             <td>
-                            <a
-                                href={`https://localhost:7109${application.resumeFile}`}
-                                target="_blank"
-                                rel="noreferrer"
+        <td>
+            <a
+                href={`https://localhost:7109${application.resumeFile}`}
+                target="_blank"
+                rel="noreferrer"
+            >
+                View Resume
+            </a>
+        </td>
+
+        <td>{application.status}</td>
+
+        <td>
+
+            {
+                application.status === "Withdrawn"
+                    ? (
+                        <span>Not Editable</span>
+                    )
+                    : (
+                        <>
+                            <select
+                                value={status}
+                                onChange={(e) =>
+                                    setStatus(e.target.value)
+                                }
                             >
-                                View Resume
-                            </a>
-                        </td>
+                                <option value="Applied">
+                                    Applied
+                                </option>
 
+                                <option value="Reviewed">
+                                    Reviewed
+                                </option>
 
-                       
+                                <option value="Shortlisted">
+                                    Shortlisted
+                                </option>
 
+                                <option value="Rejected">
+                                    Rejected
+                                </option>
 
-            <td>{application.status}</td>
+                            </select>
 
-            <td>{
-                application.status==="Withdrawn"?(
-                    <span>Not Editable</span>
-                ):(
-                    <>
-                
+                            {" "}
 
-                    <select
-                        value={status}
-                        onChange={(e) =>
-                            setStatus(e.target.value)
-                        }
-                    >
+                            <button
+                                onClick={() =>
+                                    onStatusUpdate(
+                                        application.applicationId,
+                                        status
+                                    )
+                                }
+                            >
+                                Update
+                            </button>
+                        </>
+                    )
+            }
 
-                        <option value="Applied">
-                            Applied
-                        </option>
+        </td>
 
-                        <option value="Reviewed">
-                            Reviewed
-                        </option>
+        <td>
 
-                        <option value="Shortlisted">
-                            Shortlisted
-                        </option>
+            <button
+                onClick={() =>
+                    onViewCandidate(
+                        application.jobSeekerId
+                    )
+                }
+            >
+                View Candidate
+            </button>
 
-                        <option value="Rejected">
-                            Rejected
-                        </option>
+        </td>
 
-                    </select>
+    </tr>
 
-                    {" "}
-
-                    <button
-                        onClick={() =>
-                            onStatusUpdate(
-                                application.applicationId,
-                                status
-                            )
-                        }
-                    >
-                        Update
-                    </button>
-                    </>
-                )}
-
-            </td>
-
-        </tr>
-
-    );
+);
 
 }
 
 
 export function ApplicationTable({
     applications,
-    onStatusUpdate
+    onStatusUpdate,
+    onViewCandidate
 }) {
 
     if (applications.length === 0) {
@@ -110,19 +124,14 @@ export function ApplicationTable({
             <thead>
 
                 <tr>
-
                     <th>Applicant</th>
-
                     <th>Job Title</th>
-
                     <th>Company</th>
-
                     <th>Applied Date</th>
-
+                    <th>Resume</th>
                     <th>Current Status</th>
-
                     <th>Update Status</th>
-
+                    <th>Candidate</th>
                 </tr>
 
             </thead>
@@ -136,6 +145,7 @@ export function ApplicationTable({
                             key={application.applicationId}
                             application={application}
                             onStatusUpdate={onStatusUpdate}
+                            onViewCandidate={onViewCandidate}
                         />
 
                     )

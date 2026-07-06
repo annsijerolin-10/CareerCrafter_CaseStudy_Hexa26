@@ -16,6 +16,7 @@ export function MyResumes() {
     const [resumes, setResumes] = useState([]);
     //const [selectedResume, setSelectedResume] = useState(null);
     const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
 
@@ -61,14 +62,16 @@ export function MyResumes() {
                 user.token
             );
 
-            alert("Resume uploaded successfully.");
-
+            setMessage("Resume uploaded successfully.");
+            await loadResumes();
+            setTimeout(() => {
+                setMessage("");
+            }, 3000);
             loadResumes();
 
         }
         catch (error) {
-
-            alert(error.message);
+            setError(error.message);
 
         }
 
@@ -87,14 +90,19 @@ export function MyResumes() {
                 user.token
             );
 
-            alert("Resume deleted successfully.");
+            setMessage("Resume deleted successfully.");
+            await loadResumes();
+
+            setTimeout(() => {
+                setMessage("");
+            }, 3000);
 
             loadResumes();
 
         }
         catch (error) {
 
-            alert(error.message);
+            setError(error.message);
 
         }
 
@@ -103,8 +111,17 @@ export function MyResumes() {
     return (
 
         <div>
+            
+    
 
             <h2>My Resumes</h2>
+            {
+                            message &&
+                <p style={{ color: "green" }}>
+                    {message}
+                </p>
+            
+            }
 
             {
                 error &&

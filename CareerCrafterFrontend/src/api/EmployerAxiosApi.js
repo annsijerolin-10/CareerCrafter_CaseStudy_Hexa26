@@ -100,3 +100,35 @@ export function getEmployerDashboard(employerId, token) {
     );
 
 }
+
+export async function getCandidateProfile(
+    jobSeekerId,
+    token
+) {
+
+    try {
+
+        const response = await axios.get(
+            `${BASE_URL}/candidate/${jobSeekerId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(
+                error,
+                "Failed to load candidate profile."
+            )
+        );
+
+    }
+
+}

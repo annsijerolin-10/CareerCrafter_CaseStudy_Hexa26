@@ -45,9 +45,13 @@ export function ResumeTable({
                         <tr key={resume.resumeId}>
 
                             <td>
-                                {getResumeFileName(
-                                    resume.resumeFile
-                                )}
+                                <a
+                                    href={`https://localhost:7109${resume.resumeFile}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {getResumeFileName(resume.resumeFile)}
+                                </a>
                             </td>
 
                             <td>
