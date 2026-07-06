@@ -49,6 +49,10 @@ namespace CareerCrafterAPI.Repositories.Implementations
                     .CountAsync(a =>
                         a.JobSeekerId == jobSeekerId &&
                         a.Status == "Applied"),
+                ReviewedCount = await _context.Applications
+                    .CountAsync(a =>
+                        a.JobSeekerId == jobSeekerId &&
+                        a.Status == "Reviewed"),
 
                 ShortlistedCount = await _context.Applications
                     .CountAsync(a =>
@@ -70,6 +74,10 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
                 TotalNotifications = await _context.Notifications
                     .CountAsync(n => n.JobSeekerId == jobSeekerId)
+
+               
+
+
             };
         }
     }

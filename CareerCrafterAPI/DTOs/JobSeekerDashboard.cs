@@ -15,5 +15,6 @@
         public int TotalResumes { get; set; }
 
         public int TotalNotifications { get; set; }
+        public int ReviewedCount { get; set; }
     }
 }

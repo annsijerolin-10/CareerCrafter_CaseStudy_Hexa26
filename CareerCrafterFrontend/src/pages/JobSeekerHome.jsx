@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getJobSeekerProfile } from "../api/JobSeekerAxiosApi";
+import { getJobSeekerProfile,getJobSeekerDashboard } from "../api/JobSeekerAxiosApi";
 
 export function JobSeekerHome() {
 
     const { user } = useAuth();
     const navigate = useNavigate();
-
+    const [dashboard, setDashboard] = useState(null);
+    const [error, setError] = useState("");
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
-        loadProfile();
-    }, []);
 
+    if (user.jobSeekerId) {
+        loadProfile();
+        loadDashboard();
+    }
+
+}, [user.jobSeekerId]);
     async function loadProfile() {
 
         try {
@@ -32,6 +37,27 @@ export function JobSeekerHome() {
         }
     }
 
+    async function loadDashboard() {
+
+    try {
+
+        const response =
+            await getJobSeekerDashboard(
+                user.jobSeekerId,
+                user.token
+            );
+
+        setDashboard(response);
+
+    }
+    catch (error) {
+
+        setError("Failed to load dashboard.");
+
+    }
+
+}
+
     const profileCompleted =
         profile &&
         (profile.phone ?? "").trim() !== "" &&
@@ -44,6 +70,12 @@ export function JobSeekerHome() {
         <div>
 
             <h2>Job Seeker Dashboard</h2>
+            {
+    error &&
+    <p style={{ color: "red" }}>
+        {error}
+    </p>
+}
 
             {
                 !profileCompleted
@@ -83,14 +115,51 @@ export function JobSeekerHome() {
                     )
             }
 
-            <p>
-                Welcome to CareerCrafter.
-            </p>
+            {
+    dashboard &&
+    <>
+        <h3>Dashboard Summary</h3>
 
-            <p>
-                Use the navigation above to browse jobs,
-                manage resumes and applications.
-            </p>
+        <p>
+            <strong>Total Applications:</strong>{" "}
+            {dashboard.totalApplications}
+        </p>
+
+        <p>
+            <strong>Applied:</strong>{" "}
+            {dashboard.appliedCount}
+        </p>
+        <p>
+    <strong>Reviewed:</strong>{" "}
+    {dashboard.reviewedCount}
+</p>
+
+        <p>
+            <strong>Shortlisted:</strong>{" "}
+            {dashboard.shortlistedCount}
+        </p>
+
+        <p>
+            <strong>Rejected:</strong>{" "}
+            {dashboard.rejectedCount}
+        </p>
+
+        <p>
+            <strong>Withdrawn:</strong>{" "}
+            {dashboard.withdrawnCount}
+        </p>
+
+        <p>
+            <strong>Total Resumes:</strong>{" "}
+            {dashboard.totalResumes}
+        </p>
+
+        <p>
+            <strong>Notifications:</strong>{" "}
+            {dashboard.totalNotifications}
+        </p>
+    </>
+}
 
         </div>
     );
