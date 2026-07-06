@@ -40,8 +40,12 @@ namespace CareerCrafterAPI.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(employer);
+            return Ok(new
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Employer retrieved successfully",
+                Data = employer
+            });
         }
 
         [HttpPost]
@@ -91,7 +95,23 @@ namespace CareerCrafterAPI.Controllers
             return Ok(candidate);
         }
 
+        [Authorize(Roles = "Employer")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEmployer(
+     int id,
+     EmployerUpdateDto dto)
+        {
+            var employer =
+                await _employerService
+                    .UpdateEmployerAsync(id, dto);
 
-      
+            if (employer == null)
+                return NotFound();
+
+            return Ok(employer);
+        }
+
+
+
     }
 }

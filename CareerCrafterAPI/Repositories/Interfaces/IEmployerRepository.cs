@@ -12,5 +12,6 @@ namespace CareerCrafterAPI.Repositories.Interfaces
         Task AddEmployerAsync(Employer employer);
         Task<EmployerDashboardDto> GetDashboardAsync(int employerId);
         Task<CandidateProfileDto?> GetCandidateProfileAsync(int jobSeekerId);
+        Task UpdateEmployerAsync(Employer employer);
     }
 }

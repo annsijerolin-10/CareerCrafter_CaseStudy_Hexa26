@@ -22,7 +22,9 @@ namespace CareerCrafterAPI.Repositories.Implementations
 
         public async Task<Employer?> GetEmployerByIdAsync(int employerId)
         {
-            return await _context.Employers.FirstOrDefaultAsync(e => e.EmployerId == employerId);
+            return await _context.Employers
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(e => e.EmployerId == employerId);
         }
 
         public async Task AddEmployerAsync(Employer employer)
@@ -98,6 +100,14 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 ExperienceYears = jobSeeker.ExperienceYears,
                 ResumeFile = resume?.ResumeFile
             };
+        }
+
+        public async Task UpdateEmployerAsync(
+    Employer employer)
+        {
+            _context.Employers.Update(employer);
+
+            await _context.SaveChangesAsync();
         }
     }
 

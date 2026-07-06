@@ -42,14 +42,38 @@ namespace CareerCrafterAPI.Services.Implementations
             _logger.LogInformation(
     "Fetching employer with Id {EmployerId}",
     employerId);
-            var employer = await _employerRepository.GetEmployerByIdAsync(employerId);
+            var employer =
+        await _employerRepository
+            .GetEmployerByIdAsync(employerId);
 
             if (employer == null)
                 return null;
 
-            return _mapper.Map<EmployerResponseDto>(employer);
+            return _mapper.Map<EmployerResponseDto>(
+                employer);
         }
 
+
+        public async Task<EmployerResponseDto?>
+UpdateEmployerAsync(
+    int employerId,
+    EmployerUpdateDto dto)
+        {
+            var employer =
+                await _employerRepository
+                    .GetEmployerByIdAsync(employerId);
+
+            if (employer == null)
+                return null;
+
+            _mapper.Map(dto, employer);
+
+            await _employerRepository
+                .UpdateEmployerAsync(employer);
+
+            return _mapper.Map<EmployerResponseDto>(
+                employer);
+        }
         public async Task<EmployerResponseDto> AddEmployerAsync(EmployerCreateDto dto)
         {
             try
