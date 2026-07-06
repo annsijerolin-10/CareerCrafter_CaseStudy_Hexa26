@@ -4,9 +4,20 @@ export function loginUser(loginData){
     return axios.post(`${BASE_URL}/login`,loginData)
 }
 
-export async function changePassword(
-    passwordData
-) {
+function getErrorMessage(error,fallback){
+
+    if(error.response?.data?.message)
+        return error.response.data.message;
+
+    if(error.response?.data?.title)
+        return error.response.data.title;
+
+    return error.message || fallback;
+
+}
+
+export async function changePassword(passwordData)
+     {
     try {
 
         const response = await axios.put(
@@ -26,16 +37,13 @@ export async function changePassword(
         return response.data;
 
     }
-    catch (error) {
-
-        if (error.response?.data?.message)
-            throw new Error(error.response.data.message);
-
-        if (error.response?.data?.title)
-            throw new Error(error.response.data.title);
+    catch(error){
 
         throw new Error(
-            error.message || "Failed to change password."
+            getErrorMessage(
+                error,
+                "Failed to login."
+            )
         );
 
     }

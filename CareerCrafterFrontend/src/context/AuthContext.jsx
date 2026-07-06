@@ -30,17 +30,18 @@ export function AuthProvider({ children }) {
         localStorage.setItem("userId", loginResponse.userId);
         localStorage.setItem("fullName", loginResponse.fullName);
         
-        if(loginResponse.employerId)
+        if(loginResponse.employerId){
         localStorage.setItem("employerId", loginResponse.employerId);
-        else
+        }else{
             localStorage.removeItem("employerId");
-
-        if(loginResponse.jobSeekerId)
+        }
+        if(loginResponse.jobSeekerId){
             localStorage.setItem("jobSeekerId", loginResponse.jobSeekerId);
-        else
+        }else{
             localStorage.removeItem("jobSeekerId");
-
+        }
         setUser({
+            ...initialUser,
             token: loginResponse.token,
             email: loginResponse.email,
             role: loginResponse.role,

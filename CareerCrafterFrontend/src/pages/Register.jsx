@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {useNavigate,Link} from "react-router-dom";
 import {registerUser} from "../api/userAxiosApi";
+import { AlertMessage } from "../components/AlertMessage";
 export function Register(){
     const navigate=useNavigate();
     const[userData,setUserData]=useState({
@@ -13,10 +14,11 @@ export function Register(){
         phone: "",
         address: "",
         skills: "",
-        experienceYears: 0
+        experienceYears: ""
     });
     const[errorMessage,setErrorMessage]=useState("");
     const [successMessage, setSuccessMessage] = useState("");
+
     function handleChange(e) {
 
         const { name, value } = e.target;
@@ -28,11 +30,10 @@ export function Register(){
                 setUserData({
                     ...userData,
                     role: value,
-
                     phone: "",
                     address: "",
                     skills: "",
-                    experienceYears: 0
+                    experienceYears: ""
                 });
 
             }
@@ -41,7 +42,6 @@ export function Register(){
                 setUserData({
                     ...userData,
                     role: value,
-
                     companyName: "",
                     companyDescription: ""
                 });
@@ -57,6 +57,7 @@ export function Register(){
         });
 
     }
+    
     async function handleSubmit(e){
         e.preventDefault();
         setErrorMessage("");
@@ -77,86 +78,133 @@ export function Register(){
             return;
         }
         try{
-            const response=await registerUser(userData);
-            console.log(response.data);
+            await registerUser(userData);
+            
             setErrorMessage("");
             setSuccessMessage("Registration successful! Redirecting to login...");
             setTimeout(() => {
                 navigate("/");
             }, 2000);
         }
-        catch(error){
-            if (error.response?.data?.title) {
-                setErrorMessage(error.response.data.title);
-            }
-            else if (typeof error.response?.data === "string") {
-                setErrorMessage(error.response.data);
-            }
+        catch (error) {
 
-            else {
-                setErrorMessage("Registration failed. Please try again.");
-            }
-        }
+    setErrorMessage(error.message);
+
+}
     }
 
 
 return(
+    <div className="container d-flex justify-content-center align-items-center min-vh-100">
+        <div className="card auth-card shadow-lg p-4">
+    
+
     <form onSubmit={handleSubmit}>
         <h2>Register</h2>
-        {errorMessage && <p style={{color:"red"}}>{errorMessage}</p>
-        }
-        {successMessage && (
-            <p style={{ color: "green" }}>
-                {successMessage}
-            </p>
-        )}
-        <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={userData.fullName}
-            onChange={handleChange}
+        <AlertMessage
+            message={errorMessage}
         />
-        <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={userData.email}
-            onChange={handleChange}
-        />        <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={userData.password}
-            onChange={handleChange}
+        <AlertMessage
+            type="success"
+            message={successMessage}
         />
-        <select
-            name="role"
-            value={userData.role}
-            onChange={handleChange}
-        >
-            <option value="">Select a role</option>
-            <option value="Employer">Employer</option>
-            <option value="JobSeeker">Job Seeker</option>
-        </select>
+        <div className="mb-3">
+
+            <label className="form-label">
+                Full Name
+            </label>
+            <input
+                type="text"
+                name="fullName"
+                className="form-control"
+                placeholder="Enter your Full Name"
+                value={userData.fullName}
+                onChange={handleChange}
+            />
+        </div>
+
+         <div className="mb-3">
+
+            <label className="form-label">
+                Email
+            </label>
+            <input
+                type="email"
+                name="email"
+                className="form-control"
+                placeholder="Enter the Email"
+                value={userData.email}
+                onChange={handleChange}
+            />   
+        </div>  
+         <div className="mb-3">
+
+            <label className="form-label">
+                Password
+            </label>   
+            <input
+                type="password"
+                name="password"
+                className="form-control"
+                placeholder="Enter the Password"
+                value={userData.password}
+                onChange={handleChange}
+            />
+        </div>
+
+        <div className="mb-3">
+
+            <label className="form-label">
+                Role
+            </label>
+
+            <select
+                className="form-select"
+                name="role"
+                value={userData.role}
+                onChange={handleChange}
+            >
+                <option value="">Select a role</option>
+                <option value="Employer">Employer</option>
+                <option value="JobSeeker">Job Seeker</option>
+            </select>
+        </div>
         {
+            
             userData.role === "Employer" && (
                 <>
+                   <div className="mb-3">
+
+                        <label className="form-label">
+                        Comapny Name
+                        </label>
+                    
                     <input
                         type="text"
                         name="companyName"
-                        placeholder="Company Name (Optional)"
+                        className="form-control"
+                        placeholder="Enter the Company Name (Optional)"
                         value={userData.companyName}
                         onChange={handleChange}
                     />
+                    </div>
+
+                    <div className="mb-3">
+
+                        <label className="form-label">
+                        Company Description
+                        </label>
+
 
                     <input
                         type="text"
                         name="companyDescription"
+                        className="form-control"
                         placeholder="Company Description (Optional)"
                         value={userData.companyDescription}
                         onChange={handleChange}
                     />
+                    </div>
                 </>
             )
         }
@@ -164,44 +212,91 @@ return(
         {
             userData.role === "JobSeeker" && (
                 <>
+                    <div className="mb-3">
+
+                        <label className="form-label">
+                        Phone Number
+                        </label>
                     <input
                         type="text"
                         name="phone"
-                        placeholder="Phone (Optional)"
+                        placeholder="Enter your Phone Number(Optional)"
                         value={userData.phone}
                         onChange={handleChange}
                     />
+                    </div>
+
+                    <div className="mb-3">
+
+                        <label className="form-label">
+                        Address
+                        </label>
 
                     <input
                         type="text"
                         name="address"
-                        placeholder="Address (Optional)"
+                        placeholder="Enter your Address (Optional)"
                         value={userData.address}
                         onChange={handleChange}
                     />
+                    </div>
+
+                    <div className="mb-3">
+
+                        <label className="form-label">
+                        Skills
+                        </label>
+
 
                     <input
                         type="text"
                         name="skills"
-                        placeholder="Skills (Optional)"
+                        placeholder="Enter your Skills (Optional)"
                         value={userData.skills}
                         onChange={handleChange}
                     />
+                    </div>
+
+                    <div className="mb-3">
+
+                        <label className="form-label">
+                        Experience
+                        </label>
+
 
                     <input
                         type="number"
                         name="experienceYears"
-                        placeholder="Experience (Optional)"
+                        placeholder="Enter your Work Experience (Optional)"
                         value={userData.experienceYears}
                         onChange={handleChange}
                     />
+                    </div>
                 </>
             )
         }
-        <button type="submit">Register</button>
-        <p>
-        <Link to="/">Already have an account? Login</Link>
-        </p>
+        <div>
+        <button
+            type="submit"
+            className="btn btn-success w-100"
+        >
+            Register
+        </button>
+        </div>
+        <div className="text-center mt-3">
+            Already have an account?
+
+            <Link
+                to="/"
+                className="ms-2"
+            >
+                Login
+            </Link>
+
+        </div>
     </form>
+    </div>
+    </div>
+    
 );
 }
