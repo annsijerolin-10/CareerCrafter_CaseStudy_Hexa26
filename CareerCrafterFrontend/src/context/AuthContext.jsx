@@ -1,9 +1,19 @@
 import {createContext, useContext, useState} from "react";
 const AuthContext = createContext();
+const initialUser = {
+    token: "",
+    email: "",
+    role: "",
+    userId: "",
+    employerId: "",
+    jobSeekerId: "",
+    fullName: ""
+};
 
 export function AuthProvider({ children }) {
 
     const [user, setUser] = useState({
+        ...initialUser,
     token: localStorage.getItem("token") || "",
     email: localStorage.getItem("email") || "",
     role: localStorage.getItem("role") || "",
@@ -51,15 +61,7 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("jobSeekerId");
         localStorage.removeItem("fullName");
 
-        setUser({
-            token: "",
-            email: "",
-            role: "",
-            userId: "",
-            employerId: "",
-            jobSeekerId: "",
-            fullName: ""
-        });
+        setUser(initialUser);
     }
 
     return (

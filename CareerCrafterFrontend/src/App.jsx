@@ -10,7 +10,7 @@ import { JobSeekerDashboard } from './pages/JobSeekerDashboard'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { Register } from './pages/Register'
 import { EmployerHome } from './pages/EmployerHome'
-import { CandidateProfile } from './pages/CandidateProfile'
+
 import { ManageJobs } from './pages/ManageJobs'
 import { ManageApplications } from './pages/ManageApplication'
 
@@ -19,8 +19,7 @@ import { MyResumes } from './pages/MyResumes'
 import { MyApplications } from './pages/MyApplications'
 import { BrowseJobs } from './pages/BrowseJobs'
 import { Notifications } from './pages/Notifications'
-import { MyApplicationsTable } from './components/MyApplicationsTable'
-import { JobSeekerProfileForm } from './components/JobSeekerProfileForm'
+
 import { MyProfile } from './pages/MyProfile'
 import { ForgotPassword } from './pages/ForgotPassword'
 function App() {
