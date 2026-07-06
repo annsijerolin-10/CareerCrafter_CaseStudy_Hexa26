@@ -140,47 +140,63 @@ if (jobData.applicationDeadline < today) {
     }
 
     return (
+        <div className="card shadow-sm mt-4">
+
+            <div className="card-body">
+
+
         <form onSubmit={handleSubmit}>
 
             <h3>
                 {selectedJob ? "Update Job" : "Add Job"}
             </h3>
 
-            <fieldset
-                disabled={!profileCompleted}
-                style={{
-                    border: "none",
-                    padding: 0,
-                    margin: 0
-                }}
-            >
+            <fieldset disabled={!profileCompleted}>
+                
+            
+                
 
-                {errorMessage && (
-                    <p style={{ color: "red" }}>
-                        {errorMessage}
-                    </p>
-                )}
+                <AlertMessage message={errorMessage}/>
+               
+                <div className="mb-3">
+
+                    <label className="form-label">
+                    Job Title
+                    </label>
+                    
 
                 <input
+                    className="form-control"
                     type="text"
                     name="jobTitle"
                     placeholder="Job Title"
                     value={jobData.jobTitle}
                     onChange={handleChange}
                 />
+                </div>
 
                 <br /><br />
+                <div className="mb-3">
 
+                    <label className="form-label">
+                    Job Description
+                    </label>
                 <input
+                    className="form-control"
                     type="text"
                     name="jobDescription"
                     placeholder="Job Description"
                     value={jobData.jobDescription}
                     onChange={handleChange}
                 />
+                </div>
 
                 <br /><br />
+                <div className="mb-3">
 
+                    <label className="form-label">
+                    Job Location
+                    </label>
                 <input
                     type="text"
                     name="location"
@@ -188,30 +204,48 @@ if (jobData.applicationDeadline < today) {
                     value={jobData.location}
                     onChange={handleChange}
                 />
+                </div>
 
                 <br /><br />
+                <div className="mb-3">
 
+                    <label className="form-label">
+                    Salary
+                    </label>
                 <input
+                    className="form-control"
                     type="number"
                     name="salary"
                     placeholder="Salary"
                     value={jobData.salary}
                     onChange={handleChange}
                 />
+                </div>
 
                 <br /><br />
+                <div className="mb-3">
 
+                    <label className="form-label">
+                    Required Skills
+                    </label>
                 <input
+                    className="form-control"
                     type="text"
                     name="requiredSkills"
                     placeholder="Required Skills"
                     value={jobData.requiredSkills}
                     onChange={handleChange}
                 />
+                </div>
 
                 <br /><br />
+                <div className="mb-3">
 
+                    <label className="form-label">
+                    Application DeadLine
+                    </label>
                 <input
+                    className="form-control"
                     type="date"
                     name="applicationDeadline"
                     value={jobData.applicationDeadline}
@@ -222,15 +256,16 @@ if (jobData.applicationDeadline < today) {
                     }
                     onChange={handleChange}
                 />
+                </div>
 
                 <br /><br />
 
-                <button type="submit">
+                <button className="btn btn-primary me-2" type="submit">
                     {selectedJob ? "Update" : "Add"}
                 </button>
 
                 {selectedJob && (
-                    <button
+                    <button className="btn btn-secondary"
                         type="button"
                         onClick={handleCancel}
                     >
@@ -241,5 +276,7 @@ if (jobData.applicationDeadline < today) {
             </fieldset>
 
         </form>
+        </div>
+        </div>
     );
 }

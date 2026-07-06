@@ -5,6 +5,7 @@ import { getApplicationsByJob,updateApplicationStatus } from "../api/Application
 import { ApplicationTable } from "../components/ApplicationTable";
 import { CandidateProfileModal } from "../components/CandidateProfileModal";
 import { getCandidateProfile } from "../api/EmployerAxiosApi";
+import { AlertMessage } from "../components/AlertMessage";
 export function ManageApplications() {
 
     const { user } = useAuth();
@@ -13,7 +14,7 @@ export function ManageApplications() {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [selectedCandidate, setSelectedCandidate] = useState(null);
-const [showCandidateModal, setShowCandidateModal] = useState(false);
+    const [showCandidateModal, setShowCandidateModal] = useState(false);
 
     useEffect(() => {
      if (user.employerId) {
@@ -25,11 +26,12 @@ const [showCandidateModal, setShowCandidateModal] = useState(false);
     async function loadApplications() {
 
         try {
+            setError("");
             const jobs = await getEmployerJobs(
                 user.employerId,
                 user.token
             );
-            let allApplications = [];
+            const allApplications = [];
             for (const job of jobs) {
                 const jobApplications =
                     await getApplicationsByJob(
@@ -37,14 +39,10 @@ const [showCandidateModal, setShowCandidateModal] = useState(false);
                         user.token
                     );
 
-                allApplications = [
-                    ...allApplications,
-                    ...jobApplications
-                ];
+                allApplications.push(...jobApplications);
             }
 
             setApplications(allApplications);
-
         }
         catch (error) {
 
@@ -56,12 +54,13 @@ const [showCandidateModal, setShowCandidateModal] = useState(false);
     async function handleStatusUpdate(applicationId, status) {
 
         try {
-
+            setError("");
             await updateApplicationStatus(
                 applicationId,
                 status,
                 user.token
             );
+            await loadApplications();
             setMessage("Application status updated successfully.");
             setTimeout(() => {
                 setMessage("");
@@ -79,7 +78,7 @@ const [showCandidateModal, setShowCandidateModal] = useState(false);
     async function handleViewCandidate(jobSeekerId) {
 
         try {
-
+            setError("");
             const candidate =
                 await getCandidateProfile(
                     jobSeekerId,
@@ -104,18 +103,14 @@ const [showCandidateModal, setShowCandidateModal] = useState(false);
         <div>
 
             <h2>Manage Applications</h2>
-            {
-                message &&
-                <p style={{ color: "green" }}>
-                    {message}
-                </p>
-            }
+            <AlertMessage
+                type="success"
+                message={message}
+            />
 
-            {error && (
-                <p style={{ color: "red" }}>
-                    {error}
-                </p>
-            )}
+            <AlertMessage
+                message={error}
+            />
              <ApplicationTable
                 applications={applications}
                 onStatusUpdate={handleStatusUpdate}

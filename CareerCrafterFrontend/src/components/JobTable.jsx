@@ -13,7 +13,13 @@ export function JobTable({
     }
 
     return (
-        <table border="1" cellPadding="10">
+        <div className="card shadow-sm mt-4">
+
+        <div className="card-body">
+
+        <div className="table-responsive">
+
+        <table className="table table-striped table-hover align-middle">
 
             <thead>
                 <tr>
@@ -47,11 +53,11 @@ export function JobTable({
                                     <button onClick={()=> onRestoreJob(job.jobId)}>Restore</button>
                                 ):(
                                     <>
-                                     <button onClick={() => onEditJob(job)}>  
+                                     <button btn btn-warning btn-sm me-2 onClick={() => onEditJob(job)}>  
                                         Edit                                                                                                                 
                                     </button>
 
-                                    <button onClick={() => onDeleteJob(job.jobId)}>                                                                        
+                                    <button btn btn-danger btn-sm onClick={() => onDeleteJob(job.jobId)}>                                                                        
                                         Archive
                                     </button>
                                     
@@ -71,6 +77,9 @@ export function JobTable({
             </tbody>
 
         </table>
+        </div>
+        </div>
+        </div>
     );
 }
 

@@ -126,13 +126,15 @@ export function ManageJobs() {
 
             <h2>Manage Jobs</h2>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <AlertMessage
+                message={error}
+                />
 
             {
             showArchived?
-                <button onClick={loadJobs}>Back to Active Jobs</button>
+                <button btn btn-secondary mb-3 onClick={loadJobs}>Back to Active Jobs</button>
             :
-                <button onClick={loadArchivedJobs}>View Archived Jobs</button>
+                <button btn btn-primary mb-3 onClick={loadArchivedJobs}>View Archived Jobs</button>
             }
             
 
@@ -144,15 +146,7 @@ export function ManageJobs() {
             <>
                 {
                     !profileCompleted &&
-                    <div
-                        style={{
-                            border: "1px solid orange",
-                            padding: "15px",
-                            marginTop: "20px",
-                            marginBottom: "20px",
-                            borderRadius: "8px"
-                        }}
-                    >
+                    <div className="alert alert-warning">
 
                         <h3>
                             Complete Company Profile
@@ -163,7 +157,7 @@ export function ManageJobs() {
                             posting new jobs.
                         </p>
 
-                        <button
+                        <button className="btn btn-warning"
                             onClick={() =>
                                 navigate(
                                     "/employer/dashboard/profile"

@@ -61,13 +61,14 @@ export function MyApplications() {
         <div>
 
             <h2>My Applications</h2>
+            <AlertMessage
+                message={error}
+            />
 
-            {
-                error &&
-                <p style={{ color: "red" }}>
-                    {error}
-                </p>
-            }
+           <AlertMessage
+                type="success"
+                message={message}
+            />
 
             <MyApplicationsTable
                 applications={applications}

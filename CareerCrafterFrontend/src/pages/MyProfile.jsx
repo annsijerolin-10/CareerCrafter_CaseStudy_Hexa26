@@ -8,7 +8,7 @@ export function MyProfile() {
     const { user } = useAuth();
 
     return (
-        <div>
+        <div className="container">
 
             <h2>My Profile</h2>
 
@@ -18,7 +18,7 @@ export function MyProfile() {
                     :           
                     <EmployerProfileForm />
             }
-            <hr />
+            <hr className="my-5"/>
             <ChangePasswordForm />
 
 

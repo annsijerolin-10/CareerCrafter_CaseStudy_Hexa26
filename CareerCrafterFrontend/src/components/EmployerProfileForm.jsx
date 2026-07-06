@@ -42,9 +42,6 @@ export function EmployerProfileForm() {
                 );
 
             console.log(response);
-
-setProfile(response);
-
             setProfile(response);
 
         }
@@ -111,66 +108,97 @@ setProfile(response);
     }
 
     return (
+        <div className="card shadow-sm">
+            <div className="card-body">
+
+        <h4 className="mb-4">
+            Company Profile
+        </h4>
 
         <form onSubmit={handleSubmit}>
 
-            {errorMessage &&
-                <p style={{ color: "red" }}>
-                    {errorMessage}
-                </p>
-            }
+            <AlertMessage
+                message={errorMessage}
+            />
 
-            {successMessage &&
-                <p style={{ color: "green" }}>
-                    {successMessage}
-                </p>
-            }
+            <AlertMessage
+                type="success"
+                message={successMessage}
+            />
+
+            <div className="mb-3">
+
+                <label className="form-label">
+                Full Name
+                </label>
 
             <input
+                className="form-control"
                 type="text"
                 value={profile.fullName}
                 disabled
                 placeholder="Full Name"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
 
+                <label className="form-label">
+                Email
+                </label>
             <input
+                className="form-control"
                 type="email"
                 value={profile.email}
                 disabled
                 placeholder="Email"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Company Name
+                </label>
 
             <input
+                className="form-control"
                 type="text"
                 name="companyName"
                 value={profile.companyName}
                 onChange={handleChange}
                 placeholder="Company Name"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Company Description
+                </label>
 
             <textarea
+                className="form-control"
                 name="companyDescription"
                 value={profile.companyDescription}
                 onChange={handleChange}
                 placeholder="Company Description"
                 rows="5"
             />
+            </div>
 
             <br /><br />
 
-            <button type="submit">
-
+            <button className="btn btn-primary" type="submit">
                 Save Changes
-
             </button>
 
         </form>
+        </div>
+        </div>
 
     );
 

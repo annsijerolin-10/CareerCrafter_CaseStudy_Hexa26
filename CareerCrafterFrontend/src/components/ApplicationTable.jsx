@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
+
+
 
 function ApplicationRow({
     application,
@@ -7,7 +9,11 @@ function ApplicationRow({
 }) {
 
     const [status, setStatus] = useState(application.status);
+    useEffect(() => {
 
+    setStatus(application.status);
+
+}, [application.status]);
     return (
 
     <tr>
@@ -28,6 +34,7 @@ function ApplicationRow({
                 href={`https://localhost:7109${application.resumeFile}`}
                 target="_blank"
                 rel="noreferrer"
+                className="btn btn-sm btn-outline-primary"
             >
                 View Resume
             </a>
@@ -44,33 +51,77 @@ function ApplicationRow({
                     )
                     : (
                         <>
-                            <select
+                            <select className="form-select form-select-sm d-inline w-auto"
                                 value={status}
                                 onChange={(e) =>
                                     setStatus(e.target.value)
                                 }
                             >
-                                <option value="Applied">
-                                    Applied
-                                </option>
+                                {
+                                application.status === "Applied" && (
+                                    <>
+                                        <option value="Applied">
+                                            Applied
+                                        </option>
 
-                                <option value="Reviewed">
-                                    Reviewed
-                                </option>
+                                        <option value="Reviewed">
+                                            Reviewed
+                                        </option>
 
-                                <option value="Shortlisted">
-                                    Shortlisted
-                                </option>
+                                        <option value="Shortlisted">
+                                            Shortlisted
+                                        </option>
 
-                                <option value="Rejected">
-                                    Rejected
-                                </option>
+                                        <option value="Rejected">
+                                            Rejected
+                                        </option>
+                                    </>
+                                )
+                            }
+
+                            {
+                                application.status === "Reviewed" && (
+                                    <>
+                                        <option value="Reviewed">
+                                            Reviewed
+                                        </option>
+
+                                        <option value="Shortlisted">
+                                            Shortlisted
+                                        </option>
+
+                                        <option value="Rejected">
+                                            Rejected
+                                        </option>
+                                    </>
+                                )
+                            }
+
+                            {
+                                application.status === "Shortlisted" && (
+                                    <>
+                                        <option value="Shortlisted">
+                                            Shortlisted
+                                        </option>
+                                    </>
+                                )
+                            }
+
+                            {
+                                application.status === "Rejected" && (
+                                    <>
+                                        <option value="Rejected">
+                                            Rejected
+                                        </option>
+                                    </>
+                                )
+                            }
 
                             </select>
 
                             {" "}
 
-                            <button
+                            <button className="btn btn-sm btn-success ms-2"
                                 onClick={() =>
                                     onStatusUpdate(
                                         application.applicationId,
@@ -88,7 +139,7 @@ function ApplicationRow({
 
         <td>
 
-            <button
+            <button className="btn btn-sm btn-info ms-2"
                 onClick={() =>
                     onViewCandidate(
                         application.jobSeekerId
@@ -114,20 +165,26 @@ export function ApplicationTable({
 }) {
 
     if (applications.length === 0) {
-        return <p>No Applications Found</p>;
+        return (
+        <div className="alert alert-info">
+            No applications found.
+        </div>
+
+);
     }
 
     return (
+        <div className="card shadow-sm">
 
-        <table border="1" cellPadding="10">
-
+    <div className="card-body">
+        <div className="table-responsive">
+        <table className="table table-striped table-hover align-middle">
             <thead>
-
                 <tr>
                     <th>Applicant</th>
                     <th>Job Title</th>
                     <th>Company</th>
-                    <th>Applied Date</th>
+                    <th>Applied On</th>
                     <th>Resume</th>
                     <th>Current Status</th>
                     <th>Update Status</th>
@@ -154,6 +211,9 @@ export function ApplicationTable({
             </tbody>
 
         </table>
+        </div>
+        </div>
+        </div>
 
     );
 

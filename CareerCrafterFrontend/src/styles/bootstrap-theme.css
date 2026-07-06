@@ -17,7 +17,7 @@ a{
     padding:25px;
 }
 
-/* ---------- Cards ---------- */
+
 
 .page-card{
     background:white;
@@ -26,11 +26,12 @@ a{
     box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
 }
 
-/* ---------- Login/Register ---------- */
+
 
 .auth-card{
     max-width:430px;
     margin:auto;
+    border:none;
     border-radius:12px;
 }
 
@@ -38,7 +39,7 @@ a{
     font-weight:700;
 }
 
-/* ---------- Dashboard ---------- */
+
 
 .dashboard-card{
     border:none;
@@ -51,7 +52,12 @@ a{
     font-weight:bold;
 }
 
-/* ---------- Tables ---------- */
+.dashboard-container{
+    max-width:1200px;
+    margin:30px auto;
+}
+
+
 
 .table{
     vertical-align:middle;
@@ -62,13 +68,12 @@ a{
     color:white;
 }
 
-/* ---------- Buttons ---------- */
 
 .btn{
     border-radius:8px;
 }
 
-/* ---------- Forms ---------- */
+
 
 .form-control,
 .form-select{
@@ -115,7 +120,9 @@ textarea{
     font-weight:500;
 }
 
-/* ---------- Hover ---------- */
+.card{
+    border-radius:12px;
+}
 
 .card-hover{
     transition:.25s;
@@ -154,4 +161,11 @@ body{
 
 .pointer{
     cursor:pointer;
+}
+
+.table th{
+    white-space:nowrap;
+}
+.btn{
+    border-radius:8px;
 }
