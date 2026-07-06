@@ -128,5 +128,10 @@ namespace CareerCrafterAPI.Services.Implementations
                 throw;
             }
         }
+        public async Task<JobSeekerDashboardDto> GetDashboardAsync(int jobSeekerId)
+        {
+            return await _jobSeekerRepository
+                .GetDashboardAsync(jobSeekerId);
+        }
     }
 }

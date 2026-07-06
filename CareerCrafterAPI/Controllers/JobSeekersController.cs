@@ -100,5 +100,15 @@ namespace CareerCrafterAPI.Controllers
 
             return Ok(jobSeeker);
         }
+
+        [HttpGet("{id}/dashboard")]
+        [Authorize(Roles = "JobSeeker")]
+        public async Task<IActionResult> GetDashboard(int id)
+        {
+            var dashboard =
+                await _jobSeekerService.GetDashboardAsync(id);
+
+            return Ok(dashboard);
+        }
     }
 }

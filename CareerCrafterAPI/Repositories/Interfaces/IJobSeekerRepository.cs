@@ -1,4 +1,5 @@
-﻿using CareerCrafterAPI.Models;
+﻿using CareerCrafterAPI.DTOs;
+using CareerCrafterAPI.Models;
 
 namespace CareerCrafterAPI.Repositories.Interfaces
 {
@@ -10,5 +11,6 @@ namespace CareerCrafterAPI.Repositories.Interfaces
 
         Task AddJobSeekerAsync(JobSeeker jobSeeker);
         Task UpdateJobSeekerAsync(JobSeeker jobSeeker);
+        Task<JobSeekerDashboardDto> GetDashboardAsync(int jobSeekerId);
     }
 }

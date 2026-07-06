@@ -14,5 +14,7 @@ namespace CareerCrafterAPI.Services.Interfaces
         Task<JobSeekerResponseDto?> UpdateJobSeekerAsync(
             int id,
             JobSeekerUpdateDto dto);
+
+        Task<JobSeekerDashboardDto> GetDashboardAsync(int jobSeekerId);
     }
 }

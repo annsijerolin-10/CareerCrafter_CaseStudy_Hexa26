@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CareerCrafterAPI.DTOs;
 using CareerCrafterAPI.Models;
+using CareerCrafterAPI.Repositories.Implementations;
 using CareerCrafterAPI.Repositories.Interfaces;
 using CareerCrafterAPI.Services.Interfaces;
 using Microsoft.Identity.Client;
@@ -13,18 +14,21 @@ namespace CareerCrafterAPI.Services.Implementations
         private readonly IJobSeekerRepository _jobSeekerRepository;
         private readonly ILogger<JobService> _logger;
         private readonly IMapper _mapper;
+        private readonly IEmployerRepository _employerRepository;
 
 
         public JobService(
             IJobRepository jobRepository,
             IJobSeekerRepository jobSeekerRepository,
             ILogger<JobService> logger,
-            IMapper mapper)
+            IMapper mapper,
+            IEmployerRepository employerRepository)
         {
             _jobRepository = jobRepository;
             _jobSeekerRepository = jobSeekerRepository;
             _logger = logger;
             _mapper = mapper;
+            _employerRepository = employerRepository;
         }
 
         public async Task<List<JobResponseDto>> GetAllJobsAsync()
@@ -82,6 +86,17 @@ namespace CareerCrafterAPI.Services.Implementations
                     throw new Exception("Employer not found");
                 }
 
+                var employer = await _employerRepository
+        .GetEmployerByIdAsync(dto.EmployerId);
+
+
+                if (string.IsNullOrWhiteSpace(employer.CompanyName) ||
+                    string.IsNullOrWhiteSpace(employer.CompanyDescription))
+                {
+                    throw new Exception(
+                        "Complete your company profile before posting jobs."
+                    );
+                }
                 if (dto.ApplicationDeadline.Date < DateTime.Today)
                 {
                     throw new Exception(
@@ -226,6 +241,20 @@ namespace CareerCrafterAPI.Services.Implementations
 
                 if (jobSeeker == null)
                 {
+                    return new List<JobResponseDto>();
+                }
+
+                if (
+                    string.IsNullOrWhiteSpace(jobSeeker.Phone) ||
+                    string.IsNullOrWhiteSpace(jobSeeker.Address) ||
+                    string.IsNullOrWhiteSpace(jobSeeker.Skills) ||
+                    jobSeeker.ExperienceYears <= 0
+)
+                {
+                    _logger.LogInformation(
+                        "Recommendations skipped because profile is incomplete for JobSeekerId {JobSeekerId}",
+                        jobSeekerId);
+
                     return new List<JobResponseDto>();
                 }
 
