@@ -34,6 +34,9 @@ export function EmployerDashboard() {
                 <Link to="applications">Applications</Link>
 
                 {" | "}
+             
+                <Link to="profile">My Profile</Link>
+          
 
                 
 

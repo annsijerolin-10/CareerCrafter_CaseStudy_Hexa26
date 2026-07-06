@@ -44,15 +44,19 @@ function App() {
                 element={<EmployerHome/>}
             />
 
-            { <Route
+            <Route
                 path="jobs"
                 element={<ManageJobs/>}
-            /> }
+            />
 
-            { <Route
+            <Route
                 path="applications"
                 element={<ManageApplications/>}
-            /> }
+            />
+            <Route
+            path="profile"
+            element={<MyProfile />}
+        />
            
 
       </Route>
@@ -83,9 +87,9 @@ function App() {
             element={<Notifications />}
         />
         <Route
-    path="profile"
-    element={<MyProfile />}
-/>
+            path="profile"
+            element={<MyProfile />}
+        />
 
     </Route>
     </Routes>

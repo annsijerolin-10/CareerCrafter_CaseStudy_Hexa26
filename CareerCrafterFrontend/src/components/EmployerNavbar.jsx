@@ -23,6 +23,10 @@ export function EmployerNavbar({ handleLogout }) {
 
             {" | "}
 
+            
+                <Link to="profile">My Profile</Link>
+            
+
             <button onClick={handleLogout}>
                 Logout
             </button>

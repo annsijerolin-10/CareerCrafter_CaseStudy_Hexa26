@@ -1,6 +1,6 @@
 import { useAuth } from "../context/AuthContext";
 import { JobSeekerProfileForm } from "../components/JobSeekerProfileForm";
-// import { EmployerProfileForm } from "../components/EmployerProfileForm";
+import { EmployerProfileForm } from "../components/EmployerProfileForm";
 
 export function MyProfile() {
 
@@ -16,8 +16,8 @@ export function MyProfile() {
                     ?
                     <JobSeekerProfileForm />
                     :
-                    <p>Employer Profile Coming Soon</p>
-                    // <EmployerProfileForm />
+                    
+                    <EmployerProfileForm />
             }
 
         </div>
