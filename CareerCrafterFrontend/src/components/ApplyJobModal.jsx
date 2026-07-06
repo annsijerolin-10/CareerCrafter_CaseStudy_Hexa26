@@ -14,7 +14,10 @@ export function ApplyJobModal({
     selectedResumeId,
     setSelectedResumeId,
     onApply,
-    onCancel
+    onCancel,
+    onUploadResume,
+    uploading,
+    resumeMessage
 }) {
 
     if (!job) return null;
@@ -60,6 +63,33 @@ export function ApplyJobModal({
 
             </select>
 
+            <br /><br />
+            <p>OR</p>
+            <p>Add new Resume</p>
+            <input
+                type="file"
+                accept=".pdf"
+                onChange={onUploadResume}
+            />
+            {uploading && (
+                <p style={{ color: "blue" }}>
+                    Uploading resume...
+                </p>
+            )}
+
+            {resumeMessage && (
+                <p
+                    style={{
+                        color: resumeMessage.includes("successfully")
+                            ? "green"
+                            : "red"
+                    }}
+                >
+                    {resumeMessage}
+                </p>
+            )}
+
+            
             <br /><br />
 
             <button

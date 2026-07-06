@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getAllJobs,searchJobs,getRecommendedJobs } from "../api/JobSeekerJobAxiosApi";
 import { JobCardList } from "../components/JobCardList";
-import { getResumesByJobSeeker } from "../api/ResumeAxiosApi";
+import { getResumesByJobSeeker,uploadResume } from "../api/ResumeAxiosApi";
 import { applyJob,getApplicationsByJobSeeker } from "../api/ApplicationAxiosApi";
 import { ApplyJobModal } from "../components/ApplyJobModal";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,10 @@ export function BrowseJobs() {
     const [searchTitle, setSearchTitle] = useState("");
     const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [jobSeekerProfile, setJobSeekerProfile] = useState(null);
-const [searchLocation, setSearchLocation] = useState("");
+    const [searchLocation, setSearchLocation] = useState("");
+    const [uploading, setUploading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [resumeMessage, setResumeMessage] = useState("");    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,42 +40,107 @@ const [searchLocation, setSearchLocation] = useState("");
 
     async function loadJobs() {
 
+        try {
+
+            const response = await getAllJobs(user.token);
+            console.log("All Jobs:", response);
+            console.log("Total Jobs:", response.length);
+            setJobs(response);
+
+            const applicationResponse =
+                await getApplicationsByJobSeeker(
+                    user.jobSeekerId,
+                    user.token
+                );
+
+            setApplications(applicationResponse);
+
+            const profile =
+                await getJobSeekerProfile(
+                    user.jobSeekerId,
+                    user.token
+                );
+
+            setJobSeekerProfile(profile);
+
+            const recommended =
+                await getRecommendedJobs(
+                    user.jobSeekerId,
+                    user.token
+                );
+            console.log("Recommended Jobs:", recommended);
+    console.log("Recommended Count:", recommended.length);
+
+            setRecommendedJobs(recommended);
+
+        }
+        catch (error) {
+
+            console.log(error);
+
+            setError(error.message);
+
+        }
+
+    }
+    async function handleUploadResume(e) {
+
     try {
 
-        const response = await getAllJobs(user.token);
+        const file = e.target.files[0];
 
-        setJobs(response);
+        if (!file)
+            return;
 
-        const applicationResponse =
-            await getApplicationsByJobSeeker(
+        setUploading(true);
+        setResumeMessage("");
+
+        const formData = new FormData();
+
+        formData.append(
+            "ResumeFile",
+            file
+        );
+
+        formData.append(
+            "JobSeekerId",
+            user.jobSeekerId
+        );
+
+        await uploadResume(
+            formData,
+            user.token
+        );
+
+        const updatedResumes =
+            await getResumesByJobSeeker(
                 user.jobSeekerId,
                 user.token
             );
 
-        setApplications(applicationResponse);
+        setResumes(updatedResumes);
 
-        const profile =
-            await getJobSeekerProfile(
-                user.jobSeekerId,
-                user.token
-            );
+       const uploadedResume = updatedResumes.find(r =>
+    r.resumeFile.endsWith(file.name)
+);
 
-        setJobSeekerProfile(profile);
+if (uploadedResume) {
+    setSelectedResumeId(uploadedResume.resumeId);
+}
 
-        const recommended =
-            await getRecommendedJobs(
-                user.jobSeekerId,
-                user.token
-            );
-
-        setRecommendedJobs(recommended);
+        setResumeMessage(
+            "Resume uploaded successfully. Click Confirm Apply."
+        );
 
     }
     catch (error) {
 
-        console.log(error);
+        setResumeMessage(error.message);
 
-        setError(error.message);
+    }
+    finally {
+
+        setUploading(false);
 
     }
 
@@ -81,6 +149,7 @@ const [searchLocation, setSearchLocation] = useState("");
    async function handleApply(job) {
 
         try {
+            setResumeMessage("");
 //             console.log(user);
 // console.log(user.token);
 // console.log(user.jobSeekerId);
@@ -104,10 +173,11 @@ const [searchLocation, setSearchLocation] = useState("");
 
     }
     function handleCancel() {
+        setResumeMessage("");
 
-    setSelectedJob(null);
-    setResumes([]);
-    setSelectedResumeId("");
+        setSelectedJob(null);
+        setResumes([]);
+        setSelectedResumeId("");
 
 }
 async function handleConfirmApply() {
@@ -133,11 +203,11 @@ async function handleConfirmApply() {
     );
 
     setApplications(updatedApplications);
+        alert("Job applied successfully.");
 
-        alert("Application submitted successfully.");
+handleCancel();
 
-        handleCancel();
-
+await loadJobs();
     }
     catch (error) {
 
@@ -193,6 +263,13 @@ async function handleSearch() {
 //     return fileName.substring(fileName.indexOf("_") + 1);
 
 // }
+const filteredJobs = jobs.filter(
+    job =>
+        !recommendedJobs.some(
+            recommended =>
+                recommended.jobId === job.jobId
+        )
+);
 const profileCompleted =
     jobSeekerProfile &&
     (jobSeekerProfile.phone ?? "").trim() !== "" &&
@@ -200,16 +277,7 @@ const profileCompleted =
     (jobSeekerProfile.skills ?? "").trim() !== "" &&
     jobSeekerProfile.experienceYears > 0;
 
-const filteredJobs =
-    profileCompleted
-        ? jobs.filter(
-              job =>
-                  !recommendedJobs.some(
-                      recommended =>
-                          recommended.jobId === job.jobId
-                  )
-          )
-        : jobs;
+
 
     return (
 
@@ -242,12 +310,9 @@ const filteredJobs =
             </h3>
 
             <p>
-
                 Complete your profile by adding your
-                <strong> Skills </strong>
-
-                to receive personalized job recommendations.
-
+                <strong> phone number, address, skills and experience </strong>
+                to unlock personalized job recommendations and job applications.
             </p>
 
             <button
@@ -273,8 +338,9 @@ const filteredJobs =
             <JobCardList
                 jobs={recommendedJobs}
                 applications={applications}
-                onApply={profileCompleted ? handleApply : null}
+                onApply={handleApply}
                 onViewApplication={handleViewApplication}
+                profileCompleted={profileCompleted}
             />
 
             <hr />
@@ -312,14 +378,18 @@ const filteredJobs =
                 applications={applications}
                 onApply={handleApply}
                  onViewApplication={handleViewApplication}
+                 profileCompleted={profileCompleted}
             />
             <ApplyJobModal
                 job={selectedJob}
                 resumes={resumes}
                 selectedResumeId={selectedResumeId}
                 setSelectedResumeId={setSelectedResumeId}
-                 onApply={handleConfirmApply}
+                onApply={handleConfirmApply}
                 onCancel={handleCancel}
+                onUploadResume={handleUploadResume}
+                uploading={uploading}
+                resumeMessage={resumeMessage}
                 
             />
 

@@ -78,3 +78,19 @@ export async function updateJobSeekerProfile(
     }
 
 }
+
+export async function getJobSeekerDashboard(
+    jobSeekerId,
+    token
+) {
+    const response = await axios.get(
+        `${BASE_URL}/${jobSeekerId}/dashboard`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.data;
+}

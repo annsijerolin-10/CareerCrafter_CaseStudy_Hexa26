@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 export function JobForm({
     selectedJob,
     setSelectedJob,
-    loadJobs
+    loadJobs,
+    profileCompleted
 }) {
     const { user } = useAuth();
 
@@ -145,87 +146,99 @@ if (jobData.applicationDeadline < today) {
                 {selectedJob ? "Update Job" : "Add Job"}
             </h3>
 
-            {errorMessage && (
-                <p style={{ color: "red" }}>
-                    {errorMessage}
-                </p>
-            )}
+            <fieldset
+                disabled={!profileCompleted}
+                style={{
+                    border: "none",
+                    padding: 0,
+                    margin: 0
+                }}
+            >
 
-            <input
-                type="text"
-                name="jobTitle"
-                placeholder="Job Title"
-                value={jobData.jobTitle}
-                onChange={handleChange}
-            />
+                {errorMessage && (
+                    <p style={{ color: "red" }}>
+                        {errorMessage}
+                    </p>
+                )}
 
-            <br /><br />
+                <input
+                    type="text"
+                    name="jobTitle"
+                    placeholder="Job Title"
+                    value={jobData.jobTitle}
+                    onChange={handleChange}
+                />
 
-            <input
-                type="text"
-                name="jobDescription"
-                placeholder="Job Description"
-                value={jobData.jobDescription}
-                onChange={handleChange}
-            />
+                <br /><br />
 
-            <br /><br />
+                <input
+                    type="text"
+                    name="jobDescription"
+                    placeholder="Job Description"
+                    value={jobData.jobDescription}
+                    onChange={handleChange}
+                />
 
-            <input
-                type="text"
-                name="location"
-                placeholder="Location"
-                value={jobData.location}
-                onChange={handleChange}
-            />
+                <br /><br />
 
-            <br /><br />
+                <input
+                    type="text"
+                    name="location"
+                    placeholder="Location"
+                    value={jobData.location}
+                    onChange={handleChange}
+                />
 
-            <input
-                type="number"
-                name="salary"
-                placeholder="Salary"
-                value={jobData.salary}
-                onChange={handleChange}
-            />
+                <br /><br />
 
-            <br /><br />
+                <input
+                    type="number"
+                    name="salary"
+                    placeholder="Salary"
+                    value={jobData.salary}
+                    onChange={handleChange}
+                />
 
-            <input
-                type="text"
-                name="requiredSkills"
-                placeholder="Required Skills"
-                value={jobData.requiredSkills}
-                onChange={handleChange}
-            />
+                <br /><br />
 
-            <br /><br />
-            <input
-                type="date"
-                name="applicationDeadline"
-                value={jobData.applicationDeadline}
-                min={
-                    selectedJob
-                        ? ""
-                        : new Date().toISOString().split("T")[0]
-                }
-                onChange={handleChange}
-            />
+                <input
+                    type="text"
+                    name="requiredSkills"
+                    placeholder="Required Skills"
+                    value={jobData.requiredSkills}
+                    onChange={handleChange}
+                />
 
-<br /><br />
+                <br /><br />
 
-            <button type="submit">
-                {selectedJob ? "Update" : "Add"}
-            </button>
+                <input
+                    type="date"
+                    name="applicationDeadline"
+                    value={jobData.applicationDeadline}
+                    min={
+                        selectedJob
+                            ? ""
+                            : new Date().toISOString().split("T")[0]
+                    }
+                    onChange={handleChange}
+                />
 
-            {selectedJob && (
-                <button
-                    type="button"
-                    onClick={handleCancel}
-                >
-                    Cancel
+                <br /><br />
+
+                <button type="submit">
+                    {selectedJob ? "Update" : "Add"}
                 </button>
-            )}
+
+                {selectedJob && (
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </button>
+                )}
+
+            </fieldset>
 
         </form>
     );

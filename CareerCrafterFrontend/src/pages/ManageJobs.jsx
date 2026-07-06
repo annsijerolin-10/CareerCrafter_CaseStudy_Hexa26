@@ -4,7 +4,8 @@ import { useState,useEffect } from "react";
 import { getEmployerJobs,restoreJob,getArchivedJobs,deleteJob } from "../api/JobAxiosApi";
 import { JobForm } from "../components/JobForm";
 import { JobTable } from "../components/JobTable";
-
+import { useNavigate } from "react-router-dom";
+import { getEmployerProfile } from "../api/EmployerAxiosApi";
 
 export function ManageJobs() {
 
@@ -15,27 +16,48 @@ export function ManageJobs() {
     const [selectedJob, setSelectedJob] = useState(null);
     const [showArchived, setShowArchived] = useState(false);
     const [error, setError] = useState("");
+    const [employerProfile, setEmployerProfile] = useState(null);
+    const navigate = useNavigate();
 
    useEffect(() => {
-    if(user.employerId){
+    if (user.employerId) {
         loadJobs();
+        loadEmployerProfile();
     }
+
 }, [user.employerId]);
 
    async function loadJobs() {
-    try {
-        const response = await getEmployerJobs(
-            user.employerId,
-            user.token
-        );
+        try {
+            const response = await getEmployerJobs(
+                user.employerId,
+                user.token
+            );
 
-        setJobs(response);
-        setShowArchived(false);  
+            setJobs(response);
+            setShowArchived(false);  
+        }
+        catch (error) {
+            setError(error.message);
+        }
     }
-    catch (error) {
-        setError(error.message);
+    async function loadEmployerProfile() {
+
+        try {
+
+            const profile =
+                await getEmployerProfile(
+                    user.employerId,
+                    user.token
+                );
+            setEmployerProfile(profile);
+        }
+        catch (error) {
+
+            setError(error.message);
+
+        }
     }
-}
 
     async function handleDeleteJob(jobId) {
 
@@ -76,24 +98,28 @@ export function ManageJobs() {
 
     }
     async function handleRestoreJob(jobId) {
+        try {
 
-    try {
+            await restoreJob(jobId, user.token);
+            await loadJobs();
 
-        await restoreJob(jobId, user.token);
-        await loadJobs();
+        }
+        catch (error) {
+
+            setError(error.message);
+
+        }
 
     }
-    catch (error) {
 
-        setError(error.message);
-
+    function handleEditJob(job) {
+        setSelectedJob(job);
     }
 
-}
-
-   function handleEditJob(job) {
-    setSelectedJob(job);
-}
+    const profileCompleted =
+        employerProfile &&
+        (employerProfile.companyName ?? "").trim() !== "" &&
+        (employerProfile.companyDescription ?? "").trim() !== "";
 
     return (
         <div>
@@ -113,13 +139,51 @@ export function ManageJobs() {
            
 
             {
-                !showArchived &&
-            <JobForm
-                selectedJob={selectedJob}
-                setSelectedJob={setSelectedJob}
-                loadJobs={loadJobs}
-            />
-            }
+            !showArchived &&
+
+            <>
+                {
+                    !profileCompleted &&
+                    <div
+                        style={{
+                            border: "1px solid orange",
+                            padding: "15px",
+                            marginTop: "20px",
+                            marginBottom: "20px",
+                            borderRadius: "8px"
+                        }}
+                    >
+
+                        <h3>
+                            Complete Company Profile
+                        </h3>
+
+                        <p>
+                            Complete your company profile before
+                            posting new jobs.
+                        </p>
+
+                        <button
+                            onClick={() =>
+                                navigate(
+                                    "/employer/dashboard/profile"
+                                )
+                            }
+                        >
+                            Complete Profile
+                        </button>
+
+                    </div>
+                }
+
+                <JobForm
+                    selectedJob={selectedJob}
+                    setSelectedJob={setSelectedJob}
+                    loadJobs={loadJobs}
+                    profileCompleted={profileCompleted}
+                />
+            </>
+           }
 
             <JobTable
                 jobs={jobs}
