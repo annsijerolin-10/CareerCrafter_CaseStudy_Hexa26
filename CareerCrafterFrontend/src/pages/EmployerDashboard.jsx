@@ -13,15 +13,18 @@ export function EmployerDashboard() {
     }
 
     return (
-        <div>
+        <div className="dashboard-container">
 
             <h2>CareerCrafter - Employer</h2>
 
             <p>Welcome {user.fullName}</p>
 
-            <hr/>
+            <div className="card shadow-sm mb-4">
 
-            <nav>
+            <div className="card-body d-flex justify-content-between align-items-center flex-wrap">
+
+            <div>
+
 
                 <Link to="">Dashboard</Link>
 
@@ -38,15 +41,16 @@ export function EmployerDashboard() {
                 <Link to="profile">My Profile</Link>
           
 
-                
+                </div>
 
                 <button onClick={handleLogout}>
                     Logout
                 </button>
 
-            </nav>
+            </div>
+            </div>
 
-            <hr/>
+            
 
             <Outlet/>
 

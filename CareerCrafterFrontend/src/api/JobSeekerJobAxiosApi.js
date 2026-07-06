@@ -3,7 +3,6 @@ import axios from "axios";
 const BASE_URL = "https://localhost:7109/api/Jobs";
 
 function getErrorMessage(error, fallbackMessage) {
-    console.log("jobSeekerJobAxiosApi loaded");
 
     if (error.response?.data?.message)
         return error.response.data.message;
@@ -15,9 +14,6 @@ function getErrorMessage(error, fallbackMessage) {
 }
 
 export async function getAllJobs(token) {
-
-    console.log("Inside getAllJobs");
-
     try {
 
         const response = await axios.get(
@@ -34,9 +30,6 @@ export async function getAllJobs(token) {
         return response.data;
     }
     catch (error) {
-
-        console.log(error);
-
         throw new Error(
             getErrorMessage(error, "Failed to fetch jobs.")
         );

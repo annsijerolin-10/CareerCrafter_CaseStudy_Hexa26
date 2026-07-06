@@ -1,6 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { addJob,updateJob } from "../api/JobAxiosApi";
 import { useState, useEffect } from "react";
+import { AlertMessage } from "./AlertMessage";
 
 export function JobForm({
     selectedJob,
@@ -193,11 +194,12 @@ if (jobData.applicationDeadline < today) {
 
                 <br /><br />
                 <div className="mb-3">
-
+                    
                     <label className="form-label">
                     Job Location
                     </label>
                 <input
+                    className="form-control"
                     type="text"
                     name="location"
                     placeholder="Location"

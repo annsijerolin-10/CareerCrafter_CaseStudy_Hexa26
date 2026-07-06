@@ -4,6 +4,7 @@ import {
     getNotificationsByJobSeeker,
     markNotificationAsRead
 } from "../api/NotificationAxiosApi";
+import { AlertMessage } from "../components/AlertMessage";
 import { NotificationTable } from "../components/NotificationTable";
 
 export function Notifications() {
@@ -28,14 +29,9 @@ export function Notifications() {
                     user.jobSeekerId,
                     user.token
                 );
-                response.sort(
-    (a, b) =>
-        new Date(b.createdDate) - new Date(a.createdDate)
-);
-
-
+                response.sort((a, b) =>
+                    new Date(b.createdDate) - new Date(a.createdDate));
             setNotifications(response);
-
         }
         catch (error) {
 
@@ -59,7 +55,7 @@ export function Notifications() {
         }
         catch (error) {
 
-            alert(error.message);
+            setError(error.message);
 
         }
 
@@ -71,12 +67,9 @@ export function Notifications() {
 
             <h2>My Notifications</h2>
 
-            {
-                error &&
-                <p style={{ color: "red" }}>
-                    {error}
-                </p>
-            }
+            <AlertMessage
+            message={error}
+            />
 
             <NotificationTable
                 notifications={notifications}

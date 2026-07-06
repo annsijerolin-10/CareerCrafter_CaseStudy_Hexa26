@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getJobSeekerProfile,getJobSeekerDashboard } from "../api/JobSeekerAxiosApi";
-
+import { AlertMessage } from "../components/AlertMessage";
 export function JobSeekerHome() {
 
     const { user } = useAuth();
@@ -33,7 +33,7 @@ export function JobSeekerHome() {
 
         }
         catch (error) {
-            console.log(error);
+            setError("Failed to load dashboard");
         }
     }
 
@@ -67,27 +67,16 @@ export function JobSeekerHome() {
 
     return (
 
-        <div>
+        <div className="container-fluid">
 
             <h2>Job Seeker Dashboard</h2>
-            {
-    error &&
-    <p style={{ color: "red" }}>
-        {error}
-    </p>
-}
+            <AlertMessage message={error}/>
 
             {
                 !profileCompleted
                 &&(
-                <div
-                    style={{
-                        border: "1px solid orange",
-                        padding: "15px",
-                        borderRadius: "8px",
-                        marginBottom: "20px"
-                    }}
-                >
+                    <div className="alert alert-warning">
+                    
 
                     <h3>
                         Complete Your Profile
@@ -102,7 +91,7 @@ export function JobSeekerHome() {
                     </p>
 
 
-                    <button
+                    <button className="btn btn-warning"
                         onClick={() =>
                             navigate("/jobseeker/dashboard/profile")
                         }
@@ -115,51 +104,108 @@ export function JobSeekerHome() {
                     )
             }
 
+            
             {
-    dashboard &&
-    <>
-        <h3>Dashboard Summary</h3>
+            dashboard &&
 
-        <p>
-            <strong>Total Applications:</strong>{" "}
-            {dashboard.totalApplications}
-        </p>
+            <>
+                <h3 className="mb-4">
+                    Dashboard Summary
+                </h3>
 
-        <p>
-            <strong>Applied:</strong>{" "}
-            {dashboard.appliedCount}
-        </p>
-        <p>
-    <strong>Reviewed:</strong>{" "}
-    {dashboard.reviewedCount}
-</p>
+                <div className="row g-4">
 
-        <p>
-            <strong>Shortlisted:</strong>{" "}
-            {dashboard.shortlistedCount}
-        </p>
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Total Applications</h6>
+                                <h2 className="dashboard-stat">
+                                    {dashboard.totalApplications}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
 
-        <p>
-            <strong>Rejected:</strong>{" "}
-            {dashboard.rejectedCount}
-        </p>
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Applied</h6>
+                                <h2 className="dashboard-stat text-primary">
+                                    {dashboard.appliedCount}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
 
-        <p>
-            <strong>Withdrawn:</strong>{" "}
-            {dashboard.withdrawnCount}
-        </p>
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Reviewed</h6>
+                                <h2 className="dashboard-stat text-info">
+                                    {dashboard.reviewedCount}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
 
-        <p>
-            <strong>Total Resumes:</strong>{" "}
-            {dashboard.totalResumes}
-        </p>
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Shortlisted</h6>
+                                <h2 className="dashboard-stat text-success">
+                                    {dashboard.shortlistedCount}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
 
-        <p>
-            <strong>Notifications:</strong>{" "}
-            {dashboard.totalNotifications}
-        </p>
-    </>
-}
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Rejected</h6>
+                                <h2 className="dashboard-stat text-danger">
+                                    {dashboard.rejectedCount}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Withdrawn</h6>
+                                <h2 className="dashboard-stat text-secondary">
+                                    {dashboard.withdrawnCount}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Total Resumes</h6>
+                                <h2 className="dashboard-stat text-warning">
+                                    {dashboard.totalResumes}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-md-3">
+                        <div className="card dashboard-card text-center">
+                            <div className="card-body">
+                                <h6>Notifications</h6>
+                                <h2 className="dashboard-stat text-dark">
+                                    {dashboard.totalNotifications}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </>
+        }
 
         </div>
     );

@@ -19,7 +19,7 @@ export function JobCardList({
 
     return (
 
-        <div className="job-container">
+        <div className="row g-4">
 
             {jobs.map(job => {
 
@@ -32,51 +32,58 @@ export function JobCardList({
 
                     <div
                         key={job.jobId}
-                        className="job-card"
+                        className="col-md-6 col-lg-4"
                     >
 
-                        <h3>{job.jobTitle}</h3>
+                    <div className="card card-hover h-100 shadow-sm">
 
-                        <p>
+                    <div className="card-body">
+
+                        <h5 className="card-title">
+                            {job.jobTitle}
+                        </h5>
+
+                        <p className="mb-2">
                             <strong>Company:</strong> {job.companyName}
                         </p>
 
-                        <p>
+                        <p className="mb-2">
                             <strong>Location:</strong> {job.location}
                         </p>
 
-                        <p>
+                        <p className="mb-2">
                             <strong>Salary:</strong> ₹ {job.salary}
                         </p>
 
-                        <p>
+                        <p className="mb-2">
                             <strong>Skills:</strong> {job.requiredSkills}
                         </p>
 
-                        <p>
+                        <p className="mb-2">
                             <strong>Posted:</strong>{" "}
                             {new Date(job.postedDate).toLocaleDateString()}
                         </p>
 
-                        <p>
+                        <p className="mb-2">
                             <strong>Apply Before:</strong>{" "}
                             {deadline.toLocaleDateString()}
                         </p>
 
-                        <hr />
+                        
 
                         {
                             appliedJobIds.includes(job.jobId)
                                 ? (
                                     <>
-                                        <button disabled>
+                                        <button
+                                            className="btn btn-success"
+                                            disabled
+                                        >
                                             ✓ Applied
                                         </button>
 
-                                        <br />
-
                                         <button
-                                            style={{ marginTop: "10px" }}
+                                            className="btn btn-outline-primary mt-2 d-block"
                                             onClick={() =>
                                                 onViewApplication(job.jobId)
                                             }
@@ -85,46 +92,45 @@ export function JobCardList({
                                         </button>
                                     </>
                                 )
+
                                 : isDeadlinePassed
-                                    ?(
+                                    ? (
                                         <button
+                                            className="btn btn-secondary"
                                             disabled
-                                            style={{
-                                                backgroundColor: "#888",
-                                                cursor: "not-allowed"
-                                            }}
                                         >
                                             Closed
                                         </button>
                                     )
-                                    :(
+
+                                    : (
                                         <button
+                                            className={`btn ${
+                                                profileCompleted
+                                                    ? "btn-primary"
+                                                    : "btn-warning"
+                                            }`}
                                             disabled={!profileCompleted}
-                                            onClick={() => {
-
-                                                if (!profileCompleted) {
-                                                    alert(
-                                                        "Complete your profile before applying for jobs."
-                                                    );
-                                                    return;
-                                                }
-
-                                                onApply(job);
-
-                                            }}
+                                            onClick={() => onApply(job)}
                                         >
-                                            {profileCompleted ? "Apply" : "Complete Profile"}
+                                            {
+                                                profileCompleted
+                                                    ? "Apply"
+                                                    : "Complete Profile First"
+                                            }
                                         </button>
                                     )
                         }
 
                     </div>
+                    </div></div>
 
                 );
 
             })}
 
         </div>
+
 
     );
 

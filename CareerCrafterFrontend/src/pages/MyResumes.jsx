@@ -8,6 +8,7 @@ import {
 } from "../api/ResumeAxiosApi";
 import { ResumeTable } from "../components/ResumeTable";
 import { ResumeForm } from "../components/ResumeForm";
+import { AlertMessage } from "../components/AlertMessage";
 
 export function MyResumes() {
 
@@ -67,7 +68,7 @@ export function MyResumes() {
             setTimeout(() => {
                 setMessage("");
             }, 3000);
-            loadResumes();
+            
 
         }
         catch (error) {
@@ -97,7 +98,7 @@ export function MyResumes() {
                 setMessage("");
             }, 3000);
 
-            loadResumes();
+            //loadResumes();
 
         }
         catch (error) {
@@ -115,20 +116,18 @@ export function MyResumes() {
     
 
             <h2>My Resumes</h2>
-            {
-                            message &&
-                <p style={{ color: "green" }}>
-                    {message}
-                </p>
             
-            }
+                 <AlertMessage
+                    type="success"
+                    message={message}
+                />
+                <AlertMessage
+                    message={error}
+                />
+                            
+            
 
-            {
-                error &&
-                <p style={{ color: "red" }}>
-                    {error}
-                </p>
-            }
+            
 
             <ResumeForm
                 onUpload={handleUpload}

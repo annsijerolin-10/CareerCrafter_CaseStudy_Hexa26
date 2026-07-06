@@ -1,19 +1,18 @@
 import { useState } from "react";
-
+import { AlertMessage } from "./AlertMessage";
 export function ResumeForm({
     onUpload
 }) {
 
     const [resumeFile, setResumeFile] = useState(null);
+    const [error,setError]=useState("");
 
     function handleSubmit(e) {
 
         e.preventDefault();
 
-        if (!resumeFile) {
-
-            alert("Please select a PDF.");
-
+           if(!resumeFile){
+                setError("Please select a PDF.");
             return;
 
         }
@@ -23,32 +22,46 @@ export function ResumeForm({
         setResumeFile(null);
 
         e.target.reset();
+        setError("");
+        
 
     }
 
     return (
+        <div className="card dashboard-card mb-4">
 
-        <form onSubmit={handleSubmit}>
+        <div className="card-body">
+
+        
 
             <h3>Upload Resume</h3>
+            <AlertMessage
+                message={error}
+                />
+            
+            <form onSubmit={handleSubmit}>
 
+            <div className="mb-3">
             <input
+            className="form-control"
                 type="file"
                 accept=".pdf"
                 onChange={(e) =>
                     setResumeFile(e.target.files[0])
                 }
             />
+            </div>
 
-            <br /><br />
+            
 
-            <button type="submit">
+            <button className="btn btn-primary" type="submit">
 
                 Upload
 
             </button>
 
         </form>
+        </div></div>
 
     );
 

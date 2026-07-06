@@ -5,7 +5,7 @@ import {
     getEmployerProfile,
     updateEmployerProfile
 } from "../api/EmployerAxiosApi";
-
+import { AlertMessage } from "./AlertMessage";
 export function EmployerProfileForm() {
 
     const { user } = useAuth();

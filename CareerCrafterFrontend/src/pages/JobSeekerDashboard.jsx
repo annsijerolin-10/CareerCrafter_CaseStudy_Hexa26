@@ -6,57 +6,72 @@ export function JobSeekerDashboard() {
     const { user, logout } = useAuth();
 
     return (
-        <div>
+        <div className="dashboard-container">
 
             <h1>CareerCrafter - Job Seeker</h1>
 
             <h2>Welcome {user.fullName}</h2>
 
-            <nav>
+            <div className="card shadow-sm mb-4">
+            <div className="card-body d-flex justify-content-between align-items-center flex-wrap">
 
-                <Link to="/jobseeker/dashboard">
-                    Dashboard
-                </Link>
+                <div>
 
-                {" | "}
+                    <Link
+                        className="btn btn-outline-primary me-2 mb-2"
+                        to="/jobseeker/dashboard"
+                    >
+                        Dashboard
+                    </Link>
 
-                <Link to="/jobseeker/dashboard/jobs">
-                    Browse Jobs
-                </Link>
+                    <Link
+                        className="btn btn-outline-primary me-2 mb-2"
+                        to="/jobseeker/dashboard/jobs"
+                    >
+                        Browse Jobs
+                    </Link>
 
-                {" | "}
+                    <Link
+                        className="btn btn-outline-primary me-2 mb-2"
+                        to="/jobseeker/dashboard/applications"
+                    >
+                        My Applications
+                    </Link>
 
-                <Link to="/jobseeker/dashboard/applications">
-                    My Applications
-                </Link>
+                    <Link
+                        className="btn btn-outline-primary me-2 mb-2"
+                        to="/jobseeker/dashboard/resumes"
+                    >
+                        My Resumes
+                    </Link>
 
-                {" | "}
+                    <Link
+                        className="btn btn-outline-primary me-2 mb-2"
+                        to="/jobseeker/dashboard/notifications"
+                    >
+                        Notifications
+                    </Link>
 
-                <Link to="/jobseeker/dashboard/resumes">
-                    My Resumes
-                </Link>
+                    <Link
+                        className="btn btn-outline-primary mb-2"
+                        to="/jobseeker/dashboard/profile"
+                    >
+                        My Profile
+                    </Link>
 
-                {" | "}
+                </div>
 
-                <Link to="/jobseeker/dashboard/notifications">
-                    Notifications
-                </Link>
-                {" | "}
-                <Link to="/jobseeker/dashboard/profile">
-
-    My Profile
-
-</Link>
-
-                {" | "}
-
-                <button onClick={logout}>
+                <button
+                    className="btn btn-danger"
+                    onClick={logout}
+                >
                     Logout
                 </button>
 
-            </nav>
+            </div>
+        </div>
 
-            <hr />
+        
 
             <Outlet />
 

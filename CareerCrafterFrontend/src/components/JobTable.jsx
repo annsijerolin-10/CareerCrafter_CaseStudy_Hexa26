@@ -50,14 +50,15 @@ export function JobTable({
                         <td>
                             {
                                 showArchived?(
-                                    <button onClick={()=> onRestoreJob(job.jobId)}>Restore</button>
+                                    <button className="btn btn-success btn-sm" onClick={()=> onRestoreJob(job.jobId)}>Restore</button>
                                 ):(
                                     <>
-                                     <button btn btn-warning btn-sm me-2 onClick={() => onEditJob(job)}>  
+                                     <button className= "btn btn-warning btn-sm me-2" 
+                                        onClick={() => onEditJob(job)}>  
                                         Edit                                                                                                                 
                                     </button>
 
-                                    <button btn btn-danger btn-sm onClick={() => onDeleteJob(job.jobId)}>                                                                        
+                                    <button className= "btn btn-danger btn-sm" onClick={() => onDeleteJob(job.jobId)}>                                                                        
                                         Archive
                                     </button>
                                     

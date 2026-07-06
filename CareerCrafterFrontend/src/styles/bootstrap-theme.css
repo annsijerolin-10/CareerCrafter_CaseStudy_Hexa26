@@ -1,12 +1,9 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
-/* ---------- Global ---------- */
-
 body{
-    background-color:#f8f9fa;
-    font-family: "Segoe UI", sans-serif;
+    background:#f5f7fb;
+    font-family:"Segoe UI",sans-serif;
 }
-
 a{
     text-decoration:none;
 }
@@ -55,6 +52,7 @@ a{
 .dashboard-container{
     max-width:1200px;
     margin:30px auto;
+   
 }
 
 
@@ -84,7 +82,7 @@ textarea{
     resize:none;
 }
 
-/* ---------- Navigation ---------- */
+
 
 .navbar-brand{
     font-weight:bold;
@@ -94,7 +92,7 @@ textarea{
     font-weight:500;
 }
 
-/* ---------- Profile Completion ---------- */
+
 
 .profile-warning{
     border-left:5px solid orange;
@@ -103,18 +101,18 @@ textarea{
 }
 
 .profile-success{
-    border-left:5px solid green;
+    border-left:5px solid rgb(91, 164, 91);
     background:#e8f5e9;
     border-radius:8px;
 }
 
-/* ---------- Modal ---------- */
+
 
 .modal-content{
     border-radius:12px;
 }
 
-/* ---------- Resume ---------- */
+
 
 .resume-link{
     font-weight:500;
@@ -133,22 +131,6 @@ textarea{
     box-shadow:0 .8rem 1.5rem rgba(0,0,0,.15);
 }
 
-body{
-    background:#f8fafc;
-}
-
-.auth-card{
-    width:100%;
-    max-width:500px;
-    border:none;
-    border-radius:16px;
-}
-
-.dashboard-container{
-    max-width:1300px;
-    margin:30px auto;
-    padding:20px;
-}
 
 .table-card{
     border-radius:12px;
@@ -166,6 +148,19 @@ body{
 .table th{
     white-space:nowrap;
 }
-.btn{
-    border-radius:8px;
+
+.table-card{
+    border:none;
+    border-radius:12px;
+}
+
+.section-card{
+    border:none;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.page-title{
+    font-weight:700;
+    margin-bottom:20px;
 }

@@ -1,16 +1,13 @@
 function getResumeFileName(path) {
 
     if (!path) return "";
-
     const fileName = path.split("/").pop();
-
     return fileName.substring(fileName.indexOf("_") + 1);
 
 }
 
 export function ResumeTable({
-    resumes,
-   
+    resumes, 
     onDelete
 }) {
 
@@ -22,7 +19,13 @@ export function ResumeTable({
 
     return (
 
-        <table border="1" cellPadding="10">
+        <div className="card table-card">
+
+        <div className="card-body">
+
+        <div className="table-responsive">
+
+        <table className="table table-striped table-hover align-middle">
 
             <thead>
 
@@ -46,6 +49,7 @@ export function ResumeTable({
 
                             <td>
                                 <a
+                                    className="resume-link"
                                     href={`https://localhost:7109${resume.resumeFile}`}
                                     target="_blank"
                                     rel="noreferrer"
@@ -63,7 +67,7 @@ export function ResumeTable({
                             </td>
 
                             <td>
-                                <button
+                                <button className="btn btn-danger btn-sm"
                                     onClick={() => onDelete(resume.resumeId)}
                                     style={{ marginLeft: "10px" }}
                                 >
@@ -81,6 +85,9 @@ export function ResumeTable({
             </tbody>
 
         </table>
+        </div>
+        </div>
+        </div>
 
     );
 

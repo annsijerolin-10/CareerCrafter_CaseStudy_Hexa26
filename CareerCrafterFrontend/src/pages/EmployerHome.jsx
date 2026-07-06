@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertMessage } from "../components/AlertMessage";
 import {
     getEmployerDashboard,
     getEmployerProfile
@@ -61,7 +62,7 @@ export function EmployerHome() {
         }
         catch (error) {
 
-            console.log(error);
+            setError(error.message);
 
         }
 
@@ -73,8 +74,12 @@ export function EmployerHome() {
         (profile.companyDescription ?? "").trim() !== "";
 
     return (
+       
 
-        <div>
+        <div className="container-fluid">
+             <AlertMessage
+                message={error}
+            />
 
             <h2>Employer Dashboard</h2>
 
@@ -83,17 +88,8 @@ export function EmployerHome() {
             {
                 !profileCompleted && (
 
-                    <div
-                        style={{
-                            border: "1px solid orange",
-                            padding: "15px",
-                            borderRadius: "8px",
-                            marginBottom: "20px",
-                            
-                        }}
-                    >
-
-                        <h3>Complete Company Profile</h3>
+                    <div className="alert alert-warning">
+                      <h3>Complete Company Profile</h3>
 
                         <p>
                             Complete your company profile to                  
@@ -102,7 +98,7 @@ export function EmployerHome() {
                             Increase company credibility
                         </p>
 
-                        <button
+                        <button className="btn btn-warning"
                             onClick={() =>
                                 navigate("/employer/dashboard/profile")
                             }
@@ -114,68 +110,106 @@ export function EmployerHome() {
 
                 )
             }
-            {error &&
-
-                <p style={{ color: "red" }}>
-                    {error}
-                </p>
-
-            }
+            
 
             {
                 dashboard &&
 
                 <>
 
-                    <h3>Dashboard Summary</h3>
+                    <h3 className="mb-4">Dashboard Summary</h3>
 
-                    <p>
-                        <strong>Total Job Posts:</strong>{" "}
-                        {dashboard.totalJobsPosted}
-                    </p>
-                    <p>
-                        <strong>Active Jobs:</strong>{" "}
-                        {dashboard.activeJobsCount}
-                    </p>
-                    <p>
-    <strong>Archived Jobs:</strong>{" "}
-    {dashboard.archivedJobsCount}
-</p>
+                    <div className="row g-4">
 
-                    <p>
-                        <strong>Total Applications Received:</strong>{" "}
-                        {dashboard.totalApplications}
-                    </p>
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Total Jobs</h6>
+                                    <h2>{dashboard.totalJobsPosted}</h2>
+                                </div>
+                            </div>
+                        </div>
 
-                    <p>
-                        <strong>Applied:</strong>{" "}
-                        {dashboard.appliedCount}
-                    </p>
-                    <p>
-                        <strong>Reviewed Applications:</strong>{" "}
-                        {dashboard.reviewedCount}
-                    </p>
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Active Jobs</h6>
+                                    <h2>{dashboard.activeJobsCount}</h2>
+                                </div>
+                            </div>
+                        </div>
 
-                    <p>
-                        <strong>Shortlisted Applications:</strong>{" "}
-                        {dashboard.shortlistedCount}
-                    </p>
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Archived Jobs</h6>
+                                    <h2>{dashboard.archivedJobsCount}</h2>
+                                </div>
+                            </div>
+                        </div>
 
-                    <p>
-                        <strong>Rejected Applications:</strong>{" "}
-                        {dashboard.rejectedCount}
-                    </p>
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Total Applications</h6>
+                                    <h2>{dashboard.totalApplications}</h2>
+                                </div>
+                            </div>
+                        </div>
 
-                    <p>
-                        <strong>Withdrawn Applications:</strong>{" "}
-                        {dashboard.withdrawnCount}
-                    </p>
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Applied</h6>
+                                    <h2>{dashboard.appliedCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Reviewed</h6>
+                                    <h2>{dashboard.reviewedCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Shortlisted</h6>
+                                    <h2>{dashboard.shortlistedCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Rejected</h6>
+                                    <h2>{dashboard.rejectedCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-3">
+                            <div className="card dashboard-card">
+                                <div className="card-body text-center">
+                                    <h6>Withdrawn</h6>
+                                    <h2>{dashboard.withdrawnCount}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                 </>
 
             }
 
         </div>
+        
 
     );
 

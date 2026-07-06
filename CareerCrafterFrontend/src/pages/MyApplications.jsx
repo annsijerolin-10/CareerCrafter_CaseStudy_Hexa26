@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getApplicationsByJobSeeker,withdrawApplication } from "../api/ApplicationAxiosApi";
 import { MyApplicationsTable } from "../components/MyApplicationsTable";
-
+import { AlertMessage } from "../components/AlertMessage";
 export function MyApplications() {
 
     const { user } = useAuth();
-
     const [applications, setApplications] = useState([]);
     const [error, setError] = useState("");
-
+    const [message,setMessage]=useState("");
     useEffect(() => {
         loadApplications();
     }, []);
@@ -43,14 +42,19 @@ export function MyApplications() {
                 user.token
             );
 
-            alert("Application withdrawn successfully.");
+            setMessage( "Application withdrawn successfully.");
+            await loadApplications();
 
-            loadApplications();
+            setTimeout(()=>{
+
+            setMessage("");
+
+            },3000);
 
         }
         catch (error) {
 
-            alert(error.message);
+            setError(error.message);
 
         }
 
@@ -65,10 +69,13 @@ export function MyApplications() {
                 message={error}
             />
 
-           <AlertMessage
+            <AlertMessage
                 type="success"
                 message={message}
-            />
+                />
+
+
+           
 
             <MyApplicationsTable
                 applications={applications}

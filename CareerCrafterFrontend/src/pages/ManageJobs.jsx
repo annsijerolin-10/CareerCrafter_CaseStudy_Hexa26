@@ -6,12 +6,10 @@ import { JobForm } from "../components/JobForm";
 import { JobTable } from "../components/JobTable";
 import { useNavigate } from "react-router-dom";
 import { getEmployerProfile } from "../api/EmployerAxiosApi";
-
+import { AlertMessage } from "../components/AlertMessage";
 export function ManageJobs() {
 
     const { user } = useAuth();
-
-
     const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [showArchived, setShowArchived] = useState(false);
@@ -132,9 +130,9 @@ export function ManageJobs() {
 
             {
             showArchived?
-                <button btn btn-secondary mb-3 onClick={loadJobs}>Back to Active Jobs</button>
+                <button className=" btn btn-secondary mb-3" onClick={loadJobs}>Back to Active Jobs</button>
             :
-                <button btn btn-primary mb-3 onClick={loadArchivedJobs}>View Archived Jobs</button>
+                <button className=" btn btn-primary mb-3" onClick={loadArchivedJobs}>View Archived Jobs</button>
             }
             
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-
+import { AlertMessage } from "./AlertMessage";
 import {
     getJobSeekerProfile,
     updateJobSeekerProfile
@@ -104,86 +104,130 @@ export function JobSeekerProfileForm() {
     }
 
     return (
+        <div className="card dashboard-card">
+        <div className="card-body">
 
         <form onSubmit={handleSubmit}>
+          
+                <AlertMessage
+                    message={errorMessage}
+                />       
+                <AlertMessage
+                    type="success"
+                    message={successMessage}
+                />
+            
 
-            {errorMessage &&
-                <p style={{ color: "red" }}>
-                    {errorMessage}
-                </p>
-            }
+            <div className="mb-3">
 
-            {successMessage &&
-                <p style={{ color: "green" }}>
-                    {successMessage}
-                </p>
-            }
+                <label className="form-label">
+                FullName
+                </label>
 
             <input
+                className="form-control"
                 type="text"
                 value={profile.fullName}
                 disabled
                 placeholder="Full Name"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Email
+                </label>
 
             <input
+                className="form-control"
                 type="email"
                 value={profile.email}
                 disabled
                 placeholder="Email"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Phone Number
+                </label>
 
             <input
+                className="form-control"
                 type="text"
                 name="phone"
                 value={profile.phone}
                 onChange={handleChange}
                 placeholder="Phone"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Address
+                </label>
 
             <input
+                className="form-control"
                 type="text"
                 name="address"
                 value={profile.address}
                 onChange={handleChange}
                 placeholder="Address"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Skills
+                </label>
 
             <input
+                className="form-control"
                 type="text"
                 name="skills"
                 value={profile.skills}
                 onChange={handleChange}
                 placeholder="Skills"
             />
+            </div>
 
             <br /><br />
+            <div className="mb-3">
+
+                <label className="form-label">
+                Work Experience
+                </label>
 
             <input
+                className="form-control"
                 type="number"
                 name="experienceYears"
                 value={profile.experienceYears}
                 onChange={handleChange}
                 placeholder="Experience"
             />
+            </div>
 
             <br /><br />
 
-            <button type="submit">
+            <button className="form-control" type="submit">
 
                 Save Changes
 
             </button>
 
         </form>
+        </div>
+        </div>
 
     );
 
