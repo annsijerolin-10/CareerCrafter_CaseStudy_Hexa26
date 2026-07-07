@@ -43,8 +43,10 @@ function ApplicationRow({
         <td>{application.status}</td>
 
         <td>
+            
 
             {
+                
                 application.status === "Withdrawn"
                     ? (
                         <span>Not Editable</span>
@@ -179,7 +181,7 @@ export function ApplicationTable({
     <div className="card-body">
         <div className="table-responsive">
         <table className="table table-striped table-hover align-middle">
-            <thead>
+            <thead className="table-primary">
                 <tr>
                     <th>Applicant</th>
                     <th>Job Title</th>

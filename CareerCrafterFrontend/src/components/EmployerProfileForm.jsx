@@ -135,8 +135,6 @@ export function EmployerProfileForm() {
                 placeholder="Full Name"
             />
             </div>
-
-            <br /><br />
             <div className="form-row">
 
                 <label>
@@ -150,8 +148,6 @@ export function EmployerProfileForm() {
                 placeholder="Email"
             />
             </div>
-
-            <br /><br />
            <div className="form-row">
 
                 <label>
@@ -168,7 +164,6 @@ export function EmployerProfileForm() {
             />
             </div>
 
-            <br /><br />
             <div className="form-row">
 
                 <label>

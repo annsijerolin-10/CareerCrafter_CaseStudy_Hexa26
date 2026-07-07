@@ -20,7 +20,7 @@ a{
     background:white;
     border-radius:12px;
     padding:25px;
-    box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+    box-shadow:0 .5rem 1rem rgba(231, 221, 221, 0.1);
 }
 
 
@@ -41,7 +41,7 @@ a{
 .dashboard-card{
     border:none;
     border-radius:12px;
-    box-shadow:0 .25rem .75rem rgba(0,0,0,.08);
+    box-shadow:0 .25rem .75rem rgba(202, 190, 190, 0.08);
 }
 
 .dashboard-stat{
@@ -205,12 +205,3 @@ textarea{
     position: relative;
 }
 
-.date-input{
-    width:100%;
-    height:45px;
-    border:1px solid #ced4da;
-    border-radius:8px;
-    padding:8px 12px;
-    font-size:16px;
-    background:#e3dada;
-}

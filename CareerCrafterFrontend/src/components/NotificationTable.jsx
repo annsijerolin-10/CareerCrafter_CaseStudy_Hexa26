@@ -13,7 +13,7 @@ export function NotificationTable({
 
         <table border="1" cellPadding="10">
 
-            <thead>
+            <thead className="table-primary">
 
                 <tr>
 

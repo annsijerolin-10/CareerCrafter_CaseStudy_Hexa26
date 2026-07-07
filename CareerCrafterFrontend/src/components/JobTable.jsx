@@ -21,7 +21,7 @@ export function JobTable({
 
         <table className="table table-striped table-hover align-middle">
 
-            <thead>
+            <thead className="table-primary">
                 <tr>
                     <th>Title</th>
                     <th>Location</th>

@@ -80,8 +80,8 @@ export function BrowseJobs() {
                     user.jobSeekerId,
                     user.token
                 );
-            console.log("Recommended Jobs:", recommended);
-    console.log("Recommended Count:", recommended.length);
+            // console.log("Recommended Jobs:", recommended);
+            // console.log("Recommended Count:", recommended.length);
 
             setRecommendedJobs(recommended);
 
@@ -130,9 +130,9 @@ export function BrowseJobs() {
             r.resumeFile.endsWith(file.name)
         );
 
-if (uploadedResume) {
-    setSelectedResumeId(uploadedResume.resumeId);
-}
+        if (uploadedResume) {
+            setSelectedResumeId(uploadedResume.resumeId);
+        }
 
         setResumeMessage(
             "Resume uploaded successfully. Click Confirm Apply."
@@ -253,10 +253,9 @@ async function handleSearch() {
     }
 
 }
-function handleViewApplication(jobId) {
-    navigate(`/jobseeker/dashboard/applications/${jobId}`);
+function handleViewApplication() {
+    navigate("/jobseeker/dashboard/applications");
 }
-
 
 // function getResumeFileName(path) {
 

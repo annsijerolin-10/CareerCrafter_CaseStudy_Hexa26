@@ -27,7 +27,7 @@ export function ResumeTable({
 
         <table className="table table-striped table-hover align-middle">
 
-            <thead>
+            <thead className="table-primary">
 
                 <tr>
 

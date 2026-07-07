@@ -51,7 +51,14 @@ export function MyApplicationsTable({
 
                                     <td>{application.companyName}</td>
                                    <td>
+                                    <a
+                                        href={`https://localhost:7109/${application.resumeFile}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+
                                         {getResumeFileName(application.resumeFile)}
+                                    </a>
                                     </td>
 
                                     <td>

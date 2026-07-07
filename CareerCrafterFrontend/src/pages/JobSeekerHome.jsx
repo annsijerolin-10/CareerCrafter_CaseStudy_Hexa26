@@ -86,9 +86,7 @@ export function JobSeekerHome() {
                     </h3>
 
                     <p>
-                        Complete your profile to
-                    
-                    
+                        Complete your profile to   
                         Get Recommended Jobs,
                         Apply for Jobs
                     </p>
@@ -116,12 +114,12 @@ export function JobSeekerHome() {
                     Dashboard Summary
                 </h3>
 
-                <div className="row g-4">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
 
-                    <div className="col-md-3">
+                    <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
-                                <h6>Total Applications</h6>
+                                <h6>Total Jobs Applied</h6>
                                 <h2 className="dashboard-stat text-dark">
                                     {dashboard.totalApplications}
                                 </h2>
@@ -129,10 +127,10 @@ export function JobSeekerHome() {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                    <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
-                                <h6>Applied</h6>
+                                <h6>Application-Applied Status </h6>
                                 <h2 className="dashboard-stat text-dark">
                                     {dashboard.appliedCount}
                                 </h2>
@@ -140,10 +138,10 @@ export function JobSeekerHome() {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                    <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
-                                <h6>Reviewed</h6>
+                                <h6>Reviewed Applications</h6>
                                 <h2 className="dashboard-stat text-dark">
                                     {dashboard.reviewedCount}
                                 </h2>
@@ -151,10 +149,10 @@ export function JobSeekerHome() {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                   <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
-                                <h6>Shortlisted</h6>
+                                <h6>Shortlisted Applications</h6>
                                 <h2 className="dashboard-stat text-dark">
                                     {dashboard.shortlistedCount}
                                 </h2>
@@ -162,10 +160,10 @@ export function JobSeekerHome() {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                   <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
-                                <h6>Rejected</h6>
+                                <h6>Rejected Applications</h6>
                                 <h2 className="dashboard-stat text-dark">
                                     {dashboard.rejectedCount}
                                 </h2>
@@ -173,10 +171,10 @@ export function JobSeekerHome() {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                    <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
-                                <h6>Withdrawn</h6>
+                                <h6>Withdrawn Applications</h6>
                                 <h2 className="dashboard-stat text-dark">
                                     {dashboard.withdrawnCount}
                                 </h2>
@@ -184,7 +182,7 @@ export function JobSeekerHome() {
                         </div>
                     </div>
 
-                    <div className="col-md-3">
+                   {/* <div className="col">
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Total Resumes</h6>
@@ -193,7 +191,7 @@ export function JobSeekerHome() {
                                 </h2>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                    
 

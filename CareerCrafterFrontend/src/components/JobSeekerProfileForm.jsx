@@ -129,7 +129,6 @@ export function JobSeekerProfileForm() {
             />
             </div>
 
-            <br /><br />
             <div className="form-row">
 
                 <label>
@@ -145,7 +144,6 @@ export function JobSeekerProfileForm() {
             />
             </div>
 
-            <br /><br />
             <div className="form-row">
 
                 <label>
@@ -162,7 +160,6 @@ export function JobSeekerProfileForm() {
             />
             </div>
 
-            <br /><br />
             <div className="form-row">
 
                 <label>
@@ -179,7 +176,6 @@ export function JobSeekerProfileForm() {
             />
             </div>
 
-            <br /><br />
             <div className="form-row">
 
                 <label>
@@ -196,7 +192,6 @@ export function JobSeekerProfileForm() {
             />
             </div>
 
-            <br /><br />
             <div className="form-row">
 
                 <label>
@@ -212,9 +207,6 @@ export function JobSeekerProfileForm() {
                 placeholder="Experience"
             />
             </div>
-
-            <br /><br />
-
             <div className="form-actions">
 
                 <button

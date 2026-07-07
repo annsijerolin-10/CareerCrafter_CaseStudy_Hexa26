@@ -119,7 +119,7 @@ export function EmployerHome() {
 
                     <h3 className="mb-4">Dashboard Summary</h3>
 
-                    <div className="row g-4">
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
 
                         <div className="col-md-3">
                             <div className="card dashboard-card">

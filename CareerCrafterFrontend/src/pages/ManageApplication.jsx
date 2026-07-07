@@ -6,7 +6,7 @@ import { ApplicationTable } from "../components/ApplicationTable";
 import { CandidateProfileModal } from "../components/CandidateProfileModal";
 import { getCandidateProfile } from "../api/EmployerAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import {markAllEmployerNotificationsRead} from "../api/EmployerNotificationAxiosApi";
 export function ManageApplications() {
 
@@ -18,6 +18,7 @@ export function ManageApplications() {
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [showCandidateModal, setShowCandidateModal] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
     useEffect(() => {
 
         async function initialize() {
@@ -57,38 +58,38 @@ export function ManageApplications() {
             }
 
             setApplications(allApplications);
-            const applicationId =
-    location.state?.applicationId;
+            const applicationId = location.state?.applicationId;
 
-if (applicationId) {
+            if (applicationId) {
 
-    setTimeout(() => {
+                setTimeout(() => {
 
-        const row =
-            document.getElementById(
-                `application-${applicationId}`
-            );
+                const row = document.getElementById(
+                        `application-${applicationId}`
+                    );
 
-        if (row) {
+                    if (row) {
 
-            row.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
+                        row.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
 
-            row.classList.add("table-warning");
+                        row.classList.add("table-warning");
 
-            setTimeout(() => {
+                        setTimeout(() => {
+                            row.classList.remove("table-warning");
+                        }, 5000);
 
-                row.classList.remove("table-warning");
+                    }
+                    navigate(location.pathname, {
+                        replace: true,
+                        state: {}
+                    });
 
-            }, 5000);
+                }, 300);
 
-        }
-
-    }, 300);
-
-}
+            }
         }
         catch (error) {
 
