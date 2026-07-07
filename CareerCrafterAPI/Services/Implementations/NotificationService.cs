@@ -45,6 +45,7 @@ namespace CareerCrafterAPI.Services.Implementations
             }
         }
 
+
         public async Task<bool> MarkAsReadAsync(int notificationId)
         {
             try
