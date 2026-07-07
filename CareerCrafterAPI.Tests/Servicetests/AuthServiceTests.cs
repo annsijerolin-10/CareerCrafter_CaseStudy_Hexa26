@@ -124,5 +124,148 @@ namespace CareerCrafterAPI.Tests.Servicetests
                 j => j.GenerateToken(It.IsAny<User>()),
                 Times.Never);
         }
+
+        [Test]
+        public async Task ForgotPasswordAsync_UpdatesPassword_WhenEmailExists()
+        {
+            var dto = new ForgotPasswordDto
+            {
+                Email = "john@gmail.com",
+                NewPassword = "newpassword123"
+            };
+
+            var user = new User
+            {
+                UserId = 1,
+                Email = "john@gmail.com",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("oldpassword")
+            };
+
+            _mockAuthRepository
+                .Setup(r => r.GetUserByEmailAsync(dto.Email))
+                .ReturnsAsync(user);
+
+            _mockAuthRepository
+                .Setup(r => r.UpdateUserAsync(It.IsAny<User>()))
+                .Returns(Task.CompletedTask);
+
+            await _authService.ForgotPasswordAsync(dto);
+
+            _mockAuthRepository.Verify(
+                r => r.UpdateUserAsync(It.IsAny<User>()),
+                Times.Once);
+
+            Assert.IsTrue(
+                BCrypt.Net.BCrypt.Verify(
+                    "newpassword123",
+                    user.PasswordHash));
+        }
+
+        [Test]
+        public void ForgotPasswordAsync_ThrowsException_WhenEmailNotFound()
+        {
+            var dto = new ForgotPasswordDto
+            {
+                Email = "unknown@gmail.com",
+                NewPassword = "test123"
+            };
+
+            _mockAuthRepository
+                .Setup(r => r.GetUserByEmailAsync(dto.Email))
+                .ReturnsAsync((User?)null);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _authService.ForgotPasswordAsync(dto));
+
+            _mockAuthRepository.Verify(
+                r => r.UpdateUserAsync(It.IsAny<User>()),
+                Times.Never);
+        }
+
+        [Test]
+        public async Task ChangePasswordAsync_ChangesPassword_WhenCurrentPasswordIsCorrect()
+        {
+            var dto = new ChangePasswordDto
+            {
+                UserId = 1,
+                CurrentPassword = "oldpassword",
+                NewPassword = "newpassword"
+            };
+
+            var user = new User
+            {
+                UserId = 1,
+                PasswordHash =
+                    BCrypt.Net.BCrypt.HashPassword("oldpassword")
+            };
+
+            _mockAuthRepository
+                .Setup(r => r.GetUserByIdAsync(1))
+                .ReturnsAsync(user);
+
+            _mockAuthRepository
+                .Setup(r => r.UpdateUserAsync(It.IsAny<User>()))
+                .Returns(Task.CompletedTask);
+
+            await _authService.ChangePasswordAsync(dto);
+
+            _mockAuthRepository.Verify(
+                r => r.UpdateUserAsync(It.IsAny<User>()),
+                Times.Once);
+
+            Assert.IsTrue(
+                BCrypt.Net.BCrypt.Verify(
+                    "newpassword",
+                    user.PasswordHash));
+        }
+        [Test]
+        public void ChangePasswordAsync_ThrowsException_WhenUserNotFound()
+        {
+            var dto = new ChangePasswordDto
+            {
+                UserId = 100,
+                CurrentPassword = "old",
+                NewPassword = "new"
+            };
+
+            _mockAuthRepository
+                .Setup(r => r.GetUserByIdAsync(100))
+                .ReturnsAsync((User?)null);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _authService.ChangePasswordAsync(dto));
+
+            _mockAuthRepository.Verify(
+                r => r.UpdateUserAsync(It.IsAny<User>()),
+                Times.Never);
+        }
+        [Test]
+        public void ChangePasswordAsync_ThrowsException_WhenCurrentPasswordIsIncorrect()
+        {
+            var dto = new ChangePasswordDto
+            {
+                UserId = 1,
+                CurrentPassword = "wrongpassword",
+                NewPassword = "newpassword"
+            };
+
+            var user = new User
+            {
+                UserId = 1,
+                PasswordHash =
+                    BCrypt.Net.BCrypt.HashPassword("correctpassword")
+            };
+
+            _mockAuthRepository
+                .Setup(r => r.GetUserByIdAsync(1))
+                .ReturnsAsync(user);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _authService.ChangePasswordAsync(dto));
+
+            _mockAuthRepository.Verify(
+                r => r.UpdateUserAsync(It.IsAny<User>()),
+                Times.Never);
+        }
     } 
 }
