@@ -59,13 +59,13 @@ namespace CareerCrafterAPI.Tests.Servicetests
             _mockRepository.Setup(r => r.GetResumeByIdAsync(1)).ReturnsAsync(resume);
 
             _mockMapper
-    .Setup(m => m.Map<ResumeResponseDto>(It.IsAny<Resume>()))
-    .Returns(new ResumeResponseDto
-    {
-        ResumeId = 1,
-        ResumeFile = "uploads/resume.pdf",
-        JobSeekerId = 1
-    });
+                .Setup(m => m.Map<ResumeResponseDto>(It.IsAny<Resume>()))
+                .Returns(new ResumeResponseDto
+                {
+                    ResumeId = 1,
+                    ResumeFile = "uploads/resume.pdf",
+                    JobSeekerId = 1
+                });
 
 
             var result = await _resumeService.GetResumeByIdAsync(1);
@@ -73,9 +73,9 @@ namespace CareerCrafterAPI.Tests.Servicetests
             Assert.That(result.ResumeFile, Is.EqualTo("uploads/resume.pdf"));
         }
         [Test]
-        public async Task GetResumeByIdAsyncc_ReturnsNull_WhenResumeNotFound()
+        public async Task GetResumeByIdAsync_ReturnsNull_WhenResumeNotFound()
         {
-            _mockRepository.Setup(r=>r.GetResumeByIdAsync(20)).ReturnsAsync((Resume?)null);
+            _mockRepository.Setup(r => r.GetResumeByIdAsync(20)).ReturnsAsync((Resume?)null);
             var result = await _resumeService.GetResumeByIdAsync(20);
             Assert.IsNull(result);
         }
@@ -98,6 +98,9 @@ namespace CareerCrafterAPI.Tests.Servicetests
             _mockRepository
                 .Setup(r => r.DeleteResumeAsync(resume))
                 .Returns(Task.CompletedTask);
+            _mockRepository
+                .Setup(r => r.CanDeleteResumeAsync(1))
+                .ReturnsAsync(true);
 
             var result = await _resumeService.DeleteResumeAsync(1);
 
@@ -138,6 +141,51 @@ namespace CareerCrafterAPI.Tests.Servicetests
         }
 
         [Test]
+        public async Task UploadResumeAsync_ReturnsUploadedResume()
+        {
+            var bytes = Encoding.UTF8.GetBytes("Dummy PDF");
+
+            var stream = new MemoryStream(bytes);
+
+            IFormFile file = new FormFile(
+                stream,
+                0,
+                bytes.Length,
+                "ResumeFile",
+                "resume.pdf");
+
+            var dto = new ResumeUploadDto
+            {
+                ResumeFile = file,
+                JobSeekerId = 1
+            };
+
+            _mockRepository
+                .Setup(r => r.JobSeekerExistsAsync(1))
+                .ReturnsAsync(true);
+
+            _mockRepository
+                .Setup(r => r.AddResumeAsync(It.IsAny<Resume>()))
+                .Returns(Task.CompletedTask);
+
+            _mockMapper
+                .Setup(m => m.Map<ResumeResponseDto>(It.IsAny<Resume>()))
+                .Returns(new ResumeResponseDto
+                {
+                    JobSeekerId = 1
+                });
+
+            var result =
+                await _resumeService.UploadResumeAsync(dto);
+
+            Assert.IsNotNull(result);
+
+            _mockRepository.Verify(
+                r => r.AddResumeAsync(It.IsAny<Resume>()),
+                Times.Once);
+        }
+
+        [Test]
         public async Task UpdateResumeAsync_ReturnsUpdatedResume_WhenResumeExists()
         {
             var resume = new Resume
@@ -161,7 +209,7 @@ namespace CareerCrafterAPI.Tests.Servicetests
                                   It.IsAny<Resume>()))
                 .Callback<ResumeUpdateDto, Resume>((d, r) =>
                 {
-                  
+
                 });
 
             _mockRepository
@@ -211,29 +259,56 @@ namespace CareerCrafterAPI.Tests.Servicetests
                     await _resumeService.UploadResumeAsync(dto));
         }
 
+        [Test]
+        public void UpdateResumeAsync_ThrowsException_WhenUploadedFileIsNotPdf()
+        {
+            var resume = new Resume
+            {
+                ResumeId = 1,
+                ResumeFile = "/uploads/old.pdf"
+            };
 
-        //[Test]
-        //public void UploadResumeAsync_ThrowsException_WhenFileIsNotPdf()
-        //{
-        //    var fileMock = new Mock<IFormFile>();
+            var fileMock = new Mock<IFormFile>();
 
-        //    fileMock.Setup(f => f.FileName).Returns("resume.docx");
+            fileMock
+                .Setup(f => f.FileName)
+                .Returns("resume.docx");
+
+            var dto = new ResumeUpdateDto
+            {
+                ResumeFile = fileMock.Object
+            };
+
+            _mockRepository
+                .Setup(r => r.GetResumeByIdAsync(1))
+                .ReturnsAsync(resume);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _resumeService.UpdateResumeAsync(1, dto));
+        }
+
+        [Test]
+        public void UploadResumeAsync_ThrowsException_WhenFileIsNotPdf()
+        {
+            var fileMock = new Mock<IFormFile>();
+
+            fileMock.Setup(f => f.FileName).Returns("resume.docx");
 
 
-        //    var dto = new ResumeUploadDto
-        //    {
-        //        ResumeFile = fileMock.Object,
-        //        JobSeekerId = 1
-        //    };
+            var dto = new ResumeUploadDto
+            {
+                ResumeFile = fileMock.Object,
+                JobSeekerId = 1
+            };
 
-        //    _mockRepository
-        //     .Setup(r => r.GetByJobSeekerIdAsync(1))
-        //     .ReturnsAsync((Resume?)null);
+            _mockRepository
+                .Setup(r => r.JobSeekerExistsAsync(1))
+                .ReturnsAsync(true);
 
-        //    Assert.ThrowsAsync<Exception>(
-        //        async () =>
-        //            await _resumeService.UploadResumeAsync(dto));
-        //}
+            Assert.ThrowsAsync<Exception>(
+                async () =>
+                    await _resumeService.UploadResumeAsync(dto));
+        }
 
         [Test]
         public async Task GetAllResumesAsync_ReturnsResumes()
@@ -273,166 +348,71 @@ namespace CareerCrafterAPI.Tests.Servicetests
 
         }
 
-        //[Test]
-        //public void UploadResumeAsync_ThrowsException_WhenResumeAlreadyExists()
-        //{
-        //    var fileMock = new Mock<IFormFile>();
+        [Test]
+        public void DeleteResumeAsync_ThrowsException_WhenResumeIsInUse()
+        {
+            var resume = new Resume
+            {
+                ResumeId = 1
+            };
 
-        //    fileMock.Setup(f => f.FileName)
-        //        .Returns("resume.pdf");
+            _mockRepository
+                .Setup(r => r.GetResumeByIdAsync(1))
+                .ReturnsAsync(resume);
 
-        //    var dto = new ResumeUploadDto
-        //    {
-        //        ResumeFile = fileMock.Object,
-        //        JobSeekerId = 1
-        //    };
+            _mockRepository
+                .Setup(r => r.CanDeleteResumeAsync(1))
+                .ReturnsAsync(false);
 
-        //    _mockRepository
-        //        .Setup(r => r.JobSeekerExistsAsync(1))
-        //        .ReturnsAsync(true);
+            Assert.ThrowsAsync<ArgumentException>(async () =>
+                await _resumeService.DeleteResumeAsync(1));
 
-        //    _mockRepository
-        //        .Setup(r => r.GetByJobSeekerIdAsync(1))
-        //        .ReturnsAsync(new Resume
-        //        {
-        //            ResumeId = 1,
-        //            JobSeekerId = 1
-        //        });
-
-        //    Assert.ThrowsAsync<Exception>(
-        //        async () =>
-        //            await _resumeService.UploadResumeAsync(dto));
-        //}
+            _mockRepository.Verify(
+                r => r.DeleteResumeAsync(It.IsAny<Resume>()),
+                Times.Never);
+        }
 
 
+        [Test]
+        public async Task GetResumeByJobSeekerIdAsync_ReturnsResumes()
+        {
+            var resumes = new List<Resume>
+                {
+                    new Resume
+                    {
+                        ResumeId = 1,
+                        ResumeFile = "/uploads/resume.pdf",
+                        JobSeekerId = 1
+                    }
+                };
 
-        //[Test]
-        //    public async Task AddResumeAsync_ReturnsCreatedResume()
-        //    {
-        //        var dto = new ResumeUploadDto
-        //        {
-        //            ResumeFile = "/uploads/priya_resume.pdf",
-        //            JobSeekerId = 1
-        //        };
+            _mockRepository
+                .Setup(r => r.GetResumeByJobSeekerIdAsync(1))
+                .ReturnsAsync(resumes);
 
-        //        _mockRepository.Setup(r => r.JobSeekerExistsAsync(1))
-        //            .ReturnsAsync(true);
+            _mockMapper
+                .Setup(m => m.Map<List<ResumeResponseDto>>(It.IsAny<List<Resume>>()))
+                .Returns(new List<ResumeResponseDto>
+                {
+            new ResumeResponseDto
+            {
+                ResumeId = 1,
+                ResumeFile = "/uploads/resume.pdf",
+                JobSeekerId = 1
+            }
+                });
 
+            var result =
+                await _resumeService.GetResumeByJobSeekerIdAsync(1);
 
-        //        _mockRepository.Setup(r => r.AddResumeAsync(It.IsAny<Resume>()))
-        //            .Returns(Task.CompletedTask);
+            Assert.IsNotNull(result);
 
-
-        //        _mockMapper
-        //.Setup(m => m.Map<Resume>(It.IsAny<ResumeUploadDto>()))
-        //.Returns(new Resume
-        //{
-        //    ResumeFile = "/uploads/priya_resume.pdf",
-        //    JobSeekerId = 1
-        //});
-
-        //        _mockMapper
-        //            .Setup(m => m.Map<ResumeResponseDto>(It.IsAny<Resume>()))
-        //            .Returns(new ResumeResponseDto
-        //            {
-        //                ResumeFile = "/uploads/priya_resume.pdf",
-        //                JobSeekerId = 1
-        //            });
-
-        //        var result = await _resumeService.UploadResumeAsync(dto);
-
-
-        //        Assert.IsNotNull(result);
-
-        //        Assert.That(result.ResumeFile, Is.EqualTo("/uploads/priya_resume.pdf"));
+            Assert.That(result.Count, Is.EqualTo(1));
+        }
 
 
 
-        //        _mockRepository.Verify(r => r.AddResumeAsync(It.IsAny<Resume>()), Times.Once());
 
 
-        //    }
-        //[Test]
-        //public void AddResumeAsync_ThrowsException_WhenJobSeekerNotFound()
-        //{
-        //    var dto = new ResumeDto
-        //    {
-        //        ResumeFile = "/uploads/test.pdf",
-        //        JobSeekerId = 100
-        //    };
-
-        //    _mockRepository
-        //        .Setup(r => r.JobSeekerExistsAsync(100))
-        //        .ReturnsAsync(false);
-
-        //    Assert.ThrowsAsync<Exception>(async () => await _resumeService.AddResumeAsync(dto));
-
-        //}
-        //[Test]
-        //public async Task UpdateResumeAsync_ReturnsUpdatedResume()
-        //{
-        //    var resume = new Resume
-        //    {
-        //        ResumeId = 1,
-        //        ResumeFile = "/uploads/old.pdf",
-        //        JobSeekerId = 1
-        //    };
-
-        //    var dto = new ResumeUpdateDto
-        //    {
-        //        ResumePath = "/uploads/new.pdf"
-        //    };
-
-        //    _mockRepository
-        //        .Setup(r => r.GetResumeByIdAsync(1))
-        //        .ReturnsAsync(resume);
-
-        //    _mockMapper
-        //        .Setup(m => m.Map(It.IsAny<ResumeUpdateDto>(), It.IsAny<Resume>()))
-        //        .Callback<ResumeUpdateDto, Resume>((dto, resume) =>
-        //        {
-        //            resume.ResumeFile = dto.ResumePath;
-        //        });
-
-        //    _mockRepository
-        //        .Setup(r => r.UpdateResumeAsync(It.IsAny<Resume>()))
-        //        .Returns(Task.CompletedTask);
-
-        //    _mockMapper
-        //        .Setup(m => m.Map<ResumeResponseDto>(It.IsAny<Resume>()))
-        //        .Returns(new ResumeResponseDto
-        //        {
-        //            ResumeId = 1,
-        //            ResumeFile = "/uploads/new.pdf"
-        //        });
-
-        //    var result =
-        //        await _resumeService.UpdateResumeAsync(1, dto);
-
-        //    Assert.IsNotNull(result);
-
-        //    Assert.That(
-        //        result.ResumeFile,
-        //        Is.EqualTo("/uploads/new.pdf"));
-        //}
-
-
-        //[Test]
-        //public async Task UpdateResumeAsync_ReturnsNull_WhenResumeNotFound()
-        //{
-        //    _mockRepository
-        //        .Setup(r => r.GetResumeByIdAsync(999))
-        //        .ReturnsAsync((Resume?)null);
-
-        //    var dto = new ResumeUpdateDto
-        //    {
-        //        ResumePath = "/uploads/new.pdf"
-        //    };
-
-        //    var result =
-        //        await _resumeService.UpdateResumeAsync(999, dto);
-
-        //    Assert.IsNull(result);
-        //}
     }
 }
