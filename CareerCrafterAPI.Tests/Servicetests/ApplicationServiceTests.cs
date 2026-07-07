@@ -103,91 +103,243 @@ namespace CareerCrafterAPI.Tests.Servicetests
             var dto = new ApplicationCreateDto
             {
                 JobId = 1,
-                JobSeekerId = 1
+                JobSeekerId = 1,
+                ResumeId = 1
             };
+
+            var job = new Job
+            {
+                JobId = 1,
+                JobTitle = "Software Developer",
+                ApplicationDeadline = DateTime.Today.AddDays(5)
+            };
+
+            var application = new Application
+            {
+                ApplicationId = 1,
+                JobId = 1,
+                JobSeekerId = 1,
+                Status = "Applied"
+            };
+
+            _mockRepository
+                .Setup(r => r.HasAlreadyAppliedAsync(1, 1))
+                .ReturnsAsync(false);
+
+            _mockRepository
+                .Setup(r => r.ResumeBelongsToJobSeekerAsync(1, 1))
+                .ReturnsAsync(true);
 
             _mockRepository
                 .Setup(r => r.JobExistsAsync(1))
                 .ReturnsAsync(true);
 
             _mockRepository
+                .Setup(r => r.GetJobByIdAsync(1))
+                .ReturnsAsync(job);
+
+            _mockRepository
                 .Setup(r => r.JobSeekerExistsAsync(1))
                 .ReturnsAsync(true);
 
+            _mockMapper
+                .Setup(m => m.Map<Application>(dto))
+                .Returns(application);
+
             _mockRepository
                 .Setup(r => r.AddApplicationAsync(It.IsAny<Application>()))
+                .Callback<Application>(a => a.ApplicationId = 1)
                 .Returns(Task.CompletedTask);
 
-            _mockMapper.Setup(m => m.Map<Application>(It.IsAny<ApplicationCreateDto>()))
-                .Returns(new Application
-
-                {
-                    JobId = 1,
-                    JobSeekerId = 1
-                });
+            _mockRepository
+                .Setup(r => r.GetApplicationByIdAsync(1))
+                .ReturnsAsync(application);
 
             _mockMapper
-                .Setup(m => m.Map<ApplicationResponseDto>(It.IsAny<Application>()))
+                .Setup(m => m.Map<ApplicationResponseDto>(application))
                 .Returns(new ApplicationResponseDto
                 {
+                    ApplicationId = 1,
                     JobId = 1,
                     JobSeekerId = 1,
                     Status = "Applied"
                 });
 
+            var result =
+                await _applicationService.AddApplicationAsync(dto);
 
-
-            var result = await _applicationService.AddApplicationAsync(dto);
             Assert.IsNotNull(result);
 
-            Assert.That(result.JobId, Is.EqualTo(1));
+            Assert.That(result.ApplicationId, Is.EqualTo(1));
 
-
+            Assert.That(result.Status, Is.EqualTo("Applied"));
         }
+
+
         [Test]
         public void AddApplicationAsync_ThrowsException_WhenJobNotFound()
         {
             var dto = new ApplicationCreateDto
             {
                 JobId = 90,
-                JobSeekerId = 1
+                JobSeekerId = 1,
+                ResumeId = 1
             };
+
+            _mockRepository
+                .Setup(r => r.HasAlreadyAppliedAsync(90, 1))
+                .ReturnsAsync(false);
+
+            _mockRepository
+                .Setup(r => r.ResumeBelongsToJobSeekerAsync(1, 1))
+                .ReturnsAsync(true);
 
             _mockRepository
                 .Setup(r => r.JobExistsAsync(90))
                 .ReturnsAsync(false);
 
-            Assert.ThrowsAsync<Exception>(async () => await _applicationService.AddApplicationAsync(dto));
+            Assert.ThrowsAsync<Exception>(
+                async () => await _applicationService.AddApplicationAsync(dto));
 
             _mockRepository.Verify(
                 r => r.AddApplicationAsync(It.IsAny<Application>()),
                 Times.Never);
-
         }
+
+
+
         [Test]
         public void AddApplicationAsync_ThrowsException_WhenJobSeekerNotFound()
         {
             var dto = new ApplicationCreateDto
             {
                 JobId = 1,
-                JobSeekerId = 99
+                JobSeekerId = 99,
+                ResumeId = 1
             };
 
-            _mockRepository.Setup(r => r.JobExistsAsync(1))
-                .ReturnsAsync(true);
+            var job = new Job
+            {
+                JobId = 1,
+                ApplicationDeadline = DateTime.Today.AddDays(10)
+            };
 
-
-            _mockRepository.Setup(r => r.JobSeekerExistsAsync(99))
+            _mockRepository
+                .Setup(r => r.HasAlreadyAppliedAsync(1, 99))
                 .ReturnsAsync(false);
 
+            _mockRepository
+                .Setup(r => r.ResumeBelongsToJobSeekerAsync(1, 99))
+                .ReturnsAsync(true);
+
+            _mockRepository
+                .Setup(r => r.JobExistsAsync(1))
+                .ReturnsAsync(true);
+
+            _mockRepository
+                .Setup(r => r.GetJobByIdAsync(1))
+                .ReturnsAsync(job);
+
+            _mockRepository
+                .Setup(r => r.JobSeekerExistsAsync(99))
+                .ReturnsAsync(false);
+
+            Assert.ThrowsAsync<Exception>(
+                async () => await _applicationService.AddApplicationAsync(dto));
+
+            _mockRepository.Verify(
+                r => r.AddApplicationAsync(It.IsAny<Application>()),
+                Times.Never);
+        }
+
+        [Test]
+        public void AddApplicationAsync_ThrowsException_WhenAlreadyApplied()
+        {
+            var dto = new ApplicationCreateDto
+            {
+                JobId = 1,
+                JobSeekerId = 1,
+                ResumeId = 1
+            };
+
+            _mockRepository
+                .Setup(r => r.HasAlreadyAppliedAsync(1, 1))
+                .ReturnsAsync(true);
 
             Assert.ThrowsAsync<Exception>(async () =>
-                    await _applicationService.AddApplicationAsync(dto));
-            _mockRepository.Verify(
-                    r => r.AddApplicationAsync(It.IsAny<Application>()),
-                    Times.Never);
+                await _applicationService.AddApplicationAsync(dto));
 
+            _mockRepository.Verify(
+                r => r.AddApplicationAsync(It.IsAny<Application>()),
+                Times.Never);
         }
+
+        [Test]
+        public void AddApplicationAsync_ThrowsException_WhenResumeIsInvalid()
+        {
+            var dto = new ApplicationCreateDto
+            {
+                JobId = 1,
+                JobSeekerId = 1,
+                ResumeId = 10
+            };
+
+            _mockRepository
+                .Setup(r => r.HasAlreadyAppliedAsync(1, 1))
+                .ReturnsAsync(false);
+
+            _mockRepository
+                .Setup(r => r.ResumeBelongsToJobSeekerAsync(10, 1))
+                .ReturnsAsync(false);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _applicationService.AddApplicationAsync(dto));
+
+            _mockRepository.Verify(
+                r => r.AddApplicationAsync(It.IsAny<Application>()),
+                Times.Never);
+        }
+
+        [Test]
+        public void AddApplicationAsync_ThrowsException_WhenDeadlineHasPassed()
+        {
+            var dto = new ApplicationCreateDto
+            {
+                JobId = 1,
+                JobSeekerId = 1,
+                ResumeId = 1
+            };
+
+            var job = new Job
+            {
+                JobId = 1,
+                ApplicationDeadline = DateTime.Today.AddDays(-1)
+            };
+
+            _mockRepository
+                .Setup(r => r.HasAlreadyAppliedAsync(1, 1))
+                .ReturnsAsync(false);
+
+            _mockRepository
+                .Setup(r => r.ResumeBelongsToJobSeekerAsync(1, 1))
+                .ReturnsAsync(true);
+
+            _mockRepository
+                .Setup(r => r.JobExistsAsync(1))
+                .ReturnsAsync(true);
+
+            _mockRepository
+                .Setup(r => r.GetJobByIdAsync(1))
+                .ReturnsAsync(job);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _applicationService.AddApplicationAsync(dto));
+
+            _mockRepository.Verify(
+                r => r.AddApplicationAsync(It.IsAny<Application>()),
+                Times.Never);
+        }
+
         [Test]
         public async Task GetAllApplicationsAsync_ReturnsApplications()
         {
@@ -384,6 +536,56 @@ namespace CareerCrafterAPI.Tests.Servicetests
                     It.IsAny<Notification>()),
                     Times.Never);
 
+        }
+
+        [Test]
+        public async Task WithdrawApplicationAsync_ReturnsTrue_WhenApplicationExists()
+        {
+            var application = new Application
+            {
+                ApplicationId = 1,
+                Status = "Applied"
+            };
+
+            _mockRepository
+                .Setup(r => r.GetApplicationByIdAsync(1))
+                .ReturnsAsync(application);
+
+            _mockRepository
+                .Setup(r => r.UpdateApplicationAsync(It.IsAny<Application>()))
+                .Returns(Task.CompletedTask);
+
+            var result =
+                await _applicationService.WithdrawApplicationAsync(1);
+
+            Assert.IsTrue(result);
+
+            Assert.That(application.Status, Is.EqualTo("Withdrawn"));
+
+            _mockRepository.Verify(
+                r => r.UpdateApplicationAsync(It.IsAny<Application>()),
+                Times.Once);
+        }
+
+        [Test]
+        public void WithdrawApplicationAsync_ThrowsException_WhenStatusIsNotApplied()
+        {
+            var application = new Application
+            {
+                ApplicationId = 1,
+                Status = "Rejected"
+            };
+
+            _mockRepository
+                .Setup(r => r.GetApplicationByIdAsync(1))
+                .ReturnsAsync(application);
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _applicationService.WithdrawApplicationAsync(1));
+
+            _mockRepository.Verify(
+                r => r.UpdateApplicationAsync(It.IsAny<Application>()),
+                Times.Never);
         }
 
 
