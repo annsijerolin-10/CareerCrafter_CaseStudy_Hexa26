@@ -41,14 +41,14 @@ namespace CareerCrafterAPI.Tests.Servicetests
         public async Task GetByJobSeekerIdAsync_ReturnsNotifications()
         {
             var notifications = new List<Notification>
-    {
-        new Notification
-        {
-            NotificationId = 1,
-            Message = "Application Shortlisted",
-            JobSeekerId = 2
-        }
-    };
+            {
+                new Notification
+                {
+                    NotificationId = 1,
+                    Message = "Application Shortlisted",
+                    JobSeekerId = 2
+                }
+            };
 
             _mockRepository
                 .Setup(r => r.GetByJobSeekerIdAsync(2))
@@ -73,6 +73,26 @@ namespace CareerCrafterAPI.Tests.Servicetests
             Assert.IsNotNull(result);
 
             Assert.That(result.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task GetByJobSeekerIdAsync_ReturnsEmptyList_WhenNoNotificationsExist()
+        {
+            _mockRepository
+                .Setup(r => r.GetByJobSeekerIdAsync(1))
+                .ReturnsAsync(new List<Notification>());
+
+            _mockMapper
+                .Setup(m => m.Map<List<NotificationResponseDto>>(
+                    It.IsAny<List<Notification>>()))
+                .Returns(new List<NotificationResponseDto>());
+
+            var result =
+                await _notificationService.GetByJobSeekerIdAsync(1);
+
+            Assert.IsNotNull(result);
+
+            Assert.That(result.Count, Is.EqualTo(0));
         }
         [Test]
         public async Task MarkAsReadAsync_ReturnsTrue_WhenNotificationExists()
@@ -104,6 +124,16 @@ namespace CareerCrafterAPI.Tests.Servicetests
             _mockRepository.Verify(
                 r => r.UpdateAsync(It.IsAny<Notification>()),
                 Times.Once);
+        }
+        [Test]
+        public void GetByJobSeekerIdAsync_ThrowsException_WhenRepositoryThrowsException()
+        {
+            _mockRepository
+                .Setup(r => r.GetByJobSeekerIdAsync(1))
+                .ThrowsAsync(new Exception("Database error"));
+
+            Assert.ThrowsAsync<Exception>(async () =>
+                await _notificationService.GetByJobSeekerIdAsync(1));
         }
         [Test]
         public async Task MarkAsReadAsync_ReturnsFalse_WhenNotificationNotFound()
