@@ -13,5 +13,7 @@
         public User? User { get; set; }
 
         public List<Job> Jobs { get; set; } = new List<Job>();
+        public ICollection<EmployerNotification> EmployerNotifications { get; set; }
+        
     }
 }

@@ -19,6 +19,7 @@ namespace CareerCrafterAPI.Data
         public DbSet<Application> Applications { get; set; }=null!;
         public DbSet<Resume> Resumes { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<EmployerNotification> EmployerNotifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Application>()
