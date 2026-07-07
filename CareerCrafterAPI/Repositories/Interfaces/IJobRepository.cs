@@ -15,10 +15,11 @@ namespace CareerCrafterAPI.Repositories.Interfaces
 
         Task<bool> EmployerExistsAsync(int employerId);
         Task<List<Job>> GetJobsPagedAsync(
-             int pageNumber,
-             int pageSize,
-             string? sortBy,
-             bool descending);
+         string skills,
+         int pageNumber,
+         int pageSize,
+         string? sortBy,
+         bool descending);
         Task<List<Job>> SearchJobsAsync(string? title, string? location);
 
 

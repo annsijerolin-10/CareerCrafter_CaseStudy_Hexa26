@@ -83,7 +83,6 @@ textarea{
 }
 
 
-
 .navbar-brand{
     font-weight:bold;
 }
@@ -163,4 +162,31 @@ textarea{
 .page-title{
     font-weight:700;
     margin-bottom:20px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.form-row label {
+    width: 220px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.form-row .form-control,
+.form-row textarea,
+.form-row .form-select {
+    flex: 1;
+}
+
+.form-actions{
+    margin-top:30px;
+    text-align:center;
+}
+
+.form-actions .btn{
+    min-width:220px;
 }

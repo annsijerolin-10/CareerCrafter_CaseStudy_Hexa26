@@ -1,98 +1,98 @@
-export function JobList({
-    jobs,
-    applications,
-    onApply,
-    onViewApplication
-}) {
+// export function JobList({
+//     jobs,
+//     applications,
+//     onApply,
+//     onViewApplication
+// }) {
 
-    if (jobs.length === 0) {
+//     if (jobs.length === 0) {
 
-        return <p>No Jobs Available.</p>;
+//         return <p>No Jobs Available.</p>;
 
-    }
-    const appliedJobIds = applications
-    .filter(app => app.status !== "Withdrawn")
-    .map(app => app.jobId);
+//     }
+//     const appliedJobIds = applications
+//     .filter(app => app.status !== "Withdrawn")
+//     .map(app => app.jobId);
 
     
-    return (
+//     return (
 
-        <table border="1" cellPadding="10">
+//         <table border="1" cellPadding="10">
 
-            <thead>
+//             <thead>
 
-                <tr>
+//                 <tr>
 
-                    <th>Title</th>
-                    {/* <th>Company</th> */}
-                    <th>Location</th>
-                    <th>Salary</th>
-                    <th>Required Skills</th>
-                    <th>Posted Date</th>
-                    <th>Action</th>
+//                     <th>Title</th>
+//                     {/* <th>Company</th> */}
+//                     <th>Location</th>
+//                     <th>Salary</th>
+//                     <th>Required Skills</th>
+//                     <th>Posted Date</th>
+//                     <th>Action</th>
 
-                </tr>
+//                 </tr>
 
-            </thead>
+//             </thead>
 
-            <tbody>
+//             <tbody>
 
-                {
+//                 {
 
-                    jobs.map(job => (
+//                     jobs.map(job => (
 
-                        <tr key={job.jobId}>
+//                         <tr key={job.jobId}>
 
-                            <td>{job.jobTitle}</td>
-                            {/* <td>{job.companyName}</td> */}
-                            <td>{job.location}</td>
-                            <td>{job.salary}</td>
-                            <td>{job.requiredSkills}</td>
-                            <td>{new Date(job.postedDate).toLocaleDateString()}</td>
+//                             <td>{job.jobTitle}</td>
+//                             {/* <td>{job.companyName}</td> */}
+//                             <td>{job.location}</td>
+//                             <td>{job.salary}</td>
+//                             <td>{job.requiredSkills}</td>
+//                             <td>{new Date(job.postedDate).toLocaleDateString()}</td>
 
                            
-                            <td>
+//                             <td>
 
-                            {
-                                appliedJobIds.includes(job.jobId)?(
-                                <>
-                                        <button disabled>
-                                            ✓ Applied
-                                        </button>
-                                        <button
-                                            style={{
-                                                marginTop: "5px",
-                                                fontSize: "12px"
-                                            }}
-                                            onClick={() => onViewApplication(job.jobId)}
-                                        >
-                                            View Application
-                                        </button>
-                                    </>
+//                             {
+//                                 appliedJobIds.includes(job.jobId)?(
+//                                 <>
+//                                         <button disabled>
+//                                             ✓ Applied
+//                                         </button>
+//                                         <button
+//                                             style={{
+//                                                 marginTop: "5px",
+//                                                 fontSize: "12px"
+//                                             }}
+//                                             onClick={() => onViewApplication(job.jobId)}
+//                                         >
+//                                             View Application
+//                                         </button>
+//                                     </>
                                         
-                                    )
-                                    : (
-                                        <button
-                                            onClick={() => onApply(job)}
-                                        >
-                                            Apply
-                                        </button>
-                                    )
+//                                     )
+//                                     : (
+//                                         <button
+//                                             onClick={() => onApply(job)}
+//                                         >
+//                                             Apply
+//                                         </button>
+//                                     )
                                 
-                            }
+//                             }
 
-                            </td>
+//                             </td>
 
-                        </tr>
+//                         </tr>
 
-                    ))
+//                     ))
 
-                }
+//                 }
 
-            </tbody>
+//             </tbody>
 
-        </table>
+//         </table>
 
-    );
+//     );
 
-}
+// }

@@ -52,7 +52,7 @@ export async function updateApplicationStatus(
 ) {
 
     try {
-        console.log(token);
+        
 
         const response = await axios.put(
             `${BASE_URL}/${applicationId}/status`,
@@ -122,9 +122,7 @@ export async function getApplicationsByJobSeeker(jobSeekerId, token) {
     }
     catch (error) {
 
-        throw new Error(
-            getErrorMessage(error, "Failed to fetch applications.")
-        );
+        throw new Error(getErrorMessage(error, "Failed to fetch applications."));
 
     }
 

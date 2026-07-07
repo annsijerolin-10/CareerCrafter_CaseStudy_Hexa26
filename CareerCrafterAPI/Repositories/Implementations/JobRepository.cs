@@ -55,14 +55,30 @@ namespace CareerCrafterAPI.Repositories.Implementations
         }
 
         public async Task<List<Job>> GetJobsPagedAsync(
-            int pageNumber,
-            int pageSize,
-            string? sortBy,
-            bool descending)
- 
+             string skills,
+             int pageNumber,
+             int pageSize,
+             string? sortBy,
+             bool descending)
+
         {
             IQueryable<Job> query = _context.Jobs.Include(j => j.Employer)
-    .Where(j => !j.IsDeleted);
+                .Where(j => !j.IsDeleted);
+            if (!string.IsNullOrWhiteSpace(skills))
+            {
+                var skillList = skills
+                    .Split(',')
+                    .Select(s => s.Trim().ToLower())
+                    .ToList();
+
+                query = query.Where(job =>
+                    string.IsNullOrEmpty(job.RequiredSkills) ||
+
+                    !skillList.Any(skill =>
+                        job.RequiredSkills
+                            .ToLower()
+                            .Contains(skill)));
+            }
 
             if (!string.IsNullOrEmpty(sortBy))
             {

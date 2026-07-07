@@ -81,9 +81,9 @@ export function EmployerHome() {
                 message={error}
             />
 
-            <h2>Employer Dashboard</h2>
+            {/* <h2>Employer Dashboard</h2>
 
-            <h3>Welcome, {user.fullName}</h3>
+            <h3>Welcome, {user.fullName}</h3> */}
 
             {
                 !profileCompleted && (

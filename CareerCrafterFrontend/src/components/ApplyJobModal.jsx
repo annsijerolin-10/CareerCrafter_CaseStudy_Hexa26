@@ -5,7 +5,6 @@ function getResumeFileName(path) {
     const fileName = path.split("/").pop();
 
     return fileName.substring(fileName.indexOf("_") + 1);
-
 }
 
 export function ApplyJobModal({
@@ -25,89 +24,126 @@ export function ApplyJobModal({
     return (
 
         <div
+            className="modal fade show"
             style={{
-                border: "1px solid white",
-                padding: "20px",
-                marginTop: "20px"
+                display: "block",
+                backgroundColor: "rgba(0,0,0,0.5)"
             }}
         >
 
-            <h3>Apply for {job.jobTitle}</h3>
+            <div className="modal-dialog">
 
-            <p>Select Resume:</p>
+                <div className="modal-content">
 
-            <select
-                value={selectedResumeId}
-                onChange={(e) =>
-                    setSelectedResumeId(Number(e.target.value))
-                }
-            >
+                    <div className="modal-header">
 
-                <option value="">-- Select Resume --</option>
+                        <h5 className="modal-title">
+                            Apply for {job.jobTitle}
+                        </h5>
 
-                {
-                    resumes.map(resume => (
+                        <button
+                            className="btn-close"
+                            onClick={onCancel}
+                        />
 
-                        <option
-                            key={resume.resumeId}
-                            value={resume.resumeId}
+                    </div>
+
+                    <div className="modal-body">
+
+                        <label className="form-label">
+                            Select Resume
+                        </label>
+
+                        <select
+                            className="form-select"
+                            value={selectedResumeId}
+                            onChange={(e) =>
+                                setSelectedResumeId(
+                                    Number(e.target.value)
+                                )
+                            }
                         >
-                           {getResumeFileName(resume.resumeFile)}
-                            {/* {" ("} */}
-                            {/* {new Date(resume.uploadDate).toLocaleDateString()}
-                            {")"} */}
-                        </option>
 
-                    ))
-                }
+                            <option value="">
+                                -- Select Resume --
+                            </option>
 
-            </select>
+                            {
+                                resumes.map(resume => (
 
-            <br /><br />
-            <p>OR</p>
-            <p>Add new Resume</p>
-            <input
-                type="file"
-                accept=".pdf"
-                onChange={onUploadResume}
-            />
-            {uploading && (
-                <p style={{ color: "blue" }}>
-                    Uploading resume...
-                </p>
-            )}
+                                    <option
+                                        key={resume.resumeId}
+                                        value={resume.resumeId}
+                                    >
+                                        {getResumeFileName(
+                                            resume.resumeFile
+                                        )}
+                                    </option>
 
-            {resumeMessage && (
-                <p
-                    style={{
-                        color: resumeMessage.includes("successfully")
-                            ? "green"
-                            : "red"
-                    }}
-                >
-                    {resumeMessage}
-                </p>
-            )}
+                                ))
+                            }
 
-            
-            <br /><br />
+                        </select>
 
-            <button
-                onClick={onApply}
-                disabled={!selectedResumeId}
-            >
-                Confirm Apply
-            </button>
+                        <hr />
 
-            <button
-                onClick={onCancel}
-                style={{ marginLeft: "10px" }}
-            >
-                Cancel
-            </button>
+                        <label className="form-label">
+                            Upload New Resume
+                        </label>
+
+                        <input
+                            className="form-control"
+                            type="file"
+                            accept=".pdf"
+                            onChange={onUploadResume}
+                        />
+
+                        {
+                            uploading &&
+                            <div className="text-primary mt-2">
+                                Uploading...
+                            </div>
+                        }
+
+                        {
+                            resumeMessage &&
+                            <div
+                                className={`alert mt-3 ${
+                                    resumeMessage.includes("successfully")
+                                        ? "alert-success"
+                                        : "alert-danger"
+                                }`}
+                            >
+                                {resumeMessage}
+                            </div>
+                        }
+
+                    </div>
+
+                    <div className="modal-footer">
+
+                        <button
+                            className="btn btn-secondary"
+                            onClick={onCancel}
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            className="btn btn-primary"
+                            disabled={!selectedResumeId}
+                            onClick={onApply}
+                        >
+                            Confirm Apply
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
     );
-
 }

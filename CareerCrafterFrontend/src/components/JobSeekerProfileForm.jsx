@@ -31,7 +31,6 @@ export function JobSeekerProfileForm() {
     }, []);
 
     async function loadProfile() {
-
         try {
 
             const response =
@@ -39,14 +38,11 @@ export function JobSeekerProfileForm() {
                     user.jobSeekerId,
                     user.token
                 );
-
             setProfile(response);
-
         }
         catch (error) {
 
             setErrorMessage(error.message);
-
         }
 
     }
@@ -118,9 +114,9 @@ export function JobSeekerProfileForm() {
                 />
             
 
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 FullName
                 </label>
 
@@ -134,9 +130,9 @@ export function JobSeekerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Email
                 </label>
 
@@ -150,9 +146,9 @@ export function JobSeekerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Phone Number
                 </label>
 
@@ -167,9 +163,9 @@ export function JobSeekerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Address
                 </label>
 
@@ -184,9 +180,9 @@ export function JobSeekerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Skills
                 </label>
 
@@ -201,9 +197,9 @@ export function JobSeekerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Work Experience
                 </label>
 
@@ -219,11 +215,16 @@ export function JobSeekerProfileForm() {
 
             <br /><br />
 
-            <button className="form-control" type="submit">
+            <div className="form-actions">
+
+                <button
+                    className="btn btn-primary"
+                    type="submit">
 
                 Save Changes
 
             </button>
+            </div>
 
         </form>
         </div>

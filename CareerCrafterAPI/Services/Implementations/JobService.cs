@@ -182,22 +182,32 @@ namespace CareerCrafterAPI.Services.Implementations
                 throw;
             }
         }
-        
+
         public async Task<List<JobResponseDto>> GetJobsPagedAsync(
+            int jobSeekerId,
             int pageNumber,
-            int pageSize,string? sortBy, bool descending)
-   
+            int pageSize,
+            string? sortBy,
+            bool descending)
+
         {
             try
             {
 
                 _logger.LogInformation("Fetching jobs. PageNumber: {PageNumber}, PageSize: {PageSize}", pageNumber, pageSize);
-                var jobs = await _jobRepository.GetJobsPagedAsync(
+                var jobSeeker = await _jobSeekerRepository.GetJobSeekerByIdAsync(jobSeekerId);
+
+
+                string skills = jobSeeker?.Skills ?? "";
+
+                var jobs =
+                    await _jobRepository.GetJobsPagedAsync(
+                        skills,
                         pageNumber,
                         pageSize,
                         sortBy,
                         descending);
-                   
+
 
 
                 return _mapper.Map<List<JobResponseDto>>(jobs);

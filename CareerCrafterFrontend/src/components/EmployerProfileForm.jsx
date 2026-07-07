@@ -126,9 +126,9 @@ export function EmployerProfileForm() {
                 message={successMessage}
             />
 
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                    <label>
                 Full Name
                 </label>
 
@@ -142,9 +142,9 @@ export function EmployerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Email
                 </label>
             <input
@@ -157,9 +157,9 @@ export function EmployerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+           <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Company Name
                 </label>
 
@@ -174,9 +174,9 @@ export function EmployerProfileForm() {
             </div>
 
             <br /><br />
-            <div className="mb-3">
+            <div className="form-row">
 
-                <label className="form-label">
+                <label>
                 Company Description
                 </label>
 
@@ -192,9 +192,14 @@ export function EmployerProfileForm() {
 
             <br /><br />
 
-            <button className="btn btn-primary" type="submit">
+            <div className="form-actions">
+
+                <button
+                    className="btn btn-primary"
+                    type="submit">
                 Save Changes
             </button>
+            </div>
 
         </form>
         </div>

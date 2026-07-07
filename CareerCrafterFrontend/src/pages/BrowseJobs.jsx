@@ -23,14 +23,20 @@ export function BrowseJobs() {
     const [searchLocation, setSearchLocation] = useState("");
     const [uploading, setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
-    const [resumeMessage, setResumeMessage] = useState("");    
+    const [resumeMessage, setResumeMessage] = useState("");
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageSize] = useState(6);    
+    const [sortBy, setSortBy] = useState("postedDate");
+    const [descending, setDescending] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-
         loadJobs();
-
-    }, []);
+    }, [
+        pageNumber,
+        sortBy,
+        descending
+    ]);
 
     useEffect(() => {
 
@@ -42,9 +48,14 @@ export function BrowseJobs() {
 
         try {
 
-            const response = await getAllJobs(user.token);
-            console.log("All Jobs:", response);
-            console.log("Total Jobs:", response.length);
+            const response = await getAllJobs(
+                user.jobSeekerId,
+                pageNumber,
+                pageSize,
+                sortBy,
+                descending,
+                user.token
+            );
             setJobs(response);
 
             const applicationResponse =
@@ -97,15 +108,9 @@ export function BrowseJobs() {
 
         const formData = new FormData();
 
-        formData.append(
-            "ResumeFile",
-            file
-        );
+        formData.append("ResumeFile",  file);
 
-        formData.append(
-            "JobSeekerId",
-            user.jobSeekerId
-        );
+        formData.append("JobSeekerId",user.jobSeekerId);
 
         await uploadResume(
             formData,
@@ -196,10 +201,9 @@ async function handleConfirmApply() {
             applicationData,
             user.token
         );
-        const updatedApplications =
-    await getApplicationsByJobSeeker(
-        user.jobSeekerId,
-        user.token
+        const updatedApplications =await getApplicationsByJobSeeker(   
+            user.jobSeekerId,
+            user.token
     );
 
     setApplications(updatedApplications);
@@ -263,13 +267,13 @@ async function handleSearch() {
 //     return fileName.substring(fileName.indexOf("_") + 1);
 
 // }
-const filteredJobs = jobs.filter(
-    job =>
-        !recommendedJobs.some(
-            recommended =>
-                recommended.jobId === job.jobId
-        )
-);
+// const filteredJobs = jobs.filter(
+//     job =>
+//         !recommendedJobs.some(
+//             recommended =>
+//                 recommended.jobId === job.jobId
+//         )
+// );
 const profileCompleted =
     jobSeekerProfile &&
     (jobSeekerProfile.phone ?? "").trim() !== "" &&
@@ -293,93 +297,198 @@ const profileCompleted =
 
             }
             {
-    !profileCompleted
-    ?
-    (
-        <div
-            style={{
-                border: "1px solid orange",
-                padding: "15px",
-                marginBottom: "20px",
-                borderRadius: "8px"
-            }}
-        >
+                !profileCompleted
+                ?
+                (
+                    <div
+                        style={{
+                            border: "1px solid orange",
+                            padding: "15px",
+                            marginBottom: "20px",
+                            borderRadius: "8px"
+                        }}
+                    >
 
-            <h3>
-                Recommended Jobs
-            </h3>
+                        <h3>
+                            Recommended Jobs
+                        </h3>
 
-            <p>
-                Complete your profile by adding your
-                <strong> phone number, address, skills and experience </strong>
-                to unlock personalized job recommendations and job applications.
-            </p>
+                        <p>
+                            Complete your profile by adding your
+                            <strong> phone number, address, skills and experience </strong>
+                            to unlock personalized job recommendations and job applications.
+                        </p>
 
-            <button
-                onClick={() =>
-                    navigate("/jobseeker/dashboard/profile")
-                }
-            >
+                        <button
+                            onClick={() =>
+                                navigate("/jobseeker/dashboard/profile")
+                            }
+                        >
 
-                Complete Profile
+                            Complete Profile
 
-            </button>
+                        </button>
 
-        </div>
-    )
-    :
-    recommendedJobs.length > 0 &&
-    (
-        <>
-            <h3>
-                Recommended Jobs
-            </h3>
+                    </div>
+                )
+                :
+                recommendedJobs.length > 0 &&
+                (
+                    <>
+                        <h3>
+                            Recommended Jobs
+                        </h3>
 
-            <JobCardList
-                jobs={recommendedJobs}
-                applications={applications}
-                onApply={handleApply}
-                onViewApplication={handleViewApplication}
-                profileCompleted={profileCompleted}
-            />
+                        <JobCardList
+                            jobs={recommendedJobs}
+                            applications={applications}
+                            onApply={handleApply}
+                            onViewApplication={handleViewApplication}
+                            profileCompleted={profileCompleted}
+                        />
 
-            <hr />
+                        <hr />
 
-        </>
-    )
-}
-            <div style={{ marginBottom: "20px" }}>
+                    </>
 
-                <input
-                    type="text"
-                    placeholder="Search by Job Title"
-                    value={searchTitle}
-                    onChange={(e) =>
-                        setSearchTitle(e.target.value)
-                    }
-                />
 
-                <input
-                    type="text"
-                    placeholder="Location"
-                    value={searchLocation}
-                    onChange={(e) =>
-                        setSearchLocation(e.target.value)
-                    }
-                    style={{ marginLeft: "10px" }}
-                />
+                )
+            } 
+            <h3 className="mb-3">Available Jobs </h3>          
+            <div className="row g-3 align-items-end mb-4">
 
-                
+                <div className="col-4">
+
+                    <select
+                        className="form-select"
+                        onChange={(e)=>{
+
+                            switch(e.target.value){
+
+                                case "Newest":
+                                    setSortBy("postedDate");
+                                    setDescending(true);
+                                    break;
+
+                                case "Oldest":
+                                    setSortBy("postedDate");
+                                    setDescending(false);
+                                    break;
+
+                                case "SalaryHigh":
+                                    setSortBy("salary");
+                                    setDescending(true);
+                                    break;
+
+                                case "SalaryLow":
+                                    setSortBy("salary");
+                                    setDescending(false);
+                                    break;
+                            }
+
+                            setPageNumber(1);
+
+                        }}
+                    >
+                        
+                        <option value="">
+                            --Sort by--
+                        </option>
+                        
+
+                        <option value="Newest">
+                            Newest First
+                        </option>
+
+                        <option value="Oldest">
+                            Oldest First
+                        </option>
+
+                        <option value="SalaryHigh">
+                            Salary High → Low
+                        </option>
+
+                        <option value="SalaryLow">
+                            Salary Low → High
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div className="col-md-4">
+
+
+                    <input
+                        className="form-control"
+                        placeholder="Search Job Title"
+                        value={searchTitle}
+                        onChange={(e)=>setSearchTitle(e.target.value)}
+                    />
+
+                </div>
+
+                <div className="col-md-4">
+
+                    <input
+                        className="form-control"
+                        placeholder="Search by Location"
+                        value={searchLocation}
+                        onChange={(e)=>setSearchLocation(e.target.value)}
+                    />
+
+                </div>
+
+                {/* <div className="col-md-2">
+
+                    <button
+                        className="btn btn-primary w-100"
+                        onClick={handleSearch}
+                    >
+                        Search
+                    </button>
+
+                </div> */}
 
             </div>
-
+                                    
             <JobCardList
-                jobs={filteredJobs}
+                jobs={jobs}
                 applications={applications}
                 onApply={handleApply}
                  onViewApplication={handleViewApplication}
                  profileCompleted={profileCompleted}
             />
+
+            <div className="d-flex justify-content-center gap-3 mt-4">
+
+                <button
+                    className="btn btn-outline-primary"
+                    disabled={pageNumber===1}
+                    onClick={()=>
+                        setPageNumber(pageNumber-1)
+                    }
+                >
+                    Previous
+                </button>
+
+                <span className="align-self-center">
+
+                    Page {pageNumber}
+
+                </span>
+
+                <button
+                    className="btn btn-outline-primary"
+                    disabled={jobs.length < pageSize}
+                    onClick={()=>
+                        setPageNumber(pageNumber+1)
+                    }
+                >
+                    Next
+                </button>
+
+            </div>
             <ApplyJobModal
                 job={selectedJob}
                 resumes={resumes}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../api/AuthAxiosApi";
+import { AlertMessage } from "../components/AlertMessage";
 
 export function ForgotPassword() {
 
@@ -67,71 +68,96 @@ export function ForgotPassword() {
     }
 
     return (
+        
+        <div className="container d-flex justify-content-center align-items-center vh-100">
 
-        <form onSubmit={handleSubmit}>
+            <div className="card auth-card shadow-lg p-4">
 
-            <h2>Forgot Password</h2>
+                <h2 className="text-center mb-4">
+                    Forgot Password
+                </h2>
 
-            {
-                errorMessage &&
-                <p style={{ color: "red" }}>
-                    {errorMessage}
-                </p>
-            }
+               <AlertMessage
+                    message={errorMessage}
+                />
 
-            {
-                successMessage &&
-                <p style={{ color: "green" }}>
-                    {successMessage}
-                </p>
-            }
+                <AlertMessage
+                    type="success"
+                    message={successMessage}
+                />
 
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-            />
+                <form onSubmit={handleSubmit}>
 
-            <br /><br />
+                    <div className="mb-3">
 
-            <input
-                type="password"
-                name="newPassword"
-                placeholder="New Password"
-                value={formData.newPassword}
-                onChange={handleChange}
-            />
+                        <label className="form-label">
+                            Email
+                        </label>
 
-            <br /><br />
+                        <input
+                            type="email"
+                            name="email"
+                            className="form-control"
+                            placeholder="Enter Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                        />
 
-            <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-            />
+                    </div>
 
-            <br /><br />
+                    <div className="mb-3">
 
-            <button type="submit">
+                        <label className="form-label">
+                            New Password
+                        </label>
 
-                Reset Password
+                        <input
+                            type="password"
+                            name="newPassword"
+                            className="form-control"
+                            placeholder="Enter New Password"
+                            value={formData.newPassword}
+                            onChange={handleChange}
+                        />
 
-            </button>
+                    </div>
 
-            <br /><br />
+                    <div className="mb-3">
 
-            <Link to="/">
+                        <label className="form-label">
+                            Confirm Password
+                        </label>
 
-                Back to Login
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            className="form-control"
+                            placeholder="Confirm New Password"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                        />
 
-            </Link>
+                    </div>
 
-        </form>
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-100"
+                    >
+                        Reset Password
+                    </button>
 
+                </form>
+
+                <div className="text-center mt-3">
+
+                    <Link to="/">
+                        ← Back to Login
+                    </Link>
+
+                </div>
+
+            </div>
+
+        </div>
     );
-
 }

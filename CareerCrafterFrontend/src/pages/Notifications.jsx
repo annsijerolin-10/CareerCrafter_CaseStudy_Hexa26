@@ -4,15 +4,17 @@ import {
     getNotificationsByJobSeeker,
     markNotificationAsRead
 } from "../api/NotificationAxiosApi";
+
 import { AlertMessage } from "../components/AlertMessage";
 import { NotificationTable } from "../components/NotificationTable";
-
+import { useNotification } from "../context/NotificationContext";
 export function Notifications() {
 
     const { user } = useAuth();
 
     const [notifications, setNotifications] = useState([]);
     const [error, setError] = useState("");
+    const { setUnreadCount } = useNotification();
 
     useEffect(() => {
 
@@ -51,6 +53,7 @@ export function Notifications() {
             );
 
             loadNotifications();
+            setUnreadCount(prev => Math.max(prev - 1, 0));
 
         }
         catch (error) {

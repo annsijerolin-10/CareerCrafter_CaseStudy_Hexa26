@@ -15,6 +15,7 @@ namespace CareerCrafterAPI.Services.Interfaces
 
         Task<bool> DeleteJobAsync(int jobId);
         Task<List<JobResponseDto>> GetJobsPagedAsync(
+            int jobSeekerId,
             int pageNumber,
             int pageSize,
             string? sortBy,

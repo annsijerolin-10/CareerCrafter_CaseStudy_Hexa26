@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getJobSeekerProfile,getJobSeekerDashboard } from "../api/JobSeekerAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
+import { useNotification } from "../context/NotificationContext";
 export function JobSeekerHome() {
 
     const { user } = useAuth();
@@ -10,6 +11,7 @@ export function JobSeekerHome() {
     const [dashboard, setDashboard] = useState(null);
     const [error, setError] = useState("");
     const [profile, setProfile] = useState(null);
+    const { setUnreadCount } = useNotification();
 
     useEffect(() => {
 
@@ -48,6 +50,7 @@ export function JobSeekerHome() {
             );
 
         setDashboard(response);
+        setUnreadCount(response.unreadNotifications);
 
     }
     catch (error) {
@@ -69,7 +72,7 @@ export function JobSeekerHome() {
 
         <div className="container-fluid">
 
-            <h2>Job Seeker Dashboard</h2>
+            {/* <h2>Job Seeker Dashboard</h2> */}
             <AlertMessage message={error}/>
 
             {
@@ -119,7 +122,7 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Total Applications</h6>
-                                <h2 className="dashboard-stat">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.totalApplications}
                                 </h2>
                             </div>
@@ -130,7 +133,7 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Applied</h6>
-                                <h2 className="dashboard-stat text-primary">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.appliedCount}
                                 </h2>
                             </div>
@@ -141,7 +144,7 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Reviewed</h6>
-                                <h2 className="dashboard-stat text-info">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.reviewedCount}
                                 </h2>
                             </div>
@@ -152,7 +155,7 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Shortlisted</h6>
-                                <h2 className="dashboard-stat text-success">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.shortlistedCount}
                                 </h2>
                             </div>
@@ -163,7 +166,7 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Rejected</h6>
-                                <h2 className="dashboard-stat text-danger">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.rejectedCount}
                                 </h2>
                             </div>
@@ -174,7 +177,7 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Withdrawn</h6>
-                                <h2 className="dashboard-stat text-secondary">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.withdrawnCount}
                                 </h2>
                             </div>
@@ -185,23 +188,14 @@ export function JobSeekerHome() {
                         <div className="card dashboard-card text-center">
                             <div className="card-body">
                                 <h6>Total Resumes</h6>
-                                <h2 className="dashboard-stat text-warning">
+                                <h2 className="dashboard-stat text-dark">
                                     {dashboard.totalResumes}
                                 </h2>
                             </div>
                         </div>
                     </div>
 
-                    <div className="col-md-3">
-                        <div className="card dashboard-card text-center">
-                            <div className="card-body">
-                                <h6>Notifications</h6>
-                                <h2 className="dashboard-stat text-dark">
-                                    {dashboard.totalNotifications}
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
+                   
 
                 </div>
             </>

@@ -20,7 +20,7 @@ namespace CareerCrafterAPI.Controllers
             _jobService = jobService;
         }
 
-        
+
         //[HttpGet]
         //public async Task<IActionResult> GetAllJobs()
         //{
@@ -28,12 +28,14 @@ namespace CareerCrafterAPI.Controllers
 
         //    return Ok(jobs);
         //}
+        [Authorize(Roles = "JobSeeker")]
         [HttpGet]
-        public async Task<IActionResult> GetJobsPaged([FromQuery] PaginationDto pagination)
-
+        public async Task<IActionResult> GetJobsPaged(
+    int jobSeekerId,
+    [FromQuery] PaginationDto pagination)
         {
             var jobs = await _jobService.GetJobsPagedAsync(
-
+                jobSeekerId,
                 pagination.PageNumber,
                 pagination.PageSize,
                 pagination.SortBy,

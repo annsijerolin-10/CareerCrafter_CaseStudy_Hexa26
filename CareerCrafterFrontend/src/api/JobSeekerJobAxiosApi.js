@@ -13,28 +13,45 @@ function getErrorMessage(error, fallbackMessage) {
     return error.message || fallbackMessage;
 }
 
-export async function getAllJobs(token) {
+export async function getAllJobs(
+    jobSeekerId,
+    pageNumber,
+    pageSize,
+    sortBy,
+    descending,
+    token
+) {
     try {
 
         const response = await axios.get(
-            `${BASE_URL}?PageNumber=1&PageSize=100`,
+            BASE_URL,
             {
+                params: {
+                    jobSeekerId,
+                    PageNumber: pageNumber,
+                    PageSize: pageSize,
+                    SortBy: sortBy,
+                    Descending: descending
+                },
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
         );
 
-        console.log(response);
-
         return response.data;
+
     }
     catch (error) {
-        throw new Error(
-            getErrorMessage(error, "Failed to fetch jobs.")
-        );
-    }
 
+        throw new Error(
+            getErrorMessage(
+                error,
+                "Failed to fetch jobs."
+            )
+        );
+
+    }
 }
 export async function searchJobs(
     title,
@@ -51,7 +68,7 @@ export async function searchJobs(
             {
                 params: {
                     title,
-                    location
+                    location,
                 },
 
                 headers: {

@@ -72,10 +72,12 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 TotalResumes = await _context.Resumes
                     .CountAsync(r => r.JobSeekerId == jobSeekerId),
 
-                TotalNotifications = await _context.Notifications
-                    .CountAsync(n => n.JobSeekerId == jobSeekerId)
+                UnreadNotifications = await _context.Notifications
+                    .CountAsync(n =>
+                        n.JobSeekerId == jobSeekerId &&
+                        !n.IsRead)
 
-               
+
 
 
             };

@@ -2,7 +2,7 @@ import { useState} from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
-
+import { AlertMessage } from "./AlertMessage";
 import { changePassword } from "../api/AuthAxiosApi";
 
 export function ChangePasswordForm() {
@@ -86,93 +86,97 @@ export function ChangePasswordForm() {
 
     return (
 
-        <form onSubmit={handleSubmit}>
+    <div className="card shadow-sm mt-4">
 
-            <h3>Change Password</h3>
+        <div className="card-body">
 
-            {
-
-                errorMessage &&
-
-                <p style={{ color: "red" }}>
-                    {errorMessage}
-                </p>
-
-            }
-
-            {
-
-                successMessage &&
-
-                <p style={{ color: "green" }}>
-                    {successMessage}
-                </p>
-
-            }
-
-            <input
-
-                type="password"
-
-                name="currentPassword"
-
-                placeholder="Current Password"
-
-                value={passwordData.currentPassword}
-
-                onChange={handleChange}
-                
-
-            />
-                
-            <p>
-                <Link to="/forgot-password">
-                    Forgot Password?
-                </Link>
-            </p>
-
-            <br /><br />
-
-            <input
-
-                type="password"
-
-                name="newPassword"
-
-                placeholder="New Password"
-
-                value={passwordData.newPassword}
-
-                onChange={handleChange}
-
-            />
-
-            <br /><br />
-
-            <input
-
-                type="password"
-
-                name="confirmPassword"
-
-                placeholder="Confirm Password"
-
-                value={passwordData.confirmPassword}
-
-                onChange={handleChange}
-
-            />
-
-            <br /><br />
-
-            <button type="submit">
-
+            <h3 className="mb-4 text-center">
                 Change Password
+            </h3>
 
-            </button>
+            <AlertMessage
+                message={errorMessage}
+            />
 
-        </form>
+            <AlertMessage
+                type="success"
+                message={successMessage}
+            />
 
-    );
+            <form onSubmit={handleSubmit}>
+
+                <div className="form-row">
+
+                    <label>
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="currentPassword"
+                        className="form-control"
+                        placeholder="Enter Current Password"
+                        value={passwordData.currentPassword}
+                        onChange={handleChange}
+                    />
+
+                    <div className="text-end mt-2">
+
+                        <Link to="/forgot-password">
+                            Forgot Password?
+                        </Link>
+
+                    </div>
+
+                </div>
+
+                <div className="form-row">
+
+                    <label>
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="newPassword"
+                        className="form-control"
+                        placeholder="Enter New Password"
+                        value={passwordData.newPassword}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                <div className="form-row">
+
+                    <label>
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        className="form-control"
+                        placeholder="Confirm New Password"
+                        value={passwordData.confirmPassword}
+                        onChange={handleChange}
+                    />
+
+                </div>
+
+                <button
+                    type="submit"
+                    className="btn btn-primary w-100"
+                >
+                    Change Password
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+);
 
 }
