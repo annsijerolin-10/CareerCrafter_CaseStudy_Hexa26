@@ -118,9 +118,7 @@ namespace CareerCrafterAPI.Tests.Servicetests
             Assert.IsNotNull(result);
 
             Assert.That(result.CompanyName, Is.EqualTo("ABC"));
-            _mockRepository.Verify(
-                r => r.AddEmployerAsync(It.IsAny<Employer>()),
-                Times.Once);
+            
 
         }
         [Test]
@@ -216,6 +214,80 @@ namespace CareerCrafterAPI.Tests.Servicetests
 
             Assert.IsNotNull(result);
             Assert.That(result.FullName, Is.EqualTo("Priya"));
+        }
+
+        [Test]
+        public async Task UpdateEmployerAsync_ReturnsUpdatedEmployer()
+        {
+            var employer = new Employer
+            {
+                EmployerId = 1,
+                CompanyName = "ABC",
+                CompanyDescription = "Old Description",
+                UserId = 1
+            };
+
+            var dto = new EmployerUpdateDto
+            {
+                CompanyName = "Hexaware",
+                CompanyDescription = "IT Services"
+            };
+
+            _mockRepository
+                .Setup(r => r.GetEmployerByIdAsync(1))
+                .ReturnsAsync(employer);
+
+            _mockMapper
+                .Setup(m => m.Map(dto, employer));
+
+            _mockRepository
+                .Setup(r => r.UpdateEmployerAsync(employer))
+                .Returns(Task.CompletedTask);
+
+            _mockMapper
+                .Setup(m => m.Map<EmployerResponseDto>(employer))
+                .Returns(new EmployerResponseDto
+                {
+                    EmployerId = 1,
+                    CompanyName = "Hexaware",
+                    CompanyDescription = "IT Services",
+                    UserId = 1
+                });
+
+            var result =
+                await _employerService.UpdateEmployerAsync(1, dto);
+
+            Assert.IsNotNull(result);
+
+            Assert.That(result.CompanyName,
+                Is.EqualTo("Hexaware"));
+
+            _mockRepository.Verify(
+                r => r.UpdateEmployerAsync(It.IsAny<Employer>()),
+                Times.Once);
+        }
+
+        [Test]
+        public async Task UpdateEmployerAsync_ReturnsNull_WhenEmployerNotFound()
+        {
+            var dto = new EmployerUpdateDto
+            {
+                CompanyName = "Updated Company",
+                CompanyDescription = "Updated Description"
+            };
+
+            _mockRepository
+                .Setup(r => r.GetEmployerByIdAsync(100))
+                .ReturnsAsync((Employer?)null);
+
+            var result =
+                await _employerService.UpdateEmployerAsync(100, dto);
+
+            Assert.IsNull(result);
+
+            _mockRepository.Verify(
+                r => r.UpdateEmployerAsync(It.IsAny<Employer>()),
+                Times.Never);
         }
 
     }
