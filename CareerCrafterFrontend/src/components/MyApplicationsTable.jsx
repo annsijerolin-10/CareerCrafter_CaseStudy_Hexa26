@@ -14,84 +14,88 @@ export function MyApplicationsTable({
 }) {
 
     if (applications.length === 0) {
-
         return <p>No Applications Found.</p>;
-
     }
 
     return (
 
-        <table border="1" cellPadding="10">
+        <div className="card shadow rounded-4">
 
-            <thead>
+            <div className="card-body">
 
-                <tr>
+                <div className="table-responsive">
 
-                    <th>Job Title</th>
-                    <th>Company</th>
-                    <th>Resume</th>
-                    <th>Applied Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <table className="table table-striped table-hover align-middle">
 
-                </tr>
+                        <thead className="table-primary">
 
-            </thead>
+                            <tr>
 
-            <tbody>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Resume</th>
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
 
-                {
+                            </tr>
 
-                    applications.map(application => (
+                        </thead>
 
-                        <tr key={application.applicationId}>
+                        <tbody>
+                       {applications.map(application => (
 
-                            <td>{application.jobTitle}</td>
+                                <tr key={application.applicationId}>
 
-                            <td>{application.companyName}</td>
+                                    <td>{application.jobTitle}</td>
 
-                            <td>
-                                {getResumeFileName(
-                                    application.resumeFile
-                                )}
-                            </td>
+                                    <td>{application.companyName}</td>
+                                   <td>
+                                        {getResumeFileName(application.resumeFile)}
+                                    </td>
 
-                            <td>
-                                {
-                                    new Date(
-                                        application.applicationDate
-                                    ).toLocaleDateString()
-                                }
-                            </td>
+                                    <td>
+                                        {new Date(
+                                            application.applicationDate
+                                        ).toLocaleDateString()}
+                                    </td>
 
-                            <td>{application.status}</td>
+                                    <td>{application.status}</td>
 
-                            <td>
+                                    <td>
 
-                                {
-                                    application.status === "Applied" ?
+                                        {application.status === "Applied" ? (
 
-                                        <button onClick={()=> onWithdraw(application.applicationId)}>
-                                            Withdraw
-                                        </button>
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() =>
+                                                    onWithdraw(application.applicationId)
+                                                }
+                                            >
+                                                Withdraw
+                                            </button>
 
-                                        :
+                                        ) : (
 
-                                        "-"
+                                            "-"
 
-                                }
+                                        )}
 
-                            </td>
+                                    </td>
 
-                        </tr>
+                                </tr>
 
-                    ))
+                            ))}
 
-                }
+                        </tbody>
 
-            </tbody>
+                    </table>
 
-        </table>
+                </div>
+
+            </div>
+
+        </div>
 
     );
 

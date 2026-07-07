@@ -21,6 +21,7 @@ namespace CareerCrafterAPI.Tests.Servicetests
         private Mock<INotificationRepository> _mockNotificationRepository;
         private ApplicationService _applicationService;
         private Mock<IMapper> _mockMapper;
+        private Mock<IEmployerNotificationRepository> _mockEmployerNotificationRepository;
 
         [SetUp]
         public void Setup()
@@ -29,11 +30,13 @@ namespace CareerCrafterAPI.Tests.Servicetests
             _mockMapper = new Mock<IMapper>();
             _mockNotificationRepository = new Mock<INotificationRepository>();
             _mockRepository = new Mock<IApplicationRepository>();
+            _mockEmployerNotificationRepository = new Mock<IEmployerNotificationRepository>();
             _applicationService = new ApplicationService(
                      _mockRepository.Object,
                      logger.Object,
                      _mockMapper.Object,
-                     _mockNotificationRepository.Object);
+                     _mockNotificationRepository.Object,
+                     _mockEmployerNotificationRepository.Object);
 
         }
         [Test]
@@ -154,7 +157,9 @@ namespace CareerCrafterAPI.Tests.Servicetests
             _mockRepository
                 .Setup(r => r.GetApplicationByIdAsync(1))
                 .ReturnsAsync(application);
-
+            _mockEmployerNotificationRepository
+                .Setup(r => r.AddNotificationAsync(It.IsAny<EmployerNotification>()))
+                .Returns(Task.CompletedTask);
             _mockMapper
                 .Setup(m => m.Map<ApplicationResponseDto>(application))
                 .Returns(new ApplicationResponseDto
@@ -173,6 +178,9 @@ namespace CareerCrafterAPI.Tests.Servicetests
             Assert.That(result.ApplicationId, Is.EqualTo(1));
 
             Assert.That(result.Status, Is.EqualTo("Applied"));
+            _mockEmployerNotificationRepository.Verify(
+            r => r.AddNotificationAsync(It.IsAny<EmployerNotification>()),
+            Times.Once);
         }
 
 

@@ -28,7 +28,10 @@ namespace CareerCrafterAPI.Controllers
 
             if (result == null)
                 {
-                    return Unauthorized("Invalid email or password");
+                return Unauthorized(new
+                {
+                    Message = "Invalid email or password."
+                });
 
             }
 
@@ -49,15 +52,24 @@ namespace CareerCrafterAPI.Controllers
 
         [Authorize]
         [HttpPut("change-password")]
-        public async Task<IActionResult> ChangePassword(
-    ChangePasswordDto dto)
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
         {
-            await _authService.ChangePasswordAsync(dto);
-
-            return Ok(new
+            try
             {
-                Message = "Password changed successfully."
-            });
+                await _authService.ChangePasswordAsync(dto);
+
+                return Ok(new
+                {
+                    Message = "Password changed successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Message = ex.Message
+                });
+            }
         }
 
 

@@ -14,6 +14,7 @@ export function ManageJobs() {
     const [selectedJob, setSelectedJob] = useState(null);
     const [showArchived, setShowArchived] = useState(false);
     const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
     const [employerProfile, setEmployerProfile] = useState(null);
     const navigate = useNavigate();
 
@@ -62,8 +63,13 @@ export function ManageJobs() {
         try {
 
             await deleteJob(jobId, user.token);
+            setMessage("Job archived successfully.");
 
             await loadJobs();
+
+            setTimeout(() => {
+                setMessage("");
+            }, 3000);
 
         }
         catch (error) {
@@ -99,7 +105,14 @@ export function ManageJobs() {
         try {
 
             await restoreJob(jobId, user.token);
-            await loadJobs();
+
+            setMessage("Job restored successfully.");
+
+            await loadArchivedJobs();
+
+            setTimeout(() => {
+                setMessage("");
+            }, 3000);
 
         }
         catch (error) {
@@ -121,6 +134,14 @@ export function ManageJobs() {
 
     return (
         <div>
+            <AlertMessage
+                type="success"
+                message={message}
+            />
+
+            <AlertMessage
+                message={error}
+            />
 
             <h2>Manage Jobs</h2>
 

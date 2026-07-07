@@ -2,6 +2,7 @@ import {useState} from "react";
 import {useNavigate,Link} from "react-router-dom";
 import {registerUser} from "../api/userAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
+import { AuthLayout } from "../components/AuthLayout";
 export function Register(){
     const navigate=useNavigate();
     const[userData,setUserData]=useState({
@@ -95,9 +96,7 @@ export function Register(){
 
 
 return(
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-        <div className="card auth-card shadow-lg p-4">
-    
+    <AuthLayout title="Create Account">
 
     <form onSubmit={handleSubmit}>
         <h2>Register</h2>
@@ -218,6 +217,7 @@ return(
                         Phone Number
                         </label>
                     <input
+                        className="form-control"
                         type="text"
                         name="phone"
                         placeholder="Enter your Phone Number(Optional)"
@@ -233,6 +233,7 @@ return(
                         </label>
 
                     <input
+                        className="form-control"
                         type="text"
                         name="address"
                         placeholder="Enter your Address (Optional)"
@@ -249,6 +250,7 @@ return(
 
 
                     <input
+                        className="form-control"
                         type="text"
                         name="skills"
                         placeholder="Enter your Skills (Optional)"
@@ -265,6 +267,7 @@ return(
 
 
                     <input
+                        className="form-control"
                         type="number"
                         name="experienceYears"
                         placeholder="Enter your Work Experience (Optional)"
@@ -295,8 +298,8 @@ return(
 
         </div>
     </form>
-    </div>
-    </div>
+    </AuthLayout>
+    
     
 );
 }

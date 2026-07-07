@@ -22,61 +22,140 @@ export function CandidateProfileModal({
     return (
 
         <div
+            className="modal fade show"
             style={{
-                border: "1px solid white",
-                padding: "20px",
-                marginTop: "20px"
+                display: "block",
+                backgroundColor: "rgba(0,0,0,0.5)"
             }}
         >
 
-            <h3>Candidate Profile</h3>
+            <div className="modal-dialog modal-lg modal-dialog-centered">
 
-            <p>
-                <strong>Name:</strong>{" "}
-                {candidate.fullName}
-            </p>
+                <div className="modal-content">
 
-            <p>
-                <strong>Email:</strong>{" "}
-                {candidate.email}
-            </p>
+                    <div className="modal-header">
 
-            <p>
-                <strong>Phone:</strong>{" "}
-                {candidate.phone}
-            </p>
+                        <h5 className="modal-title">
+                            Candidate Profile
+                        </h5>
 
-            <p>
-                <strong>Address:</strong>{" "}
-                {candidate.address}
-            </p>
+                        <button
+                            className="btn-close"
+                            onClick={onClose}
+                        />
 
-            <p>
-                <strong>Skills:</strong>{" "}
-                {candidate.skills}
-            </p>
+                    </div>
 
-            <p>
-                <strong>Experience:</strong>{" "}
-                {candidate.experienceYears} Years
-            </p>
+                    <div className="modal-body">
 
-            <p>
-                <strong>Resume:</strong>{" "}
+                        <div className="row mb-3">
 
-                <a
-                    href={`https://localhost:7109${candidate.resumeFile}`}
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    {getResumeFileName(candidate.resumeFile)}
-                </a>
+                            <div className="col-4 fw-bold">
+                                Name
+                            </div>
 
-            </p>
+                            <div className="col-8">
+                                {candidate.fullName}
+                            </div>
 
-            <button onClick={onClose}>
-                Close
-            </button>
+                        </div>
+
+                        <div className="row mb-3">
+
+                            <div className="col-4 fw-bold">
+                                Email
+                            </div>
+
+                            <div className="col-8">
+                                {candidate.email}
+                            </div>
+
+                        </div>
+
+                        <div className="row mb-3">
+
+                            <div className="col-4 fw-bold">
+                                Phone
+                            </div>
+
+                            <div className="col-8">
+                                {candidate.phone}
+                            </div>
+
+                        </div>
+
+                        <div className="row mb-3">
+
+                            <div className="col-4 fw-bold">
+                                Address
+                            </div>
+
+                            <div className="col-8">
+                                {candidate.address}
+                            </div>
+
+                        </div>
+
+                        <div className="row mb-3">
+
+                            <div className="col-4 fw-bold">
+                                Skills
+                            </div>
+
+                            <div className="col-8">
+                                {candidate.skills}
+                            </div>
+
+                        </div>
+
+                        <div className="row mb-3">
+
+                            <div className="col-4 fw-bold">
+                                Experience
+                            </div>
+
+                            <div className="col-8">
+                                {candidate.experienceYears} Years
+                            </div>
+
+                        </div>
+
+                        <div className="row">
+
+                            <div className="col-4 fw-bold">
+                                Resume
+                            </div>
+
+                            <div className="col-8">
+
+                                <a
+                                    href={`https://localhost:7109${candidate.resumeFile}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {getResumeFileName(candidate.resumeFile)}
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="modal-footer">
+
+                        <button
+                            className="btn btn-secondary"
+                            onClick={onClose}
+                        >
+                            Close
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 

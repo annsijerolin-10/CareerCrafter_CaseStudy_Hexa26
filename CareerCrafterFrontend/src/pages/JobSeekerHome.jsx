@@ -70,7 +70,7 @@ export function JobSeekerHome() {
 
     return (
 
-        <div className="container-fluid">
+        <div>
 
             {/* <h2>Job Seeker Dashboard</h2> */}
             <AlertMessage message={error}/>
@@ -78,7 +78,7 @@ export function JobSeekerHome() {
             {
                 !profileCompleted
                 &&(
-                    <div className="alert alert-warning">
+                    <div className="alert alert-warning shadow-sm">
                     
 
                     <h3>
@@ -112,7 +112,7 @@ export function JobSeekerHome() {
             dashboard &&
 
             <>
-                <h3 className="mb-4">
+                <h3 className="text-center mb-4">
                     Dashboard Summary
                 </h3>
 

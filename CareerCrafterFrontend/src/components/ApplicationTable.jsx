@@ -16,7 +16,7 @@ function ApplicationRow({
 }, [application.status]);
     return (
 
-    <tr>
+    <tr id={`application-${application.applicationId}`}>
 
         <td>{application.jobSeekerName}</td>
 

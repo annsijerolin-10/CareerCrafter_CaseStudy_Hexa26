@@ -167,11 +167,12 @@ textarea{
 .form-row {
     display: flex;
     align-items: center;
-    margin-bottom: 18px;
+    gap: 15px;
+    margin-bottom: 12px;
 }
 
 .form-row label {
-    width: 220px;
+    width: 170px;
     font-weight: 600;
     margin-bottom: 0;
 }
@@ -189,4 +190,27 @@ textarea{
 
 .form-actions .btn{
     min-width:220px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.date-control{
+    position: relative;
+}
+
+.date-input{
+    width:100%;
+    height:45px;
+    border:1px solid #ced4da;
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:16px;
+    background:#e3dada;
 }

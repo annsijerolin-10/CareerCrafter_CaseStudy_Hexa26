@@ -7,7 +7,7 @@ import { applyJob,getApplicationsByJobSeeker } from "../api/ApplicationAxiosApi"
 import { ApplyJobModal } from "../components/ApplyJobModal";
 import { useNavigate } from "react-router-dom";
 import { getJobSeekerProfile } from "../api/JobSeekerAxiosApi";
-
+import { AlertMessage } from "../components/AlertMessage";
 export function BrowseJobs() {
 
     const { user } = useAuth();
@@ -22,12 +22,13 @@ export function BrowseJobs() {
     const [jobSeekerProfile, setJobSeekerProfile] = useState(null);
     const [searchLocation, setSearchLocation] = useState("");
     const [uploading, setUploading] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
     const [resumeMessage, setResumeMessage] = useState("");
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize] = useState(6);    
     const [sortBy, setSortBy] = useState("postedDate");
     const [descending, setDescending] = useState(true);
+    const [message, setMessage] = useState("");
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -126,8 +127,8 @@ export function BrowseJobs() {
         setResumes(updatedResumes);
 
        const uploadedResume = updatedResumes.find(r =>
-    r.resumeFile.endsWith(file.name)
-);
+            r.resumeFile.endsWith(file.name)
+        );
 
 if (uploadedResume) {
     setSelectedResumeId(uploadedResume.resumeId);
@@ -169,17 +170,14 @@ if (uploadedResume) {
 
         }
         catch (error) {
-
             console.log(error);
-
-            alert(error.message);
+             setError(error.message);
 
         }
 
     }
     function handleCancel() {
         setResumeMessage("");
-
         setSelectedJob(null);
         setResumes([]);
         setSelectedResumeId("");
@@ -207,24 +205,23 @@ async function handleConfirmApply() {
     );
 
     setApplications(updatedApplications);
-        alert("Job applied successfully.");
+    setMessage("Job applied successfully.");
+    setTimeout(() => {
+        setMessage("");
+    }, 3000);
 
-handleCancel();
+    handleCancel();
 
-await loadJobs();
+    await loadJobs();
     }
     catch (error) {
 
-        alert(error.message);
+         setError(error.message);
 
     }
 
 }
-function handleViewApplication(jobId) {
 
-    navigate("/jobseeker/dashboard/applications");
-
-}
 async function handleSearch() {
 
     try {
@@ -235,7 +232,7 @@ async function handleSearch() {
             searchLocation.trim() === ""
         ) {
 
-            loadJobs();
+            await loadJobs();
             return;
 
         }
@@ -255,6 +252,9 @@ async function handleSearch() {
 
     }
 
+}
+function handleViewApplication(jobId) {
+    navigate(`/jobseeker/dashboard/applications/${jobId}`);
 }
 
 
@@ -287,28 +287,21 @@ const profileCompleted =
 
         <div>
 
-            <h2>Browse Jobs</h2>
-            {
-
-                error &&
-                <p style={{ color: "red" }}>
-                    {error}
-                </p>
-
-            }
+            <h2 className="text-center mb-4">
+                Browse Jobs
+            </h2>
+            <AlertMessage
+                type="success"
+                message={message}
+            />
+            <AlertMessage
+                message={error}
+            />
             {
                 !profileCompleted
                 ?
                 (
-                    <div
-                        style={{
-                            border: "1px solid orange",
-                            padding: "15px",
-                            marginBottom: "20px",
-                            borderRadius: "8px"
-                        }}
-                    >
-
+                     <div className="alert alert-warning shadow-sm">              
                         <h3>
                             Recommended Jobs
                         </h3>
@@ -320,22 +313,22 @@ const profileCompleted =
                         </p>
 
                         <button
+                            className="btn btn-warning"
                             onClick={() =>
                                 navigate("/jobseeker/dashboard/profile")
                             }
                         >
-
                             Complete Profile
-
                         </button>
 
+                            
                     </div>
                 )
                 :
                 recommendedJobs.length > 0 &&
                 (
                     <>
-                        <h3>
+                        <h3 className="text-center mb-4">
                             Recommended Jobs
                         </h3>
 
@@ -354,7 +347,9 @@ const profileCompleted =
 
                 )
             } 
-            <h3 className="mb-3">Available Jobs </h3>          
+            <h3 className="text-center mb-4">
+                Available Jobs
+            </h3>        
             <div className="row g-3 align-items-end mb-4">
 
                 <div className="col-4">

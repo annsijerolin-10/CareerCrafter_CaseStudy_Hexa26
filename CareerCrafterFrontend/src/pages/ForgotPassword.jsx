@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../api/AuthAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
-
+import { AuthLayout } from "../components/AuthLayout";
 export function ForgotPassword() {
 
     const navigate = useNavigate();
@@ -47,10 +47,18 @@ export function ForgotPassword() {
             return;
         }
 
+        if (formData.newPassword !== formData.confirmPassword) {
+            setErrorMessage("New Password and Confirm Password do not match.");
+            setTimeout(() => {
+                navigate("/");
+            }, 1500);
+            return;
+        }
+
         try {
 
-            const response =
-                await forgotPassword(formData);
+            const response =await forgotPassword(formData);
+                
 
             setSuccessMessage(response.message);
 
@@ -69,13 +77,11 @@ export function ForgotPassword() {
 
     return (
         
-        <div className="container d-flex justify-content-center align-items-center vh-100">
+               <AuthLayout title="Forgot Password">
 
-            <div className="card auth-card shadow-lg p-4">
 
-                <h2 className="text-center mb-4">
-                    Forgot Password
-                </h2>
+
+                
 
                <AlertMessage
                     message={errorMessage}
@@ -156,8 +162,6 @@ export function ForgotPassword() {
 
                 </div>
 
-            </div>
-
-        </div>
+        </AuthLayout>
     );
 }

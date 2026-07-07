@@ -110,11 +110,6 @@ export function EmployerProfileForm() {
     return (
         <div className="card shadow-sm">
             <div className="card-body">
-
-        <h4 className="mb-4">
-            Company Profile
-        </h4>
-
         <form onSubmit={handleSubmit}>
 
             <AlertMessage
@@ -189,9 +184,6 @@ export function EmployerProfileForm() {
                 rows="5"
             />
             </div>
-
-            <br /><br />
-
             <div className="form-actions">
 
                 <button

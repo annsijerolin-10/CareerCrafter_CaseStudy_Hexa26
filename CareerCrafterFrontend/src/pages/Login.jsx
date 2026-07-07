@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import { loginUser } from "../api/AuthAxiosApi.js";
 import {useAuth} from "../context/AuthContext.jsx"
 import { AlertMessage } from "../components/AlertMessage.jsx";
+import { AuthLayout } from "../components/AuthLayout.jsx";
 
 export function Login(){
+
     const [loginData,setLoginData]=useState({
         email:"",
         password:""
@@ -13,6 +15,32 @@ export function Login(){
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState("");
     const { login } = useAuth();
+
+    useEffect(() => {
+
+    if (errorMessage) {
+
+        const timer = setTimeout(() => {
+            setErrorMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+
+}, [errorMessage]);
+
+useEffect(() => {
+
+    if (successMessage) {
+
+        const timer = setTimeout(() => {
+            setSuccessMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+
+}, [successMessage]);
 
     function handleChange(e){
         setLoginData({
@@ -25,10 +53,18 @@ export function Login(){
         setErrorMessage("");
         if(loginData.email.trim()===""){
           setErrorMessage("Email is required");
+    //       setTimeout(() => {
+    //     setErrorMessage("");
+    // }, 3000);
+
           return;
         }
         if(loginData.password.trim()===""){
           setErrorMessage("Password is required");
+    //       setTimeout(() => {
+    //     setErrorMessage("");
+    // }, 3000);
+
           return;
         }
         try{
@@ -36,30 +72,29 @@ export function Login(){
           setErrorMessage("");
           setSuccessMessage("Login successful! Redirecting...");
           setTimeout(() => {
-            login(response.data);
-            
-            if (response.data.role === "Employer") {
+            login(response);
 
-              navigate("/employer/dashboard");
-
+            if (response.role === "Employer") {
+                navigate("/employer/dashboard");
             }
-            else if (response.data.role === "JobSeeker") {
-
-              navigate("/jobseeker/dashboard");
-
-          }
-        },1200);
+            else if (response.role === "JobSeeker") {
+                navigate("/jobseeker/dashboard");
+            }
+        }, 1200);
 
 
     }
-    catch (error) {
+    catch (error) {  
 
-      setSuccessMessage("");
+    setSuccessMessage("");
 
-      setErrorMessage(
-          error.response?.data?.message ||
-          "Invalid Email or Password."
-      );
+    setErrorMessage(error.message);
+    // setTimeout(() => {
+    //     setErrorMessage("");
+    // }, 3000);
+
+
+
 
   }
 
@@ -67,23 +102,18 @@ export function Login(){
   }
 
   return (
-  <div className="container d-flex justify-content-center align-items-center min-vh-100">
+  
 
       
-        <div className="card auth-card shadow-lg p-4">
-      
-
-          <h2 className="text-center mb-4">
-              CareerCrafter Login
-          </h2>
-          <AlertMessage
-            message={errorMessage}
-        />
+        <AuthLayout title="CareerCrafter Login">
 
         <AlertMessage
-            type="success"
-            message={successMessage}
-        />
+        type="success"
+        message={successMessage}
+    />
+
+    <AlertMessage
+        message={errorMessage}/>
 
           <form onSubmit={handleSubmit}>
 
@@ -152,10 +182,8 @@ export function Login(){
               </Link>
 
           </div>
+          </AuthLayout>
 
 
-      </div>
-
-  </div>
   );
 }

@@ -5,7 +5,7 @@ export function AuthLayout({
 
     return (
 
-        <div className="container d-flex justify-content-center align-items-center vh-100">
+        <div className="container d-flex justify-content-center align-items-center min-vh-100">
 
             <div className="card auth-card shadow-lg p-4">
 

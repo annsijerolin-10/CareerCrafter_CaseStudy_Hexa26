@@ -101,6 +101,7 @@ namespace CareerCrafterAPI.Mappings
 
 
             CreateMap<Notification, NotificationResponseDto>();
+            CreateMap<EmployerNotification, EmployerNotificationDto>();
 
 
 

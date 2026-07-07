@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
@@ -23,6 +23,35 @@ export function ChangePasswordForm() {
 
     const [successMessage, setSuccessMessage] = useState("");
 
+
+    useEffect(() => {
+
+    if (errorMessage) {
+
+        const timer = setTimeout(() => {
+            setErrorMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+
+    }
+
+}, [errorMessage]);
+
+useEffect(() => {
+
+    if (successMessage) {
+
+        const timer = setTimeout(() => {
+            setSuccessMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+
+    }
+
+}, [successMessage]);
+
     function handleChange(e) {
 
         setPasswordData({
@@ -42,6 +71,12 @@ export function ChangePasswordForm() {
         setErrorMessage("");
 
         setSuccessMessage("");
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+
+            setErrorMessage("New Password and Confirm Password do not match.");
+            return;
+
+        }
 
         try {
 
@@ -59,19 +94,14 @@ export function ChangePasswordForm() {
                     passwordData.confirmPassword
 
             });
-
             setSuccessMessage(
                 "Password changed successfully."
             );
 
             setPasswordData({
-
                 currentPassword: "",
-
                 newPassword: "",
-
                 confirmPassword: ""
-
             });
 
         }

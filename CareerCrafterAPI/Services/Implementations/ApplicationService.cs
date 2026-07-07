@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CareerCrafterAPI.DTOs;
 using CareerCrafterAPI.Models;
+using CareerCrafterAPI.Repositories.Implementations;
 using CareerCrafterAPI.Repositories.Interfaces;
 using CareerCrafterAPI.Services.Interfaces;
 using System.Drawing.Text;
@@ -13,17 +14,20 @@ namespace CareerCrafterAPI.Services.Implementations
         private readonly ILogger<ApplicationService> _logger;
         private readonly IMapper _mapper;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IEmployerNotificationRepository _employerNotificationRepository;
         public ApplicationService(
             IApplicationRepository applicationRepository,
             ILogger<ApplicationService> logger,
             IMapper mapper,
-            INotificationRepository notificationRepository)
+            INotificationRepository notificationRepository,
+            IEmployerNotificationRepository employerNotificationRepository)
 
         {
             _applicationRepository = applicationRepository;
             _logger = logger;
             _mapper = mapper;
             _notificationRepository = notificationRepository;
+            _employerNotificationRepository = employerNotificationRepository;
 
         }
 
@@ -132,6 +136,19 @@ namespace CareerCrafterAPI.Services.Implementations
 
                 await _applicationRepository.AddApplicationAsync(application);
                 _logger.LogInformation("Application created successfully. ApplicationId: {ApplicationId}", application.ApplicationId);
+                await _employerNotificationRepository.AddNotificationAsync(
+                    new EmployerNotification
+                    {
+                        EmployerId = job.EmployerId,
+
+                        ApplicationId = application.ApplicationId,
+
+                        Message = $"A new application has been received for '{job.JobTitle}'.",
+
+                        CreatedDate = DateTime.Now,
+
+                        IsRead = false
+                    });
 
 
 

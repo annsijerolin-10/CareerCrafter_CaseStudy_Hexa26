@@ -6,6 +6,8 @@ import { ApplicationTable } from "../components/ApplicationTable";
 import { CandidateProfileModal } from "../components/CandidateProfileModal";
 import { getCandidateProfile } from "../api/EmployerAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
+import { useLocation } from "react-router-dom";
+import {markAllEmployerNotificationsRead} from "../api/EmployerNotificationAxiosApi";
 export function ManageApplications() {
 
     const { user } = useAuth();
@@ -15,11 +17,23 @@ export function ManageApplications() {
     const [message, setMessage] = useState("");
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [showCandidateModal, setShowCandidateModal] = useState(false);
-
+    const location = useLocation();
     useEffect(() => {
-     if (user.employerId) {
+
+        async function initialize() {
+
+            if (!user.employerId)
+                return;
+
+            await markAllEmployerNotificationsRead(
+                user.employerId,
+                user.token
+            );
+
             loadApplications();
         }
+
+        initialize();
 
     }, [user.employerId]);
 
@@ -43,6 +57,38 @@ export function ManageApplications() {
             }
 
             setApplications(allApplications);
+            const applicationId =
+    location.state?.applicationId;
+
+if (applicationId) {
+
+    setTimeout(() => {
+
+        const row =
+            document.getElementById(
+                `application-${applicationId}`
+            );
+
+        if (row) {
+
+            row.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            row.classList.add("table-warning");
+
+            setTimeout(() => {
+
+                row.classList.remove("table-warning");
+
+            }, 5000);
+
+        }
+
+    }, 300);
+
+}
         }
         catch (error) {
 

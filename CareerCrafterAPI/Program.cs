@@ -56,7 +56,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 
+builder.Services.AddScoped<IEmployerNotificationRepository, EmployerNotificationRepository>();
 
+builder.Services.AddScoped<IEmployerNotificationService, EmployerNotificationService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>

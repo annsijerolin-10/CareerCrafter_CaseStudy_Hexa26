@@ -149,7 +149,7 @@ if (jobData.applicationDeadline < today) {
         <form onSubmit={handleSubmit}>
 
             <h3>
-                {selectedJob ? "Update Job" : "Add Job"}
+                {selectedJob ? "Update Job" : "Add New Job"}
             </h3>
 
             <fieldset disabled={!profileCompleted}>
@@ -159,11 +159,11 @@ if (jobData.applicationDeadline < today) {
 
                 <AlertMessage message={errorMessage}/>
                
-                <div className="mb-3">
+                <div className="form-row">
 
-                    <label className="form-label">
+                <label>
                     Job Title
-                    </label>
+                </label>
                     
 
                 <input
@@ -176,10 +176,9 @@ if (jobData.applicationDeadline < today) {
                 />
                 </div>
 
-                <br /><br />
-                <div className="mb-3">
+                <div className="form-row">
 
-                    <label className="form-label">
+                <label>
                     Job Description
                     </label>
                 <input
@@ -192,10 +191,10 @@ if (jobData.applicationDeadline < today) {
                 />
                 </div>
 
-                <br /><br />
-                <div className="mb-3">
-                    
-                    <label className="form-label">
+
+                <div className="form-row">
+
+                <label>
                     Job Location
                     </label>
                 <input
@@ -208,10 +207,9 @@ if (jobData.applicationDeadline < today) {
                 />
                 </div>
 
-                <br /><br />
-                <div className="mb-3">
+                <div className="form-row">
 
-                    <label className="form-label">
+                <label>
                     Salary
                     </label>
                 <input
@@ -224,10 +222,9 @@ if (jobData.applicationDeadline < today) {
                 />
                 </div>
 
-                <br /><br />
-                <div className="mb-3">
+               <div className="form-row">
 
-                    <label className="form-label">
+                <label>
                     Required Skills
                     </label>
                 <input
@@ -240,10 +237,9 @@ if (jobData.applicationDeadline < today) {
                 />
                 </div>
 
-                <br /><br />
-                <div className="mb-3">
+                <div className="form-row">
 
-                    <label className="form-label">
+                <label>
                     Application DeadLine
                     </label>
                 <input
@@ -257,10 +253,11 @@ if (jobData.applicationDeadline < today) {
                             : new Date().toISOString().split("T")[0]
                     }
                     onChange={handleChange}
+                   
+
                 />
                 </div>
 
-                <br /><br />
 
                 <button className="btn btn-primary me-2" type="submit">
                     {selectedJob ? "Update" : "Add"}
