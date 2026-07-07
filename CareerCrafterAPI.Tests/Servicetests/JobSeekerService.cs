@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CareerCrafterAPI.DTOs;
 using CareerCrafterAPI.Models;
-using CareerCrafterAPI.Repositories.Implementations;
+
 using CareerCrafterAPI.Repositories.Interfaces;
 using CareerCrafterAPI.Services.Implementations;
 using Microsoft.Extensions.Logging;
@@ -53,9 +53,9 @@ namespace CareerCrafterAPI.Tests.Servicetests
                 .ReturnsAsync(jobSeeker);
 
 
-            _mockMapper
-        .Setup(m => m.Map<JobSeekerResponseDto>(It.IsAny<JobSeeker>()))
+            _mockMapper.Setup(m => m.Map<JobSeekerResponseDto>(It.IsAny<JobSeeker>()))
         .Returns(new JobSeekerResponseDto
+
         {
             JobSeekerId = 1,
             Phone = "9876543210",
@@ -76,9 +76,9 @@ namespace CareerCrafterAPI.Tests.Servicetests
         [Test]
         public async Task GetJobSeekerByIdAsync_ReturnsNull_WhenNotFound()
         {
-            _mockRepository
-                .Setup(r => r.GetJobSeekerByIdAsync(100))
+            _mockRepository.Setup(r => r.GetJobSeekerByIdAsync(100))
                 .ReturnsAsync((JobSeeker?)null);
+
 
             var result =
                 await _jobSeekerService.GetJobSeekerByIdAsync(100);
@@ -191,6 +191,113 @@ namespace CareerCrafterAPI.Tests.Servicetests
 
             Assert.IsNotNull(result);
             Assert.That(result.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task UpdateJobSeekerAsync_ReturnsUpdatedJobSeeker()
+        {
+            var jobSeeker = new JobSeeker
+            {
+                JobSeekerId = 1,
+                Phone = "9999999999",
+                Address = "Old Address",
+                Skills = "Java",
+                ExperienceYears = 1,
+                UserId = 1
+            };
+
+            var dto = new JobSeekerUpdateDto
+            {
+                Phone = "9876543210",
+                Address = "Chennai",
+                Skills = "C#, SQL",
+                ExperienceYears = 3
+            };
+
+            _mockRepository
+                .Setup(r => r.GetJobSeekerByIdAsync(1))
+                .ReturnsAsync(jobSeeker);
+
+            _mockMapper
+                .Setup(m => m.Map(dto, jobSeeker));
+
+            _mockRepository
+                .Setup(r => r.UpdateJobSeekerAsync(jobSeeker))
+                .Returns(Task.CompletedTask);
+
+            _mockMapper
+                .Setup(m => m.Map<JobSeekerResponseDto>(jobSeeker))
+                .Returns(new JobSeekerResponseDto
+                {
+                    JobSeekerId = 1,
+                    Phone = "9876543210",
+                    Address = "Chennai",
+                    Skills = "C#, SQL",
+                    ExperienceYears = 3,
+                    UserId = 1
+                });
+
+            var result =
+                await _jobSeekerService.UpdateJobSeekerAsync(1, dto);
+
+            Assert.IsNotNull(result);
+
+            Assert.That(result.Phone, Is.EqualTo("9876543210"));
+
+            _mockRepository.Verify(
+                r => r.UpdateJobSeekerAsync(It.IsAny<JobSeeker>()),
+                Times.Once);
+        }
+
+        [Test]
+        public async Task UpdateJobSeekerAsync_ReturnsNull_WhenJobSeekerNotFound()
+        {
+            var dto = new JobSeekerUpdateDto
+            {
+                Phone = "9876543210",
+                Address = "Chennai",
+                Skills = "C#, SQL",
+                ExperienceYears = 3
+            };
+
+            _mockRepository
+                .Setup(r => r.GetJobSeekerByIdAsync(100))
+                .ReturnsAsync((JobSeeker?)null);
+
+            var result =
+                await _jobSeekerService.UpdateJobSeekerAsync(100, dto);
+
+            Assert.IsNull(result);
+
+            _mockRepository.Verify(
+                r => r.UpdateJobSeekerAsync(It.IsAny<JobSeeker>()),
+                Times.Never);
+        }
+
+        [Test]
+        public async Task GetDashboardAsync_ReturnsDashboard()
+        {
+            var dashboard = new JobSeekerDashboardDto
+            {
+                TotalApplications = 8,
+                AppliedCount = 3,
+                ShortlistedCount = 2,
+                RejectedCount = 2,
+                WithdrawnCount = 1
+            };
+
+            _mockRepository
+                .Setup(r => r.GetDashboardAsync(1))
+                .ReturnsAsync(dashboard);
+
+            var result =
+                await _jobSeekerService.GetDashboardAsync(1);
+
+            Assert.IsNotNull(result);
+
+            Assert.That(result.TotalApplications, Is.EqualTo(8));
+
+            Assert.That(result.ShortlistedCount, Is.EqualTo(2));
         }
     }
 }
