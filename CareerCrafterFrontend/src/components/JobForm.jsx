@@ -21,6 +21,7 @@ export function JobForm({
     });
 
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
     useEffect(() => {
 
@@ -38,6 +39,22 @@ export function JobForm({
 
     }, [selectedJob]);
 
+    useEffect(() => {
+
+        if (!errorMessage && !successMessage)
+            return;
+
+        const timer = setTimeout(() => {
+
+            setErrorMessage("");
+            setSuccessMessage("");
+
+        }, 3000);
+
+        return () => clearTimeout(timer);
+
+    }, [errorMessage, successMessage]);
+
     function handleChange(e) {
         setJobData({
             ...jobData,
@@ -47,47 +64,47 @@ export function JobForm({
 
     async function handleSubmit(e) {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    setErrorMessage("");
+        setErrorMessage("");
 
-    if (jobData.jobTitle.trim() === "") {
-        setErrorMessage("Job Title is required");
+        if (jobData.jobTitle.trim() === "") {
+            setErrorMessage("Job Title is required");
+            return;
+        }
+
+        if (jobData.jobDescription.trim() === "") {
+            setErrorMessage("Job Description is required");
+            return;
+        }
+
+        if (jobData.location.trim() === "") {
+            setErrorMessage("Location is required");
+            return;
+        }
+
+        if (jobData.salary === "" || Number(jobData.salary) <= 0) {
+            setErrorMessage("Enter a valid salary");
+            return;
+        }
+
+        if (jobData.requiredSkills.trim() === "") {
+            setErrorMessage("Required Skills are required");
+            return;
+        }
+        if (jobData.applicationDeadline === "") {
+        setErrorMessage("Application Deadline is required");
         return;
     }
 
-    if (jobData.jobDescription.trim() === "") {
-        setErrorMessage("Job Description is required");
+    const today = new Date().toISOString().split("T")[0];
+
+    if (jobData.applicationDeadline < today) {
+        setErrorMessage(
+            "Application Deadline cannot be in the past."
+        );
         return;
     }
-
-    if (jobData.location.trim() === "") {
-        setErrorMessage("Location is required");
-        return;
-    }
-
-    if (jobData.salary === "" || Number(jobData.salary) <= 0) {
-        setErrorMessage("Enter a valid salary");
-        return;
-    }
-
-    if (jobData.requiredSkills.trim() === "") {
-        setErrorMessage("Required Skills are required");
-        return;
-    }
-    if (jobData.applicationDeadline === "") {
-    setErrorMessage("Application Deadline is required");
-    return;
-}
-
-const today = new Date().toISOString().split("T")[0];
-
-if (jobData.applicationDeadline < today) {
-    setErrorMessage(
-        "Application Deadline cannot be in the past."
-    );
-    return;
-}
 
     try {
 
@@ -98,6 +115,7 @@ if (jobData.applicationDeadline < today) {
                 jobData,
                 user.token
             );
+            setSuccessMessage("Job updated successfully.");
 
         }
         else {
@@ -109,9 +127,8 @@ if (jobData.applicationDeadline < today) {
                 },
                 user.token
             );
-
-        }
-
+            setSuccessMessage("Job added successfully.");
+        }        
         await loadJobs();
 
         handleCancel();
@@ -148,13 +165,16 @@ if (jobData.applicationDeadline < today) {
 
         <form onSubmit={handleSubmit}>
 
-            <h3>
+            <h5>
                 {selectedJob ? "Update Job" : "Add New Job"}
-            </h3>
+            </h5>
 
             <fieldset disabled={!profileCompleted}>
                 
-            
+                 <AlertMessage
+                    type="success"
+                    message={successMessage}
+                />
                 
 
                 <AlertMessage message={errorMessage}/>
@@ -181,13 +201,13 @@ if (jobData.applicationDeadline < today) {
                 <label>
                     Job Description
                     </label>
-                <input
+                <textarea
                     className="form-control"
-                    type="text"
                     name="jobDescription"
-                    placeholder="Job Description"
                     value={jobData.jobDescription}
                     onChange={handleChange}
+                    placeholder="Enter job description..."
+                    rows={4}
                 />
                 </div>
 

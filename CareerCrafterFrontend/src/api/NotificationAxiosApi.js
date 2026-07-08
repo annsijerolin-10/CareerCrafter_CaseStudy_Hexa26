@@ -78,3 +78,32 @@ export async function markNotificationAsRead(
     }
 
 }
+
+export async function markAllNotificationsAsRead(
+    jobSeekerId,
+    token
+) {
+    try {
+
+        await axios.put(
+            `${BASE_URL}/jobseeker/${jobSeekerId}/read-all`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(
+                error,
+                "Failed to update notifications."
+            )
+        );
+
+    }
+}

@@ -8,6 +8,10 @@ function getErrorMessage(error, fallback) {
     if (error.response?.data?.Message)
         return error.response.data.Message;
 
+
+    if (error.response?.data?.details)
+        return error.response.data.details;
+
     if (error.response?.data?.message)
         return error.response.data.message;
 
@@ -23,7 +27,6 @@ function getErrorMessage(error, fallback) {
         return error.response.data.title;
 
     return fallback;
-
 }
 export async function loginUser(loginData) {
 
@@ -87,11 +90,26 @@ export async function changePassword(passwordData)
 
 export async function forgotPassword(data) {
 
-    const response = await axios.put(
-        `${BASE_URL}/forgot-password`,
-        data
-    );
+    try {
 
-    return response.data;
+        const response = await axios.put(
+            `${BASE_URL}/forgot-password`,
+            data
+        );
+
+        return response.data;
+
+    }
+    catch (error) {
+
+        throw new Error(
+            getErrorMessage(
+                error,
+                "Password reset failed."
+            )
+        );
+
+    }
+
 
 }

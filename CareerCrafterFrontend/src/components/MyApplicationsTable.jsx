@@ -18,14 +18,13 @@ export function MyApplicationsTable({
     }
 
     return (
+        <div className="card table-card">
 
-        <div className="card shadow rounded-4">
+        <div className="card-body">
 
-            <div className="card-body">
+        <div className="table-responsive">
 
-                <div className="table-responsive">
-
-                    <table className="table table-striped table-hover align-middle">
+                    <table className="table  table-hover align-middle">
 
                         <thead className="table-primary">
 

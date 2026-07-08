@@ -14,39 +14,39 @@ export function EmployerDashboard() {
     }
 
     const navButton = ({ isActive }) =>
-    `btn ${
-        isActive
-            ? "btn-primary"
-            : "btn-outline-primary"
-    } px-5 py-2`;
+    `dashboard-link ${isActive ? "active-link" : ""}`;
 
     return (
 
         <div className="container py-4">
 
-            <div className="text-center mb-4">
+           
 
-                <h1 className="fw-bold">
-                    CareerCrafter - Employer
+            <div className="dashboard-navbar shadow-sm">
+                <div className="text-center mb-5">
+
+                <h1 className="display-5 fw-bold text-primary">
+                    <i className="bi bi-briefcase-fill me-2"></i>
+                    CareerCrafter
                 </h1>
 
-                <h4 className="text-muted">
-                    Welcome {user.fullName}
+                <h4 className="text-secondary">
+                    Welcome back,{user.fullName}
+                    
+                
                 </h4>
-
             </div>
 
-            <div className="card shadow rounded-4 mb-4">
+                <div className="dashboard-nav-content">
 
-                <div className="card-body d-flex align-items-center">
-
-                    <div className="d-flex grow justify-content-center gap-3 flex-wrap">
+                   <div className="dashboard-menu">
 
                         <NavLink
                             end
                             to=""
                             className={navButton}
                         >
+                        <i className="bi bi-speedometer2 me-2"></i>
                             Dashboard
                         </NavLink>
 
@@ -54,6 +54,7 @@ export function EmployerDashboard() {
                             to="jobs"
                             className={navButton}
                         >
+                            <i className="bi bi-briefcase me-2"></i>
                             Manage Jobs
                         </NavLink>
 
@@ -61,6 +62,7 @@ export function EmployerDashboard() {
                             to="applications"
                             className={navButton}
                         >
+                            <i className="bi bi-file-earmark-text me-2"></i>
                             Applications
                             {unreadCount > 0 && (
                                 <span className="badge bg-danger ms-2">
@@ -72,16 +74,17 @@ export function EmployerDashboard() {
                             to="profile"
                             className={navButton}
                         >
+                            <i className="bi bi-person-circle me-2"></i>
                             My Profile
                         </NavLink>
 
                     </div>
 
-                    <button
-                        className="btn btn-danger ms-auto"
-
+                   <button
+                        className="btn btn-danger shrink-0"
                         onClick={handleLogout}
                     >
+                        <i className="bi bi-box-arrow-right me-2"></i>
                         Logout
                     </button>
 

@@ -188,11 +188,9 @@ async function handleConfirmApply() {
     try {
 
         const applicationData = {
-
             jobId: selectedJob.jobId,
             jobSeekerId: user.jobSeekerId,
             resumeId: selectedResumeId
-
         };
 
         await applyJob(
@@ -202,17 +200,17 @@ async function handleConfirmApply() {
         const updatedApplications =await getApplicationsByJobSeeker(   
             user.jobSeekerId,
             user.token
-    );
+        );
 
-    setApplications(updatedApplications);
-    setMessage("Job applied successfully.");
-    setTimeout(() => {
-        setMessage("");
-    }, 3000);
+        setApplications(updatedApplications);
+        setMessage("Job applied successfully.");
+        setTimeout(() => {
+            setMessage("");
+        }, 3000);
 
-    handleCancel();
+        handleCancel();
 
-    await loadJobs();
+        await loadJobs();
     }
     catch (error) {
 
@@ -231,7 +229,6 @@ async function handleSearch() {
             searchTitle.trim() === "" &&
             searchLocation.trim() === ""
         ) {
-
             await loadJobs();
             return;
 
@@ -297,6 +294,8 @@ const profileCompleted =
                 message={error}
             />
             {
+                jobSeekerProfile &&
+    (
                 !profileCompleted
                 ?
                 (
@@ -318,9 +317,7 @@ const profileCompleted =
                             }
                         >
                             Complete Profile
-                        </button>
-
-                            
+                        </button>                       
                     </div>
                 )
                 :
@@ -328,7 +325,7 @@ const profileCompleted =
                 (
                     <>
                         <h3 className="text-center mb-4">
-                            Recommended Jobs
+                                Jobs Recommended for you
                         </h3>
 
                         <JobCardList
@@ -339,113 +336,132 @@ const profileCompleted =
                             profileCompleted={profileCompleted}
                         />
 
-                        <hr />
+                    
 
                     </>
 
 
-                )
+                ))
             } 
             <h3 className="text-center mb-4">
                 Available Jobs
-            </h3>        
-            <div className="row g-3 align-items-end mb-4">
+            </h3>
 
-                <div className="col-4">
+            <div className="card mb-4 shadow-sm">
 
-                    <select
-                        className="form-select"
-                        onChange={(e)=>{
+                <div className="card-body">
 
-                            switch(e.target.value){
+                    <h5 className="mb-3 fw-semibold">
+                        Find Your Dream Job
+                    </h5>
 
-                                case "Newest":
-                                    setSortBy("postedDate");
-                                    setDescending(true);
-                                    break;
+                    <div className="row g-3">
 
-                                case "Oldest":
-                                    setSortBy("postedDate");
-                                    setDescending(false);
-                                    break;
+                        <div className="col-md-3">
 
-                                case "SalaryHigh":
-                                    setSortBy("salary");
-                                    setDescending(true);
-                                    break;
+                            <select
+                                className="form-select"
+                                onChange={(e) => {
 
-                                case "SalaryLow":
-                                    setSortBy("salary");
-                                    setDescending(false);
-                                    break;
-                            }
+                                    switch (e.target.value) {
 
-                            setPageNumber(1);
+                                        case "Newest":
+                                            setSortBy("postedDate");
+                                            setDescending(true);
+                                            break;
 
-                        }}
-                    >
-                        
-                        <option value="">
-                            --Sort by--
-                        </option>
-                        
+                                        case "Oldest":
+                                            setSortBy("postedDate");
+                                            setDescending(false);
+                                            break;
 
-                        <option value="Newest">
-                            Newest First
-                        </option>
+                                        case "SalaryHigh":
+                                            setSortBy("salary");
+                                            setDescending(true);
+                                            break;
 
-                        <option value="Oldest">
-                            Oldest First
-                        </option>
+                                        case "SalaryLow":
+                                            setSortBy("salary");
+                                            setDescending(false);
+                                            break;
+                                    }
 
-                        <option value="SalaryHigh">
-                            Salary High → Low
-                        </option>
+                                    setPageNumber(1);
 
-                        <option value="SalaryLow">
-                            Salary Low → High
-                        </option>
+                                }}
+                            >
 
-                    </select>
+                                <option value="">
+                                    Sort Jobs
+                                </option>
+
+                                <option value="Newest">
+                                    Newest First
+                                </option>
+
+                                <option value="Oldest">
+                                    Oldest First
+                                </option>
+
+                                <option value="SalaryHigh">
+                                    Salary High → Low
+                                </option>
+
+                                <option value="SalaryLow">
+                                    Salary Low → High
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div className="col-md-4">
+
+                            <div className="input-group">
+
+                                <span className="input-group-text">
+                                    <i className="bi bi-search"></i>
+                                </span>
+
+                                <input
+                                    className="form-control"
+                                    placeholder="Search by Job Title"
+                                    value={searchTitle}
+                                    onChange={(e) =>
+                                        setSearchTitle(e.target.value)
+                                    }
+                                />
+
+                            </div>
+
+                        </div>
+                        <div className="col-md-5">
+
+                            <div className="input-group">
+
+                                <span className="input-group-text">
+                                    <i className="bi bi-geo-alt"></i>
+                                </span>
+
+                                <input
+                                    className="form-control"
+                                    placeholder="Search by Location"
+                                    value={searchLocation}
+                                    onChange={(e) =>
+                                        setSearchLocation(e.target.value)
+                                    }
+                                />
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-                <div className="col-md-4">
-
-
-                    <input
-                        className="form-control"
-                        placeholder="Search Job Title"
-                        value={searchTitle}
-                        onChange={(e)=>setSearchTitle(e.target.value)}
-                    />
-
-                </div>
-
-                <div className="col-md-4">
-
-                    <input
-                        className="form-control"
-                        placeholder="Search by Location"
-                        value={searchLocation}
-                        onChange={(e)=>setSearchLocation(e.target.value)}
-                    />
-
-                </div>
-
-                {/* <div className="col-md-2">
-
-                    <button
-                        className="btn btn-primary w-100"
-                        onClick={handleSearch}
-                    >
-                        Search
-                    </button>
-
-                </div> */}
-
-            </div>
-                                    
+            </div>                                    
             <JobCardList
                 jobs={jobs}
                 applications={applications}

@@ -47,5 +47,19 @@ namespace CareerCrafterAPI.Controllers
                 Message = "Notification marked as read"
             });
         }
+
+        [HttpPut("jobseeker/{jobSeekerId}/read-all")]
+        [Authorize(Roles = "JobSeeker")]
+        public async Task<IActionResult> MarkAllAsRead(
+    int jobSeekerId)
+        {
+            await _notificationService
+                .MarkAllAsReadAsync(jobSeekerId);
+
+            return Ok(new
+            {
+                Message = "All notifications marked as read."
+            });
+        }
     } 
 }

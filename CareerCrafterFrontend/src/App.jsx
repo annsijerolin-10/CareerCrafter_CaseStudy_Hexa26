@@ -22,6 +22,7 @@ import { Notifications } from './pages/Notifications'
 
 import { MyProfile } from './pages/MyProfile'
 import { ForgotPassword } from './pages/ForgotPassword'
+import { NotFound } from './pages/NotFound'
 function App() {
   
 
@@ -98,6 +99,10 @@ function App() {
         
 
     </Route>
+    <Route
+    path="*"
+    element={<NotFound />}
+/>
     </Routes>
 
       

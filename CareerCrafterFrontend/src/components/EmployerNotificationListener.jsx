@@ -10,18 +10,13 @@ import {getEmployerNotifications} from "../api/EmployerNotificationAxiosApi";
 export function EmployerNotificationListener() {
 
     const { user } = useAuth();
-
     const { setUnreadCount } = useNotification();
-
     const navigate = useNavigate();
-
     const shownNotifications = useRef(new Set());
 
     useEffect(() => {
-
         if (!user?.employerId)
             return;
-
         loadNotifications();
 
         const interval = setInterval(
@@ -102,7 +97,7 @@ export function EmployerNotificationListener() {
                     ),
 
                     {
-                        autoClose: false,
+                        autoClose: 10000,
                         closeOnClick: false,
                         closeButton: true,
                         draggable: true

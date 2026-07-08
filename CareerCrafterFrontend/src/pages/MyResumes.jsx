@@ -150,29 +150,19 @@ const [selectedResumeId, setSelectedResumeId] = useState(null);
     return (
 
         <div>
-            
-    
-
-            <h2>My Resumes</h2>
-            
-                 <AlertMessage
+                              
+            <AlertMessage
                     type="success"
                     message={message}
                 />
-                <AlertMessage
+            <AlertMessage
                     message={error}
                 />
-                            
-            
-
-            
-
             <ResumeForm
-                onUpload={handleUpload}
-            
-               
-                
+                onUpload={handleUpload}              
             />
+            <h4>My Resumes</h4>
+
 
             <ResumeTable
                 resumes={resumes}

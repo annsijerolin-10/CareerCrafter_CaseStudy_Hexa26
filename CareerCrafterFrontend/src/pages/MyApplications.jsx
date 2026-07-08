@@ -64,7 +64,9 @@ export function MyApplications() {
 
         <div>
 
-            <h2>My Applications</h2>
+            <h2 className="text-center mb-4">
+                My Applications
+            </h2>
             <AlertMessage
                 message={error}
             />

@@ -89,7 +89,7 @@ export function EmployerHome() {
                 !profileCompleted && (
 
                     <div className="alert alert-warning">
-                      <h3>Complete Company Profile</h3>
+                      
 
                         <p>
                             Complete your company profile to                  
@@ -124,7 +124,7 @@ export function EmployerHome() {
                         <div className="col-md-3">
                             <div className="card dashboard-card">
                                 <div className="card-body text-center">
-                                    <h6>Total Jobs</h6>
+                                    <h6>Total Jobs Posted</h6>
                                     <h2>{dashboard.totalJobsPosted}</h2>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@ export function EmployerHome() {
                         <div className="col-md-3">
                             <div className="card dashboard-card">
                                 <div className="card-body text-center">
-                                    <h6>Total Applications</h6>
+                                    <h6>Total Applications Received</h6>
                                     <h2>{dashboard.totalApplications}</h2>
                                 </div>
                             </div>

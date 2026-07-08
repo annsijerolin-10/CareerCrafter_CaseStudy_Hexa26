@@ -32,6 +32,28 @@ export function EmployerProfileForm() {
 
     }, []);
 
+    useEffect(() => {
+
+    if (!successMessage) return;
+
+    const timer = setTimeout(() => {
+        setSuccessMessage("");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+
+}, [successMessage]);
+
+    useEffect(() => {
+        if (!errorMessage) return;
+        const timer = setTimeout(() => {
+            setErrorMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+
+    }, [errorMessage]);
+
     async function loadProfile() {
 
         try {

@@ -72,7 +72,7 @@ export function JobSeekerHome() {
 
         <div>
 
-            {/* <h2>Job Seeker Dashboard</h2> */}
+           
             <AlertMessage message={error}/>
 
             {
@@ -81,9 +81,7 @@ export function JobSeekerHome() {
                     <div className="alert alert-warning shadow-sm">
                     
 
-                    <h3>
-                        Complete Your Profile
-                    </h3>
+                    
 
                     <p>
                         Complete your profile to   

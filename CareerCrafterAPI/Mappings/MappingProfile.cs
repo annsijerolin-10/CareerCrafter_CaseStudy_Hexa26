@@ -37,7 +37,12 @@ namespace CareerCrafterAPI.Mappings
                         src => src.Employer != null
                             ? src.Employer.CompanyName
                             : ""
-                    ));
+                    ))
+
+    .ForMember(
+        dest => dest.CompanyDescription,
+        opt => opt.MapFrom(src => src.Employer != null ? src.Employer.CompanyDescription : "")
+    );
             CreateMap<JobCreateDto, Job>();
             CreateMap<JobUpdateDto, Job>();
 

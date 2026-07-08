@@ -9,7 +9,6 @@ import { useNotification } from "../context/NotificationContext";
 export function NotificationListener() {
 
     const { user } = useAuth();
-
     const shownNotifications = useRef([]);
     const { setUnreadCount } = useNotification();
 
@@ -19,7 +18,6 @@ export function NotificationListener() {
             return;
 
         checkNotifications();
-
         const interval = setInterval(
             checkNotifications,
             10000

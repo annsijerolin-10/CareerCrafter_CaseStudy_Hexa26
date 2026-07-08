@@ -1,99 +1,70 @@
 export function NotificationTable({
-    notifications,
-    onMarkAsRead
+    notifications
 }) {
 
     if (notifications.length === 0) {
-
         return <p>No Notifications Found.</p>;
-
     }
 
     return (
 
-        <table border="1" cellPadding="10">
+        <div className="card shadow rounded-4">
 
-            <thead className="table-primary">
+            <div className="card shadow-sm bg-white border-0">
 
-                <tr>
+                <div className="table-responsive">
 
-                    <th>Message</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <table className="table  table-hover align-middle">
 
-                </tr>
+                        <thead className="table-primary">
 
-            </thead>
+                            <tr>
+                                <th>Message</th>
+                                <th>Date</th>
+                                
+                            </tr>
 
-            <tbody>
+                        </thead>
 
-                {
+                        <tbody>
 
-                    notifications.map(notification => (
+                            {notifications.map(notification => (
 
-                        <tr
-                            key={notification.notificationId}
-                            style={{
-                                fontWeight: notification.isRead
-                                    ? "normal"
-                                    : "bold"
-                            }}
-                        >
+                                <tr
+                                    key={notification.notificationId}
+                                    style={{
+                                        fontWeight: notification.isRead
+                                            ? "normal"
+                                            : "bold"
+                                    }}
+                                >
 
-                            <td>{notification.message}</td>
+                                    <td>
+                                        {notification.message}
+                                    </td>
 
-                            <td>
-                                {
-                                    new Date(
-                                        notification.createdDate
-                                    ).toLocaleString()
-                                }
-                            </td>
+                                    <td>
+                                        {
+                                            new Date(
+                                                notification.createdDate
+                                            ).toLocaleString()
+                                        }
+                                    </td>
 
-                            <td>
+                                   
+                                </tr>
 
-                                {
-                                    notification.isRead
-                                        ? "Read"
-                                        : "Unread"
-                                }
+                            ))}
 
-                            </td>
+                        </tbody>
 
-                            <td>
+                    </table>
 
-                                {
+                </div>
 
-                                    !notification.isRead ?
+            </div>
 
-                                        <button
-                                            onClick={() =>
-                                                onMarkAsRead(
-                                                    notification.notificationId
-                                                )
-                                            }
-                                        >
-                                            Mark as Read
-                                        </button>
-
-                                        :
-
-                                        "-"
-
-                                }
-
-                            </td>
-
-                        </tr>
-
-                    ))
-
-                }
-
-            </tbody>
-
-        </table>
+        </div>
 
     );
 

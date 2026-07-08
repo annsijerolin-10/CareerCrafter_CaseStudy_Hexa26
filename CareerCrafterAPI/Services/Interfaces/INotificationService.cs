@@ -14,5 +14,6 @@ namespace CareerCrafterAPI.Services.Interfaces
      
 
         Task<bool> MarkAsReadAsync(int notificationId);
+        Task MarkAllAsReadAsync(int jobSeekerId);
     }
 }

@@ -39,6 +39,23 @@ namespace CareerCrafterAPI.Repositories.Implementations
                 _context.Notifications.Update(notification);
                 await _context.SaveChangesAsync();
             }
+        public async Task MarkAllAsReadAsync(int jobSeekerId)
+        {
+            var notifications = await _context.Notifications
+                .Where(n =>
+                    n.JobSeekerId == jobSeekerId &&
+                    !n.IsRead)
+                .ToListAsync();
+
+            foreach (var notification in notifications)
+            {
+                notification.IsRead = true;
+            }
+
+            await _context.SaveChangesAsync();
         }
+
+
+    }
     }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../api/AuthAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
@@ -15,7 +15,8 @@ export function ForgotPassword() {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     function handleChange(e) {
 
         setFormData({
@@ -24,7 +25,29 @@ export function ForgotPassword() {
         });
 
     }
+    useEffect(() => {
 
+    if (!successMessage) return;
+
+    const timer = setTimeout(() => {
+        setSuccessMessage("");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+
+}, [successMessage]);
+
+useEffect(() => {
+
+    if (!errorMessage) return;
+
+    const timer = setTimeout(() => {
+        setErrorMessage("");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+
+}, [errorMessage]);
     async function handleSubmit(e) {
 
         e.preventDefault();
@@ -49,9 +72,9 @@ export function ForgotPassword() {
 
         if (formData.newPassword !== formData.confirmPassword) {
             setErrorMessage("New Password and Confirm Password do not match.");
-            setTimeout(() => {
-                navigate("/");
-            }, 1500);
+            // setTimeout(() => {
+            //     navigate("/");
+            // }, 1500);
             return;
         }
 
@@ -117,14 +140,38 @@ export function ForgotPassword() {
                             New Password
                         </label>
 
+                        <div className="input-group">
+
                         <input
-                            type="password"
+                            type={
+                                showNewPassword
+                                    ? "text"
+                                    : "password"
+                            }
                             name="newPassword"
                             className="form-control"
                             placeholder="Enter New Password"
                             value={formData.newPassword}
                             onChange={handleChange}
                         />
+
+                        <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={() =>
+                                setShowNewPassword(!showNewPassword)
+                            }
+                        >
+                            <i
+                                className={
+                                    showNewPassword
+                                        ? "bi bi-eye-slash"
+                                        : "bi bi-eye"
+                                }
+                            ></i>
+                        </button>
+
+                    </div>
 
                     </div>
 
@@ -134,14 +181,38 @@ export function ForgotPassword() {
                             Confirm Password
                         </label>
 
+                       <div className="input-group">
+
                         <input
-                            type="password"
+                            type={
+                                showConfirmPassword
+                                    ? "text"
+                                    : "password"
+                            }
                             name="confirmPassword"
                             className="form-control"
                             placeholder="Confirm New Password"
                             value={formData.confirmPassword}
                             onChange={handleChange}
                         />
+
+                        <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={() =>
+                                setShowConfirmPassword(!showConfirmPassword)
+                            }
+                        >
+                            <i
+                                className={
+                                    showConfirmPassword
+                                        ? "bi bi-eye-slash"
+                                        : "bi bi-eye"
+                                }
+                            ></i>
+                        </button>
+
+                    </div>
 
                     </div>
 

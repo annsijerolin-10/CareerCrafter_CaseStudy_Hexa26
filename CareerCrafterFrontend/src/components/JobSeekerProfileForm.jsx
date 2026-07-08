@@ -100,7 +100,7 @@ export function JobSeekerProfileForm() {
     }
 
     return (
-        <div className="card dashboard-card">
+        <div className="card shadow-sm">
         <div className="card-body">
 
         <form onSubmit={handleSubmit}>

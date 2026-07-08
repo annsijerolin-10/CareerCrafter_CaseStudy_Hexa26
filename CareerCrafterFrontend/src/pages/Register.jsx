@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import {useNavigate,Link} from "react-router-dom";
 import {registerUser} from "../api/userAxiosApi";
 import { AlertMessage } from "../components/AlertMessage";
@@ -19,7 +19,30 @@ export function Register(){
     });
     const[errorMessage,setErrorMessage]=useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
+    useEffect(() => {
+
+    if (errorMessage) {
+
+        const timer = setTimeout(() => {
+            setErrorMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+
+}, [errorMessage]);
+
+    useEffect(() => {
+    if (successMessage) {
+        const timer = setTimeout(() => {
+            setSuccessMessage("");
+        }, 3000);
+        return () => clearTimeout(timer);
+    }
+
+}, [successMessage]);
     function handleChange(e) {
 
         const { name, value } = e.target;
@@ -27,19 +50,17 @@ export function Register(){
         if (name === "role") {
 
             if (value === "Employer") {
-
                 setUserData({
                     ...userData,
                     role: value,
                     phone: "",
                     address: "",
                     skills: "",
-                    experienceYears: ""
+                    experienceYears: 0
                 });
 
             }
             else {
-
                 setUserData({
                     ...userData,
                     role: value,
@@ -89,7 +110,7 @@ export function Register(){
         }
         catch (error) {
 
-    setErrorMessage(error.message);
+            setErrorMessage(error.message);
 
 }
     }
@@ -99,7 +120,7 @@ return(
     <AuthLayout title="Create Account">
 
     <form onSubmit={handleSubmit}>
-        <h2>Register</h2>
+        
         <AlertMessage
             message={errorMessage}
         />
@@ -135,20 +156,40 @@ return(
                 value={userData.email}
                 onChange={handleChange}
             />   
-        </div>  
-         <div className="mb-3">
+                </div>  
+                <div className="mb-3">
 
-            <label className="form-label">
-                Password
-            </label>   
+                    <label className="form-label">
+                        Password
+                    </label>   
+                    <div className="input-group">
+
             <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 className="form-control"
                 placeholder="Enter the Password"
                 value={userData.password}
                 onChange={handleChange}
             />
+
+            <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() =>
+                    setShowPassword(!showPassword)
+                }
+            >
+                <i
+                    className={
+                        showPassword
+                            ? "bi bi-eye-slash"
+                            : "bi bi-eye"
+                    }
+                ></i>
+            </button>
+
+        </div>
         </div>
 
         <div className="mb-3">
@@ -281,9 +322,8 @@ return(
         <div>
         <button
             type="submit"
-            className="btn btn-success w-100"
-        >
-            Register
+            className="btn btn-success w-100">
+                Register
         </button>
         </div>
         <div className="text-center mt-3">

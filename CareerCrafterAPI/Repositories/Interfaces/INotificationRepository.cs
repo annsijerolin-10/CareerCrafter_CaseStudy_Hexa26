@@ -11,5 +11,6 @@ namespace CareerCrafterAPI.Repositories.Interfaces
         Task<Notification?> GetByIdAsync(int notificationId);
 
         Task UpdateAsync(Notification notification);
+        Task MarkAllAsReadAsync(int jobSeekerId);
     }
 }

@@ -28,13 +28,13 @@ export function ResumeForm({
     }
 
     return (
-        <div className="card dashboard-card mb-4">
+        <div className="card shadow-sm mt-4">
 
-        <div className="card-body">
+            <div className="card-body">
 
         
 
-            <h3>Upload Resume</h3>
+            <h4>Upload Resume</h4>
             <AlertMessage
                 message={error}
                 />

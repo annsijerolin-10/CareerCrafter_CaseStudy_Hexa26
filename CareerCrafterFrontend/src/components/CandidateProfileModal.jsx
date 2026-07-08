@@ -36,7 +36,7 @@ export function CandidateProfileModal({
                     <div className="modal-header">
 
                         <h5 className="modal-title">
-                            Candidate Profile
+                            Candidate Details
                         </h5>
 
                         <button
@@ -142,7 +142,7 @@ export function CandidateProfileModal({
 
                     </div>
 
-                    <div className="modal-footer">
+                    {/* <div className="modal-footer">
 
                         <button
                             className="btn btn-secondary"
@@ -151,7 +151,7 @@ export function CandidateProfileModal({
                             Close
                         </button>
 
-                    </div>
+                    </div> */}
 
                 </div>
 

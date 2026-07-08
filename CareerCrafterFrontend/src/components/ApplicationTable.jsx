@@ -176,11 +176,11 @@ export function ApplicationTable({
     }
 
     return (
-        <div className="card shadow-sm">
+        <div className="table-card">
 
     <div className="card-body">
         <div className="table-responsive">
-        <table className="table table-striped table-hover align-middle">
+        <table className="table table-hover align-middle">
             <thead className="table-primary">
                 <tr>
                     <th>Applicant</th>

@@ -19,12 +19,13 @@ export function ManageJobs() {
     const navigate = useNavigate();
 
    useEffect(() => {
-    if (user.employerId) {
-        loadJobs();
-        loadEmployerProfile();
-    }
+        if (user.employerId) {
+            loadJobs();
+            loadEmployerProfile();
+        }
 
-}, [user.employerId]);
+    }, [user.employerId]);
+
 
    async function loadJobs() {
         try {
@@ -64,17 +65,20 @@ export function ManageJobs() {
 
             await deleteJob(jobId, user.token);
             setMessage("Job archived successfully.");
-
-            await loadJobs();
-
             setTimeout(() => {
                 setMessage("");
             }, 3000);
 
+
+            await loadJobs();
         }
         catch (error) {
 
             setError(error.message);
+            setTimeout(() => {
+                setError("");
+            }, 3000);
+
 
         }
 
@@ -92,11 +96,19 @@ export function ManageJobs() {
             setJobs(jobs);
 
             setShowArchived(true);
+            setTimeout(() => {
+                setMessage("");
+            }, 3000);
+
 
         }
         catch (error) {
 
             setError(error.message);
+            setTimeout(() => {
+                setError("");
+            }, 3000);
+
 
         }
 
@@ -107,17 +119,20 @@ export function ManageJobs() {
             await restoreJob(jobId, user.token);
 
             setMessage("Job restored successfully.");
-
-            await loadArchivedJobs();
-
             setTimeout(() => {
                 setMessage("");
             }, 3000);
 
+
+            await loadArchivedJobs();
         }
         catch (error) {
 
             setError(error.message);
+            setTimeout(() => {
+                setError("");
+            }, 3000);
+
 
         }
 
@@ -134,14 +149,6 @@ export function ManageJobs() {
 
     return (
         <div>
-            <AlertMessage
-                type="success"
-                message={message}
-            />
-
-            <AlertMessage
-                message={error}
-            />
 
             <h2>Manage Jobs</h2>
 
@@ -156,9 +163,6 @@ export function ManageJobs() {
                 <button className=" btn btn-primary mb-3" onClick={loadArchivedJobs}>View Archived Jobs</button>
             }
             
-
-           
-
             {
             !showArchived &&
 
@@ -197,6 +201,10 @@ export function ManageJobs() {
                 />
             </>
            }
+            <AlertMessage
+                type="success"
+                message={message}
+            />
 
             <JobTable
                 jobs={jobs}

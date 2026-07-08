@@ -15,6 +15,8 @@ export function Login(){
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState("");
     const { login } = useAuth();
+    const [showPassword, setShowPassword] = useState(false);
+    
 
     useEffect(() => {
 
@@ -92,25 +94,18 @@ useEffect(() => {
     // setTimeout(() => {
     //     setErrorMessage("");
     // }, 3000);
-
-
-
-
   }
 
     
   }
 
-  return (
-  
-
-      
+  return (       
         <AuthLayout title="CareerCrafter Login">
 
         <AlertMessage
-        type="success"
-        message={successMessage}
-    />
+            type="success"
+            message={successMessage}
+        />
 
     <AlertMessage
         message={errorMessage}/>
@@ -140,15 +135,36 @@ useEffect(() => {
                       Password
                   </label>
 
-                  <input
-                      type="password"
-                      name="password"
-                      className="form-control"
-                      placeholder="Enter Password"
-                      value={loginData.password}
-                      onChange={handleChange}
-                  />
+                  <div className="input-group">
 
+                <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    className="form-control"
+                    placeholder="Enter Password"
+                    value={loginData.password}
+                    onChange={handleChange}
+                />
+
+                <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() =>
+                        setShowPassword(!showPassword)
+                    }
+                >
+                    <i
+                        className={
+                            showPassword
+                                ? "bi bi-eye-slash"
+                                : "bi bi-eye"
+                        }
+                    ></i>
+                </button>
+
+            </div>
+                   
+       
               </div>
 
               

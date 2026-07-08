@@ -8,38 +8,40 @@ export function JobSeekerDashboard() {
     const { user, logout } = useAuth();
     const { unreadCount } = useNotification();
 
-    const navButton = ({ isActive }) =>
-        `btn ${
-            isActive ? "btn-primary" : "btn-outline-primary"
-        } px-3`;
-
+   const navButton = ({ isActive }) =>
+    `dashboard-link ${isActive ? "active-link" : ""}`;
     return (
 
         <div className="container py-4">
 
-            <div className="text-center mb-4">
+           
 
-                <h1 className="fw-bold">
-                    CareerCrafter - Job Seeker
+            <div className="dashboard-navbar shadow-sm">
+                 <div className="text-center mb-5">
+
+                <h1 className="display-5 fw-bold text-primary">
+                    <i className="bi bi-briefcase-fill me-2"></i>
+                    CareerCrafter
                 </h1>
 
-                <h4 className="text-muted">
-                    Welcome {user.fullName}
+                <h4 className="text-secondary">
+                    Welcome!{user.fullName}
+                    
+                
                 </h4>
 
             </div>
 
-            <div className="card shadow rounded-4 mb-4">
+                <div className="dashboard-nav-content">
 
-                <div className="card-body d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-                    <div className="d-flex flex-wrap gap-2">
+                   <div className="dashboard-menu">
 
                         <NavLink
                             end
                             to="/jobseeker/dashboard"
                             className={navButton}
                         >
+                            <i className="bi bi-speedometer2 me-2"></i>
                             Dashboard
                         </NavLink>
 
@@ -47,6 +49,7 @@ export function JobSeekerDashboard() {
                             to="/jobseeker/dashboard/jobs"
                             className={navButton}
                         >
+                            <i className="bi bi-search me-2"></i>
                             Browse Jobs
                         </NavLink>
 
@@ -54,6 +57,7 @@ export function JobSeekerDashboard() {
                             to="/jobseeker/dashboard/applications"
                             className={navButton}
                         >
+                            <i className="bi bi-file-earmark-text me-2"></i>
                             My Applications
                         </NavLink>
 
@@ -61,6 +65,7 @@ export function JobSeekerDashboard() {
                             to="/jobseeker/dashboard/resumes"
                             className={navButton}
                         >
+                            <i className="bi bi-file-person me-2"></i>
                             My Resumes
                         </NavLink>
 
@@ -68,6 +73,7 @@ export function JobSeekerDashboard() {
                             to="/jobseeker/dashboard/notifications"
                             className={navButton}
                         >
+                            <i className="bi bi-bell me-2"></i>
                             Notifications
 
                             {
@@ -84,15 +90,17 @@ export function JobSeekerDashboard() {
                             to="/jobseeker/dashboard/profile"
                             className={navButton}
                         >
+                            <i className="bi bi-person-circle me-2"></i>
                             My Profile
                         </NavLink>
 
                     </div>
 
                     <button
-                        className="btn btn-danger"
+                        className="btn btn-danger shrink-0"
                         onClick={logout}
                     >
+                        <i className="bi bi-box-arrow-right me-2"></i>
                         Logout
                     </button>
 
@@ -101,9 +109,9 @@ export function JobSeekerDashboard() {
             </div>
 
             <NotificationListener />
-
+                <div className="mt-4 animate-pag">
             <Outlet />
-
+</div>
         </div>
 
     );

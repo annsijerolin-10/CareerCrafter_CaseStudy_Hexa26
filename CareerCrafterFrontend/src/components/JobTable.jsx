@@ -13,13 +13,13 @@ export function JobTable({
     }
 
     return (
-        <div className="card shadow-sm mt-4">
+        <div className="card table-card">
 
         <div className="card-body">
 
         <div className="table-responsive">
 
-        <table className="table table-striped table-hover align-middle">
+                    <table className="table  table-hover align-middle">
 
             <thead className="table-primary">
                 <tr>
@@ -30,6 +30,10 @@ export function JobTable({
                     <th>Posted Date</th>
                
                     <th>Actions</th>
+                    <th>
+                        Application Deadline
+
+                    </th>
                     
                 </tr>
             </thead>
@@ -46,10 +50,8 @@ export function JobTable({
                         <td>{job.requiredSkills}</td>
                         <td>{new Date(job.postedDate).toLocaleDateString()}</td>
                         
-
                         <td>
-                            {
-                                showArchived?(
+                            {showArchived?(
                                     <button className="btn btn-success btn-sm" onClick={()=> onRestoreJob(job.jobId)}>Restore</button>
                                 ):(
                                     <>
@@ -70,6 +72,11 @@ export function JobTable({
                            
 
                         </td>
+                        
+                            <td>
+    {new Date(job.applicationDeadline).toLocaleDateString()}
+</td>
+                        
 
                     </tr>
 

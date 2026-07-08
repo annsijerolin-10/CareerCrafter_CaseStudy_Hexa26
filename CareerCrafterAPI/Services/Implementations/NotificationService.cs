@@ -80,7 +80,12 @@ namespace CareerCrafterAPI.Services.Implementations
                 throw;
             }
         }
-    
+        public async Task MarkAllAsReadAsync(int jobSeekerId)
+        {
+            await _notificationRepository
+                .MarkAllAsReadAsync(jobSeekerId);
+        }
+
     }
 }
 

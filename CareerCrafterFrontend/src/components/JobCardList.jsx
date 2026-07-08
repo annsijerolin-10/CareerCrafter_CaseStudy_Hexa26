@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export function JobCardList({
     jobs,
     applications,
@@ -17,93 +19,159 @@ export function JobCardList({
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    const [selectedJob, setSelectedJob] = useState(null);
+
     return (
+        <>
+            <div className="d-flex flex-column gap-3">
 
-        <div className="row g-4">
+                {jobs.map(job => {
 
-            {jobs.map(job => {
+                    const deadline = new Date(job.applicationDeadline);
+                    deadline.setHours(0, 0, 0, 0);
 
-                const deadline = new Date(job.applicationDeadline);
-                deadline.setHours(0, 0, 0, 0);
+                    const isDeadlinePassed = deadline < today;
 
-                const isDeadlinePassed = deadline < today;
+                    return (
 
-                return (
+                        <div
+                            key={job.jobId}
+                            className="card shadow-sm job-card"
+                        >
 
-                    <div
-                        key={job.jobId}
-                        className="col-md-6 col-lg-4"
-                    >
+                            <div className="card-body">
 
-                    <div className="card card-hover h-100 shadow-sm">
+                     
+                                <div className="d-flex justify-content-between align-items-start">
 
-                    <div className="card-body">
+                                    <div>
 
-                        <h5 className="card-title">
-                            {job.jobTitle}
-                        </h5>
+                                        <h4 className="job-title mb-1">
+                                            {job.jobTitle}
+                                        </h4>
 
-                        <p className="mb-2">
-                            <strong>Company:</strong> {job.companyName}
-                        </p>
+                                        <div className="mt-2">
 
-                        <p className="mb-2">
-                            <strong>Location:</strong> {job.location}
-                        </p>
+                                            <p className="mb-1">
+                                                <strong>Company:</strong> {job.companyName}
+                                            </p>
 
-                        <p className="mb-2">
-                            <strong>Salary:</strong> ₹ {job.salary}
-                        </p>
+                                             <button
+                                        className="btn btn-outline-primary btn-sm"
+                                        onClick={() =>
+                                            setSelectedJob({
+                                                ...job,
+                                                modalType: "Company"
+                                            })
+                                        }
+                                    >
+                                        About Company
+                                    </button>
 
-                        <p className="mb-2">
-                            <strong>Skills:</strong> {job.requiredSkills}
-                        </p>
 
-                        <p className="mb-2">
-                            <strong>Posted:</strong>{" "}
-                            {new Date(job.postedDate).toLocaleDateString()}
-                        </p>
+                                        </div>
 
-                        <p className="mb-2">
-                            <strong>Apply Before:</strong>{" "}
-                            {deadline.toLocaleDateString()}
-                        </p>
+                                    </div>
 
-                        
+                                    <div className="d-flex flex-column align-items-end gap-2">
 
-                        {
-                            appliedJobIds.includes(job.jobId)
-                                ? (
-                                    <>
+                                        <div className="job-salary">
+                                            <span className="job-label"><strong>
+                                                Salary:
+                                                </strong>
+                                            </span>{" "}
+                                            ₹ {job.salary}
+                                        </div>
+
+                                        <div ><strong>
+                                            Location: {job.location}
+                                            </strong>
+                                        </div>
                                         <button
-                                            className="btn btn-success"
-                                            disabled
-                                        >
-                                            ✓ Applied
-                                        </button>
+                                        className="btn btn-outline-primary btn-sm"
+                                        onClick={() =>
+                                            setSelectedJob({
+                                                ...job,
+                                                modalType: "job"
+                                            })
+                                        }
+                                    >
+                                        View Job Description
+                                    </button>
 
-                                        <button
-                                            className="btn btn-outline-primary mt-2 d-block"
-                                            onClick={() =>
-                                                onViewApplication(job.jobId)
-                                            }
-                                        >
-                                            View Application
-                                        </button>
-                                    </>
-                                )
+                                    </div>
 
-                                : isDeadlinePassed
-                                    ? (
+                                </div>
+
+                                <hr />
+
+
+                                <div className="d-flex justify-content-between align-items-start mb-3">
+
+                                    <div>
+
+                                        <p className="mb-2">
+                                            <strong>Skills Required:</strong>
+                                        </p>
+
+                                        <div className="d-flex flex-wrap gap-2">
+
+                                            {job.requiredSkills
+                                                ?.split(",")
+                                                .map(skill => (
+
+                                                    <span
+                                                        key={skill}
+                                                        className="badge bg-light text-dark border"
+                                                    >
+                                                        {skill.trim()}
+                                                    </span>
+
+                                                ))}
+
+                                        </div>
+
+                                    </div>
+
+                                    
+
+                                </div>
+
+                                <hr />
+
+                                <div className="d-flex justify-content-end gap-2">
+
+                                    {appliedJobIds.includes(job.jobId) ? (
+
+                                        <>
+                                            <button
+                                                className="btn btn-success"
+                                                disabled
+                                            >
+                                                Applied
+                                            </button>
+
+                                            <button
+                                                className="btn btn-outline-primary"
+                                                onClick={() =>
+                                                    onViewApplication(job.jobId)
+                                                }
+                                            >
+                                                View Application
+                                            </button>
+                                        </>
+
+                                    ) : isDeadlinePassed ? (
+
                                         <button
                                             className="btn btn-secondary"
                                             disabled
                                         >
                                             Closed
                                         </button>
-                                    )
 
-                                    : (
+                                    ) : (
+
                                         <button
                                             className={`btn ${
                                                 profileCompleted
@@ -113,25 +181,93 @@ export function JobCardList({
                                             disabled={!profileCompleted}
                                             onClick={() => onApply(job)}
                                         >
-                                            {
-                                                profileCompleted
-                                                    ? "Apply"
-                                                    : "Complete Profile First"
-                                            }
+                                            {profileCompleted
+                                                ? "Apply Now"
+                                                : "Complete Profile First"}
                                         </button>
-                                    )
-                        }
+
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    );
+
+                })}
+
+            </div>
+
+            {/* Modal */}
+
+            {selectedJob && (
+
+                <div
+                    className="modal fade show d-block"
+                    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+                >
+
+                    <div className="modal-dialog modal-lg">
+
+                        <div className="modal-content">
+
+                            <div className="modal-header">
+
+                                <h4 className="modal-title">
+
+                                    {selectedJob.modalType === "job"
+                                        ? "Job Description"
+                                        : "Company Description"}
+
+                                </h4>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => setSelectedJob(null)}
+                                ></button>
+
+                            </div>
+
+                            <div className="modal-body">
+
+                                {selectedJob.modalType === "job" ? (
+
+                                    <p style={{ whiteSpace: "pre-line" }}>
+                                        {selectedJob.jobDescription}
+                                    </p>
+
+                                ) : (
+
+                                    <p style={{ whiteSpace: "pre-line" }}>
+                                        {selectedJob.companyDescription}
+                                    </p>
+
+                                )}
+
+                            </div>
+
+                            <div className="modal-footer">
+
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={() => setSelectedJob(null)}
+                                >
+                                    Close
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
-                    </div></div>
 
-                );
+                </div>
 
-            })}
+            )}
 
-        </div>
-
-
+        </>
     );
-
 }
