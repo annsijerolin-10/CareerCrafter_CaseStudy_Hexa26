@@ -86,6 +86,9 @@ export function ApplyJobModal({
                         </select>
 
                         <hr />
+                        <p>
+                            OR
+                        </p>
 
                         <label className="form-label">
                             Upload New Resume

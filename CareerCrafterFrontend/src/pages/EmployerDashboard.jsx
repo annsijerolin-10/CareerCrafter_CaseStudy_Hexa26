@@ -2,6 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate, NavLink, Outlet } from "react-router-dom";
 import { EmployerNotificationListener } from "../components/EmployerNotificationListener";
 import { useNotification } from "../context/NotificationContext";
+import { Header } from "../components/Header";
 export function EmployerDashboard() {
 
     const { user, logout } = useAuth();
@@ -17,6 +18,7 @@ export function EmployerDashboard() {
     `dashboard-link ${isActive ? "active-link" : ""}`;
 
     return (
+        <Header>
 
         <div className="container py-4">
 
@@ -25,10 +27,13 @@ export function EmployerDashboard() {
             <div className="dashboard-navbar shadow-sm">
                 <div className="text-center mb-5">
 
-                <h1 className="display-5 fw-bold text-primary">
+                <h1 className="display-5 fw-bold text-primary mb-1">
                     <i className="bi bi-briefcase-fill me-2"></i>
                     CareerCrafter
                 </h1>
+                <p className="auth-subtitle">
+    Connecting Talent with Opportunity
+</p>
 
                 <h4 className="text-secondary">
                     Welcome back,{user.fullName}
@@ -93,10 +98,11 @@ export function EmployerDashboard() {
             </div>
 
             <EmployerNotificationListener />
-
+             </div>
+                
             <Outlet />
 
-        </div>
+       </Header>
 
     );
 

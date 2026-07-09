@@ -23,18 +23,25 @@ import { Notifications } from './pages/Notifications'
 import { MyProfile } from './pages/MyProfile'
 import { ForgotPassword } from './pages/ForgotPassword'
 import { NotFound } from './pages/NotFound'
+import { Footer } from './components/Footer'
+import { Header } from './components/Header'
+import { MainLayout } from './Layout.jsx/MainLayout'
 function App() {
   
 
   return (
     <>
-    <Routes>
+     <Routes>
+    
       <Route path="/" element={<Login/>} />
       <Route path="/register" element={<Register/>} />
        <Route
-    path="/forgot-password"
-    element={<ForgotPassword />}
-/>
+            path="/forgot-password"
+            element={<ForgotPassword />}
+        />
+
+        
+   
       <Route
         path="/employer/dashboard"
         element={
@@ -96,15 +103,16 @@ function App() {
             path="profile"
             element={<MyProfile />}
         />
-        
+        </Route>
+       
 
-    </Route>
+
     <Route
     path="*"
     element={<NotFound />}
 />
     </Routes>
-
+ <Footer/>
       
         
     </>

@@ -33,7 +33,7 @@ export function MyApplicationsTable({
                                 <th>Job Title</th>
                                 <th>Company</th>
                                 <th>Resume</th>
-                                <th>Applied Date</th>
+                                <th>Applied On</th>
                                 <th>Status</th>
                                 <th>Action</th>
 

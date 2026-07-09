@@ -9,17 +9,20 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NotificationProvider } from './context/NotificationContext.jsx'
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Header } from './components/Header.jsx'
+import { Footer } from './components/Footer.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+    
       <AuthProvider>
         <NotificationProvider>
         <App />
         </NotificationProvider>
       </AuthProvider>
-      
+   
     </BrowserRouter>
-
+    
 
     <ToastContainer
         position="top-right"

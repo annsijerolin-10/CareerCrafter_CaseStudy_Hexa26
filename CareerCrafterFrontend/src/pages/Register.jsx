@@ -322,7 +322,7 @@ return(
         <div>
         <button
             type="submit"
-            className="btn btn-success w-100">
+            className="btn btn-primary w-100">
                 Register
         </button>
         </div>

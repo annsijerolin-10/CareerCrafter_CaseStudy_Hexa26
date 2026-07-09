@@ -2,6 +2,8 @@ import { Outlet, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { NotificationListener } from "../components/NotificationListener";
 import { useNotification } from "../context/NotificationContext";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 
 export function JobSeekerDashboard() {
 
@@ -11,6 +13,7 @@ export function JobSeekerDashboard() {
    const navButton = ({ isActive }) =>
     `dashboard-link ${isActive ? "active-link" : ""}`;
     return (
+       
 
         <div className="container py-4">
 
@@ -19,10 +22,13 @@ export function JobSeekerDashboard() {
             <div className="dashboard-navbar shadow-sm">
                  <div className="text-center mb-5">
 
-                <h1 className="display-5 fw-bold text-primary">
+                <h1 className="display-5 fw-bold text-primary mb-1">
                     <i className="bi bi-briefcase-fill me-2"></i>
                     CareerCrafter
                 </h1>
+                <p className="auth-subtitle">
+                    Connecting Talent with Opportunity
+                </p>
 
                 <h4 className="text-secondary">
                     Welcome!{user.fullName}
@@ -113,6 +119,7 @@ export function JobSeekerDashboard() {
             <Outlet />
 </div>
         </div>
+        
 
     );
 

@@ -2,25 +2,39 @@ export function AuthLayout({
     title,
     children
 }) {
-
     return (
 
-        <div className="container d-flex justify-content-center align-items-center min-vh-100">
+        <div className="auth-page">
 
-            <div className="card auth-card shadow-lg p-4">
-                 
+            <div className="auth-left">
+               <i className="bi bi-briefcase-fill auth-icon"></i>
 
-               <h3 className="fw-bold text-primary mb-3">
-                    
-                    {title}
-                </h3>
+                <h1>CareerCrafter</h1>
 
-                {children}
+                <h4>Connecting Talent with Opportunity</h4>
+
+                <p>
+                    Streamline hiring, discover opportunities, and build successful careers together.
+                </p>
+
+            </div>
+
+            <div className="auth-right">
+
+                <div className="card auth-card shadow-lg p-4">
+                   
+
+                    <h3 className="fw-bold text-primary mb-3">
+                        {title}
+                    </h3>
+
+                    {children}
+
+                </div>
 
             </div>
 
         </div>
 
     );
-
 }

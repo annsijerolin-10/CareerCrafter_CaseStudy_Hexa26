@@ -100,7 +100,7 @@ useEffect(() => {
   }
 
   return (       
-        <AuthLayout title="CareerCrafter Login">
+        <AuthLayout title=" Login">
 
         <AlertMessage
             type="success"
